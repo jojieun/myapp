@@ -11,99 +11,98 @@
 |
 */
 
-Route::get('/', function(){
-    return view('good');
-});
-//Route::get('/homei',function(){
-//    return redirect(route('home'));
-//});
 
 
-//Route::get('/', 'IndexController@index');
-//Route::resource('posts', 'PostsController');
-//Route::get('posts', [
-//    'as'=>'posts.index',
-//    function(){
-//        return view('posts.index');
-//    },
-//    'uses'=>'PostsController@index'
-//]);
-Route::get('posts', function(){
-    $posts = App\Post::with('user')->paginate(10);
-    return view('posts.index',compact('posts'));
-});
+Route::get('/', [
+    'as'=>'main',
+    'uses'=>'WelcomeController@index'
+]);
+//가입 선택화면
+Route::view('auth/register_select','register_select')->name('register.select');
+//reviewer 가입 관련
+Route::get('auth/register',[
+    'as'=>'reviewers.create',
+    'uses' => 'ReviewersController@create'
+]);
+Route::post('auth/register',[
+    'as'=>'reviewers.store',
+    'uses' => 'ReviewersController@store'
+]);
+//reviewer 인증 관련
+Route::get('auth/login',[
+    'as'=>'sessions.create',
+    'uses' => 'SessionsController@create'
+]);
+Route::post('auth/login',[
+    'as'=>'sessions.store',
+    'uses' => 'SessionsController@store'
+]);
+Route::get('auth/logout',[
+    'as'=>'sessions.destory',
+    'uses' => 'SessionsController@destory'
+]);
 
-Route::resource('posts.comments', 'PostCommentController');
+//advertiser 가입 관련
+Route::get('auth/advertiser_register',[
+    'as'=>'advertisers.create',
+    'uses' => 'AdvertisersController@create'
+]);
+Route::post('auth/advertiser_register',[
+    'as'=>'advertisers.store',
+    'uses' => 'AdvertisersController@store'
+]);
+//advertiser 인증 관련
+Route::get('auth/advertiser_login',[
+    'as'=>'advertiser_sessions.create',
+    'uses' => 'AdvertisersSessionsController@create'
+]);
+Route::post('auth/advertiser_login',[
+    'as'=>'advertiser_sessions.store',
+    'uses' => 'AdvertisersSessionsController@store'
+]);
+Route::get('auth/advertiser_logout',[
+    'as'=>'advertiser_sessions.destory',
+    'uses' => 'AdvertisersSessionsController@destory'
+]);
 
-DB::listen(function ($event) {
-//    var_dump($event->sql);
-    // var_dump($event->bindings);
-    // var_dump($event->time);
-});
-Route::get('auth',function(){
-    $credentials = [
-        'email'=>'john@example.com',
-        'password'=>'password'
-    ];
-    if(! Auth::attempt($credentials)){
-        return 'Incorrect username and password combination';
-    }
-    event('user.login',[Auth::user()]);
-    var_dump('Event fired and continue to next line...');
-    return;
-});
-Event::listen('user.login', function($user){
-   var_dump('"user.log" event catches and passed data is:');
-    var_dump($user->toArray());
-});
-Event::listen('user.login', function($user) {
-    $user->last_login = (new DateTime)->format('Y-m-d H:i:s');
- 
-    return $user->save();
-});
-//Route::get('auth/logout', function(){
-//    Auth::logout();
-//    return 'See you again!';
-//});
-//Route::get('protected',[
-//    'middleware'=>'auth',
-//    function(){
-//        return 'Welcome back, '.Auth::user()->name;
-//    }
-//]);
-//Route::get('login', function(){
-//    return 'login please!';
-//});
+/* 소셜 로그인 */
+Route::get('social/{provider}', [
+    'as' => 'social.login',
+    'uses' => 'SocialController@execute',
+]);
 
-
-
-
-
-
-
-
-
+/* 비밀번호 초기화 */
+Route::get('auth/remind', [
+    'as' => 'remind.create',
+    'uses' => 'PasswordsController@getRemind',
+]);
+Route::post('auth/remind', [
+    'as' => 'remind.store',
+    'uses' => 'PasswordsController@postRemind',
+]);
+Route::get('auth/reset/{token}', [
+    'as' => 'reset.create',
+    'uses' => 'PasswordsController@getReset',
+]);
+    
+//    ->where('token', '[\pL-\pN]{64}');
+Route::post('auth/reset', [
+    'as' => 'reset.store',
+    'uses' => 'PasswordsController@postReset',
+]);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* 커뮤니티 관련 */
+Route::resource('communities', 'CommunitiesController');
 
 
 
 
 
 
+Auth::routes();
 
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
