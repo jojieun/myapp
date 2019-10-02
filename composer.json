@@ -22,9 +22,6 @@
         "phpunit/phpunit": "^7.5"
     },
     "config": {
-        "platform": {
-        "php": "7.0.7"
-        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
