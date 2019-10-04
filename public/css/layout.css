@@ -1,6 +1,7 @@
 /** 통합 레이아웃 시작 **/
 #wrap {margin:0; position:relative; }
-.pc-none{ display:none !important;}
+.pc-none,
+.pc-none-770{ display:none !important;}
 
 /** 상단 로그인 영역 **/
 .header {position:relative; width:1660px; height:100px; margin: 0 auto;}
@@ -69,9 +70,9 @@
 .campaign-list .info .txt-box .txt-top span{ display:inline-block; }
 .campaign-list .info .txt-box .sns{ float:left; }
 .campaign-list .info .txt-box .sns .blog,
-.campaign-list .info .txt-box .sns .insta { padding: 0 14px; border-radius:12px; font-size:14px; background: #fff;}
-.campaign-list .info .txt-box .sns .blog { color:#00c73c; border:1px solid #00c73c; }
-.campaign-list .info .txt-box .sns .insta { color:#8154ef; border:1px solid #8154ef;}
+.campaign-list .info .txt-box .sns .insta { padding: 0 14px; border-radius:12px; font-size:14px; background: #fff;} 
+.blog { color:#00c73c; border:1px solid #00c73c;}
+.insta { color:#8154ef; border:1px solid #8154ef;}
 .campaign-list .info .txt-box .num{ float:right; letter-spacing:-1px; }
 .campaign-list .info .txt-box .num b{ font-weight:400; color:#000; }
 .campaign-list .info .txt-box .subject{ display:block; width: 100%; margin:10px 0 8px; font-size:24px; font-weight:400; color:#000; letter-spacing:-1px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
@@ -351,6 +352,6 @@ footer{ position:relative; width: 1660px; margin:0 auto; padding:40px 0; border-
 	.footer-txt{ font-size:11px; line-height:180%; }
 	.copyright{margin-top:6px;}
 
-	.btn-top{ right:3%; bottom:26px;}
-	.btn-top img{width: 36px;}
+	.btn-top{ right:3%; bottom:130px;}
+	.btn-top img{width: 36px; opacity:0.7;}
 }

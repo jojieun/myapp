@@ -15,7 +15,7 @@ class AdvertisersSessionsController extends Controller
         $this->middleware('guest',['except'=>'destory']);
     }
     public function create(){
-        return view('sessions.create');
+        return view('sessions.advertiser_create');
     }
     public function store(Request $request)
     {
