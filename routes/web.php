@@ -17,10 +17,19 @@ Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
 ]);
+
+Route::view('athome','athome')->name('athome');
+Route::view('visit','visit')->name('visit');
+Route::view('ask','ask')->name('ask');
+Route::view('faq','faq')->name('faq');
+Route::view('notice','notice')->name('notice');
+Route::view('ask_list','ask_list')->name('ask_list');
+
 //가입 선택화면
 Route::view('auth/register_select','register_select')->name('register.select');
 //reviewer 가입 관련
 Route::get('auth/register',[
+    
     'as'=>'reviewers.create',
     'uses' => 'ReviewersController@create'
 ]);

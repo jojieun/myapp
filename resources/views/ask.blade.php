@@ -1,6 +1,7 @@
-<?
-	include $_SERVER['DOCUMENT_ROOT']. '/head.php';
-?>
+@extends('layouts.main')
+
+@section('content')
+
 	<span class="m-bar2"></span>
 	<div class="sub-container bt-ddd">
 		<!-- //탭-->
@@ -8,7 +9,7 @@
 		<!-- 상세 컨텐츠내용 -->
 		<div class="content-in-sub">
 			<!-- 왼쪽메뉴 -->
-			<? include $_SERVER['DOCUMENT_ROOT']. '/cscenter/leftmenu.php'; ?>
+			@include('layouts.leftmenu')
 						
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
@@ -51,6 +52,5 @@
 		<!-- //상세 컨텐츠내용 -->	
 	</div>
 
-<?
-	include $_SERVER['DOCUMENT_ROOT']. '/tail.php';
-?>
+
+@endsection

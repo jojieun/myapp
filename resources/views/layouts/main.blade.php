@@ -66,14 +66,14 @@
 								<span><a href="{{route('register.select')}}">회원가입</a></span>
                                 @endif
 							</li>
-							<li><a href="/sub/campaign_list.php"  class="mainmenu" id="mainmenu01"><b>방문</b></a></li>
-							<li><a href="/sub/campaign_list2.php"  class="mainmenu" id="mainmenu02"><b>재택</b></a></li>
-							<li class="mainMenu"><a href="/sub/campaign_list.php"  class="mainmenu" id="mainmenu03">고객센터</a>						
+							<li><a href="{{route('visit')}}"  class="mainmenu" id="mainmenu01"><b>방문</b></a></li>
+							<li><a href="{{route('athome')}}"  class="mainmenu" id="mainmenu02"><b>재택</b></a></li>
+							<li class="mainMenu"><a href="{{route('ask')}}"  class="mainmenu" id="mainmenu03">고객센터</a>						
 								<ol class="submenu depth" id="submenu03" style="display:none;">
-									<li><a href="/cscenter/ask.php">1:1 문의하기</a></li>
-									<li><a href="/cscenter/faq.php">FAQ</a></li>
-									<li><a href="/cscenter/notice_list.php">공지사항</a></li>
-									<li><a href="/cscenter/ask_list.php">문의내역</a></li>
+									<li><a href="{{route('ask')}}">1:1 문의하기</a></li>
+									<li><a href="{{route('faq')}}">FAQ</a></li>
+									<li><a href="{{route('notice')}}">공지사항</a></li>
+									<li><a href="{{route('ask_list')}}">문의내역</a></li>
 								</ol>
 							</li>
 							<li><a href="{{ route('communities.index') }}"  class="mainmenu" id="mainmenu04">커뮤니티</a></li>	

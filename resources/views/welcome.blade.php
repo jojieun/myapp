@@ -31,7 +31,7 @@
 								</span>
 								<div class="txt-box">
 									<p class="txt-top">
-										<span class="sns"><span class="blog">{{--auth()->guard('advertiser')->user()->name--}}</span></span>
+										<span class="sns"><span class="blog">네이버블로그</span></span>
 										<span class="num"><b>신청 22</b> / 10명</span>
 									</p>
 									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>

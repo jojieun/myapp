@@ -1,17 +1,13 @@
-<?
-	include $_SERVER['DOCUMENT_ROOT']. '/head.php';
-?>
+@extends('layouts.main')
+
+@section('content')
 
 	<div class="sub-container bt-ddd">
 
 		<!-- 상단 카테고리 필터 -->
 		<section class="content-in-top">
 			<div class="list_title">
-				<h2>방문 캠페인</h2>
-				<div class="map">
-					<a href="#" class="btn-map">지역전체</a>
-					<div class="map-on">&nbsp;</div>
-				</div>
+				<h2 class="bg-none">재택 캠페인</h2>
 			</div>
 			<div class="category">
 				<dl>
@@ -28,11 +24,13 @@
 					<dt>카테고리</dt>
 					<dd>
 						<span class="input-button"><input name="" type="checkbox" id="category01"><label for="category01">전체</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category02"><label for="category02">맛집</label></span>
+						<span class="input-button"><input name="" type="checkbox" id="category02"><label for="category02">생활</label></span>
 						<span class="input-button"><input name="" type="checkbox" id="category03"><label for="category03">뷰티</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category04"><label for="category04">숙박</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category05"><label for="category05">문화</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category06"><label for="category06">기타</label></span>				
+						<span class="input-button"><input name="" type="checkbox" id="category04"><label for="category04">디지털</label></span>
+						<span class="input-button"><input name="" type="checkbox" id="category05"><label for="category05">유아동</label></span>
+						<span class="input-button"><input name="" type="checkbox" id="category06"><label for="category06">식품</label></span>		
+						<span class="input-button"><input name="" type="checkbox" id="category07"><label for="category07">패션</label></span>		
+						<span class="input-button"><input name="" type="checkbox" id="category08"><label for="category08">도서</label></span>				
 					</dd>
 				</dl>
 			</div>
@@ -56,13 +54,13 @@
 					<ul>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday on">D-DAY</span>
 									</span>
@@ -80,13 +78,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -104,13 +102,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -128,13 +126,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday on">D-DAY</span>
 									</span>
@@ -152,13 +150,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday on">D-DAY</span>
 									</span>
@@ -176,13 +174,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -200,13 +198,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -224,13 +222,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -248,13 +246,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -272,13 +270,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -296,13 +294,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -320,13 +318,13 @@
 						</li>
 						<li>
 							<div class="campaign-item">
-								<a href="campaign_view.php">
+								<a href="campaign_view2.php">
 								<div class="thum">
 									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 								</div>
 								<div class="info">
 									<span class="ico-tag">
-										<span class="type01">방문</span>
+										<span class="type02">재택</span>
 										<span class="bg-bl">뷰티</span>
 										<span class="dday">D-11</span>
 									</span>
@@ -348,6 +346,5 @@
 		</div>
 	</div>
 
-<?
-	include $_SERVER['DOCUMENT_ROOT']. '/tail.php';
-?>
+
+@endsection
