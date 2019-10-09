@@ -3,8 +3,8 @@
 	<span class="m-bar2"></span>
 	<!-- 모바일 마이페이지 -->
 	<p class="m-top-title">
-		<b class="name">{{ $nickname }}님</b>
-		<span>{{ $email }}</span>
+		<b class="name">{{ $user->nickname }}님</b>
+		<span>{{ $user->email }}</span>
 	</p>
 	<!-- //모바일 마이페이지 -->
 
@@ -21,7 +21,7 @@
 				<div class="my-reviewer-top">
 					<dl>
 						<dt><b>나의포인트</b><a href="#">자세히보기</a></dt>
-						<dd><b>10,000</b>P</dd>
+						<dd><b>{{ $user->point }}</b>P</dd>
 					</dl>
 					<ul>
 						<li><span class="title">미제출리뷰</span><span class="txt"><b>1</b><em>건</em></span></li>

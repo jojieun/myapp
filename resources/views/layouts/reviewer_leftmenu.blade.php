@@ -1,8 +1,8 @@
 		<!-- 왼쪽메뉴 -->
 		<div class="leftmenu">
 			<p class="leftmenu-title">
-				<b class="name">{{ $nickname }}님</b>
-				<span>{{ $email }}</span>
+				<b class="name">{{ $user->nickname }}님</b>
+				<span>{{ $user->email }}</span>
 			</p>
 			<ul> 
 				<li class="on"><a href="reviewer_0101.php"><span>나의 캠페인</span></a></li>
@@ -15,12 +15,12 @@
 				<li><a href="reviewer_0801.php"><span>회원정보수정</span></a></li>
 				<li class="fw-500"><a href="reviewer_0901.php"><span>mySNS</span></a>
 					<p class="sns">
-						<span class="ico-blog"></span>
-						<span class="ico-post off"></span>
-						<span class="ico-facebook off"></span>
-						<span class="ico-insta"></span>
-						<span class="ico-kakao"></span>
-						<span class="ico-youtube off"></span>
+						<span class="ico-blog @if(!$user->naver_blog) off @endif"></span>
+						<span class="ico-post @if(!$user->naver_post) off @endif"></span>
+						<span class="ico-facebook @if(!$user->facebook) off @endif"></span>
+						<span class="ico-insta @if(!$user->instagram) off @endif"></span>
+						<span class="ico-kakao @if(!$user->kakao) off @endif"></span>
+						<span class="ico-youtube @if(!$user->youtube) off @endif"></span>
 					</p>
 				</li>
 			</ul>

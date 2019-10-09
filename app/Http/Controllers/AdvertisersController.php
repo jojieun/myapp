@@ -43,6 +43,6 @@ class AdvertisersController extends Controller
         ]);
         auth()->guard('advertiser')->login($advertiser);
 
-        return view('reviewers.registerok',['name'=>auth()->guard('advertiser')->user()->name]);
+        return view('advertisers.registerok',['name'=>auth()->guard('advertiser')->user()->name]);
     }
 }

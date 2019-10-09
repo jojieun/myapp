@@ -1,4 +1,19 @@
 @extends('layouts.main')
 @section('content')
-<h1>{{ $name }}님 환영합니다.</h1>
+<div class="sub-container bt-ddd bg-smile m-top-bar">
+		<!-- 상세 컨텐츠내용 -->	
+		<div class="content-in-sub member mtb150 text-center">
+			<h2>
+				<b>{{ $name }}님 가입을 축하드립니다!</b>
+				<p>블록션에서 리뷰어를 직접 모집하세요:) </p>
+			</h2>
+
+			<div class="login-group">				
+				<a href="{{route('main')}}" class="btn big w50">메인으로</a>
+				<a href="{{route('reviewers.mypage')}}" class="btn black big w50">마이페이지</a>
+			</div>
+
+		</div>
+		<!-- //상세 컨텐츠내용 -->	
+	</div>
 @endsection

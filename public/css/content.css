@@ -64,7 +64,7 @@ a.btn.w125, button.btn.w125{ min-width: 125px; }
 
  /* 체크박스 */
 button{ cursor:pointer; font-family: 'Montserrat', 'Noto Sans KR', 'Malgun Gothic', Dotum, Verdana, Arial, sans-serif !important; outline-style: none}
-input[type=text],input[type=tel],input[type=date],
+input[type=text],input[type=tel],input[type=date],select,
 textarea,input[type=password],input[type=email]{ height:40px; line-height:38px; padding-left:15px; border:none; border-radius:0; box-shadow:none; background: #fff; font-size:14px; outline:none; font-family:'Montserrat', 'Noto Sans KR','Malgun Gothic', Dotum, Verdana, Arial, sans-serif !important; appearance: none; }
 
 input[type="date"] {
@@ -276,7 +276,15 @@ select {
 .table_form tbody th{ width: 150px; height: 40px; line-height: 40px; padding-bottom:10px; font-weight:400; text-align:left; color:#222;}
 .table_form tbody td{ padding-bottom:10px; text-align:left; }
 .table_form tbody td b{ font-weight:400; }
-.table_form tbody td input[type=text], .table_form tbody td input[type=email], .table_form tbody td input[type=tel], .table_form tbody td input[type=date], table tbody td input[type=password] { width: 100%; border:1px solid #ddd; }
+.table_form tbody td input[type=text], 
+.table_form tbody td input[type=email], 
+.table_form tbody td select, 
+.table_form tbody td input[type=tel], .table_form tbody td input[type=date], table tbody td input[type=password] { width: 100%; border:1px solid #ddd; }
+.table_form tbody td select{
+    padding:0;
+    padding-left:15px;
+    font-size: 14px;
+}
 .table_form tbody td input[type=text].w150, .table_form tbody td input[type=tel].w150 { width: calc( 100% - 150px); }
 .table_form tbody td span.mb10{ width: 100%; display:inline-block; margin-bottom:10px; }
 
@@ -1095,7 +1103,8 @@ table.tbl_terms tbody td.center{ text-align:center;}
 
 	 /* 체크박스 */
 	input[type=text],
-	textarea,input[type=password],input[type=tel],input[type=date]{ height:36px; line-height:34px; padding-left:8px; font-size:12px;}
+    input[type=email],
+	textarea,input[type=password],input[type=tel],input[type=date], .table_form tbody td select{ height:36px; line-height:34px; padding-left:8px; font-size:12px;}
 	textarea{ height:130px; padding:10px;}
 	textarea.border2{  font-size:12px;}
 	textarea::-webkit-input-placeholder{ line-height:140%;}

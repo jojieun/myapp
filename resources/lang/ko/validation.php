@@ -123,8 +123,10 @@ return [
         'password' => '비밀번호',
         'nickname' => '닉네임',
         'birth' => '생년월일',
-        'mobile num' => '휴대폰번호',
+        'mobile_num' => '휴대폰번호',
         'zipcode' => '우편번호',
         'address' => '주소',
+        'brand_name' => '브랜드명',
+        'category_id' => '브랜드카테고리',
     ],
 ];
