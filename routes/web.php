@@ -18,6 +18,13 @@ Route::get('/', [
     'uses'=>'WelcomeController@index'
 ]);
 
+//리뷰어마이페이지
+Route::get('reviewer/mypage',[
+    'as'=>'reviewers.mypage',
+    'uses' => 'ReviewerMypageController@home'
+]);
+
+//임시 게시판보기
 Route::view('athome','athome')->name('athome');
 Route::view('visit','visit')->name('visit');
 Route::view('ask','ask')->name('ask');
@@ -113,6 +120,3 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

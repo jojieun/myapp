@@ -643,6 +643,10 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .sns-login b{ display:block; font-size:26px; margin-top:50px; color:#222; letter-spacing:-1px; }
 .sns-login p{ margin:4px 0 14px; color:#222;}
 
+#content_1, #content_2{
+    overflow: hidden;
+}
+
 /* 회원가입, 개인정보 */
 .join-btn01 { width: 630px; margin:0 auto;}
 .join-btn01 a{ display:inline-block; position:relative; width: 310px; height: 290px;  background:#fff ; border:1px solid #ddd; font-size:36px; text-align:center; font-weight:500; color:#222; padding-top: 160px;}

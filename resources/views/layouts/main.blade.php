@@ -56,7 +56,7 @@
 							</li>
 							<li class="pc-none m-login">
                                 @if(Auth::guard('web')->check())
-                                <span class="my"><a href="#"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a></span>
+                                <span class="my"><a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a></span>
 								<span class="logout"><a href="{{route('sessions.destory')}}">로그아웃</a></span>
                                 @elseif(Auth::guard('advertiser')->check())
                                 <span class="my"><a href="#"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a></span>
@@ -92,9 +92,9 @@
 			</li>
 			@if(Auth::guard('web')->check())
             <li class="my">
-				<a href="#"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a>
+				<a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a>
 				<ul class="my_list" style="display:none">
-					<li><a href="#"><span>마이페이지</span></a></li>
+					<li><a href="{{route('reviewers.mypage')}}"><span>마이페이지</span></a></li>
 					<li><a href="{{route('sessions.destory')}}"><span>로그아웃</span></a></li>
 				</ul>
 			</li>

@@ -24,7 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::include('yaho', 'ya');
-        //
+
+            app()->setLocale('ko');
+        // 카본 인스턴스의 언어를 설정한다.
+        \Carbon\Carbon::setLocale(app()->getLocale());
     }
 }

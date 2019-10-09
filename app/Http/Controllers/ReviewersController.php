@@ -17,7 +17,7 @@ class ReviewersController extends Controller
         $this->validate($request,[
             'email' => 'required|email|max:255|unique:reviewers',
             'name' => 'required|max:30',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
             'nickname' => 'required|max:30',
             'mobile_num' => 'required|digits:11',
             'birth'=>'required|date',
@@ -48,4 +48,8 @@ class ReviewersController extends Controller
         auth()->login($reviewer);
         return view('reviewers.registerok',['name'=>auth()->user()->name]);
     }
+    
+
+    
+    
 }
