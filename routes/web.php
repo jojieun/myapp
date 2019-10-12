@@ -24,6 +24,12 @@ Route::get('reviewer/mypage',[
     'uses' => 'ReviewerMypageController@home'
 ]);
 
+//광고주마이페이지
+Route::get('advertiser/mypage',[
+    'as'=>'radvertisers.mypage',
+    'uses' => 'AdvertiserMypageController@home'
+]);
+
 //임시 게시판보기
 Route::view('athome','athome')->name('athome');
 Route::view('visit','visit')->name('visit');

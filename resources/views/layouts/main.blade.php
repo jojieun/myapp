@@ -30,16 +30,16 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="{{ asset('plugin/slick-1.8.1/slick.js') }}"></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <meta name="title" content="블록션"/>
-    <meta property="og:title" content="블록션">  	
+    <title>{{ config('app.name') }}</title>
+    <meta name="title" content="{{ config('app.name') }}"/>
+    <meta property="og:title" content="{{ config('app.name') }}">  	
 </head>
 
 <body>
 <div class="wrap" id="page_top">
 <div class="header_wrap">
 	<div class="header">
-		<h1><a href="{{route('main')}}"><img src="/img/main/logo.png" alt="블록션" /></a></h1>
+		<h1><a href="{{route('main')}}"><img src="/img/main/logo.png" alt="{{ config('app.name') }}" /></a></h1>
 		<!-- 상단메뉴 출력-->
 		<div class="gnb_area">
 			<div class="gnb_box">
@@ -68,7 +68,7 @@
 							</li>
 							<li><a href="{{route('visit')}}"  class="mainmenu" id="mainmenu01"><b>방문</b></a></li>
 							<li><a href="{{route('athome')}}"  class="mainmenu" id="mainmenu02"><b>재택</b></a></li>
-							<li class="mainMenu"><a href="{{route('ask')}}"  class="mainmenu" id="mainmenu03">고객센터</a>						
+							<li class="mainMenu"><a href="{{route('ask')}}"  class="mainmenu" id="mainmenu03">고객센터</a>
 								<ol class="submenu depth" id="submenu03" style="display:none;">
 									<li><a href="{{route('ask')}}">1:1 문의하기</a></li>
 									<li><a href="{{route('faq')}}">FAQ</a></li>
@@ -159,7 +159,7 @@
 				</ul>	
 			</div>
 			<div class="footer-txt">
-				<p>블록션<small>|</small>대표 : 조용완</p>
+				<p>{{ config('app.name') }}<small>|</small>대표 : 조용완</p>
 				<p>
 					<span>48547 부산광역시 남구 신선로 365, 317호 (부산창업지원센터, 감만동)<small class="m-none">|</small></span>
 					<span>MAIL : bloxion@naver.com<small class="pc-none">|</small></span>

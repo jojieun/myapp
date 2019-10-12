@@ -21,11 +21,10 @@ class AdvertisersSessionsController extends Controller
     {
         $this->validate($request, [
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
         ]);
         
         if(! auth()->guard('advertiser')->attempt($request->only('email', 'password'), $request->has('remember')) ){
-            
             return back()->withInput();
         }
         return redirect()->intended();

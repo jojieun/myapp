@@ -14,10 +14,16 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
 DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        $this->call(UsersTableSeeder::class);
-        $this->command->info('users table seeded');
-        $this->call(PostsTableSeeder::class);
-        $this->command->info('posts table seeded');
+        $this->call(ChannelsTableSeeder::class);
+        $this->command->info('Channels table seeded');
+        $this->call(RegionsTableSeeder::class);
+        $this->command->info('Regions table seeded');
+        $this->call(AreasTableSeeder::class);
+        $this->command->info('Areas table seeded');
+        $this->call(ExposuresTableSeeder::class);
+        $this->command->info('exposures table seeded');
+        $this->call(PromotionsTableSeeder::class);
+        $this->command->info('promotions table seeded');
 DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

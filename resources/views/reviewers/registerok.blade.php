@@ -5,7 +5,7 @@
 		<div class="content-in-sub member mtb150 text-center">
 			<h2>
 				<b>{{ $name }}님 가입을 축하드립니다!</b>
-				<p>블록션에서 다양한 체험을 경험해보세요:) </p>
+				<p>{{ config('app.name') }}에서 다양한 체험을 경험해보세요:) </p>
 			</h2>
 
 			<div class="login-group">				
