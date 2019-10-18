@@ -17,9 +17,10 @@
 			<h2>플래티넘 캠페인</h2>
 			<div class="campaign-list">
 				<ul>
+                    @for($i=0; $i<4; $i++)
 					<li>
 						<div class="campaign-item">
-							<a href="#">
+							<a href="{{ route('campaigns.show1') }}">
 							<div class="thum">
 								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 							</div>
@@ -31,7 +32,7 @@
 								</span>
 								<div class="txt-box">
 									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
+										<span class="sns"><span class="channel1">네이버블로그</span></span>
 										<span class="num"><b>신청 22</b> / 10명</span>
 									</p>
 									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
@@ -41,78 +42,7 @@
 							</a>
 						</div>
 					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">부산시 동래구</span>
-									<span class="dday on">D-DAY</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday on">D-DAY</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
+                @endfor
 				</ul>
 			</div>
 		</section>		
@@ -132,9 +62,10 @@
 			<h2>프라임 캠페인</h2>
 			<div class="campaign-list w5">
 				<ul>
+                    @for($i=0; $i<5; $i++)
 					<li>
 						<div class="campaign-item">
-							<a href="#">
+							<a href="{{ route('campaigns.show1') }}">
 							<div class="thum">
 								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 							</div>
@@ -146,7 +77,7 @@
 								</span>
 								<div class="txt-box">
 									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
+										<span class="sns"><span class="channel2">인스타그램</span></span>
 										<span class="num"><b>신청 22</b> / 10명</span>
 									</p>
 									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
@@ -156,102 +87,7 @@
 							</a>
 						</div>
 					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
+                @endfor
 				</ul>
 			</div>
 		</section>		
@@ -271,9 +107,10 @@
 			<h2>그랜드 캠페인</h2>
 			<div class="campaign-list w6">
 				<ul>
+                    @for($i=0; $i<12; $i++)
 					<li>
 						<div class="campaign-item">
-							<a href="#">
+							<a href="{{ route('campaigns.show1') }}">
 							<div class="thum">
 								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
 							</div>
@@ -285,7 +122,7 @@
 								</span>
 								<div class="txt-box">
 									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
+										<span class="sns"><span class="channel4">유튜브</span></span>
 										<span class="num"><b>신청 22</b> / 10명</span>
 									</p>
 									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
@@ -295,270 +132,7 @@
 							</a>
 						</div>
 					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday on">D-DAY</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday on">D-DAY</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type01">방문</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="blog">네이버블로그</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
-					<li>
-						<div class="campaign-item">
-							<a href="#">
-							<div class="thum">
-								<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-							</div>
-							<div class="info">
-								<span class="ico-tag">
-									<span class="type02">재택</span>
-									<span class="bg-bl">뷰티</span>
-									<span class="dday">D-11</span>
-								</span>
-								<div class="txt-box">
-									<p class="txt-top">
-										<span class="sns"><span class="insta">인스타그램</span></span>
-										<span class="num"><b>신청 22</b> / 10명</span>
-									</p>
-									<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-									<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-								</div>
-							</div>
-							</a>
-						</div>
-					</li>
+					@endfor
 				</ul>
 			</div>
 		</section>		

@@ -1,18 +1,6 @@
 @extends('layouts.main')
 @section('content')
-	<span class="m-bar2"></span>
-	<!-- 모바일 마이페이지 -->
-	<p class="m-top-title">
-		<b class="name">{{ $user->nickname }}님</b>
-		<span>{{ $user->email }}</span>
-	</p>
-	<!-- //모바일 마이페이지 -->
 
-	<div class="sub-container bt-ddd w-pc-fixed">
-		<!-- //탭-->
-	
-		<!-- 상세 컨텐츠내용 -->
-		<div class="content-in-sub">
 			<!-- 왼쪽메뉴 -->
 			@include('layouts.reviewer_leftmenu')
 						

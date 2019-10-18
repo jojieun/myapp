@@ -18,6 +18,7 @@
 			<div class="login-wrap">
 				<form action="{{ route('sessions.store') }}" method="post" class="form__auth">
     {!! csrf_field() !!}
+                    @include('flash::message')
 					<div class="login-group">
 						<p class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
 							<label for="">이메일</label>
@@ -37,7 +38,7 @@
 						</div>
 						<ul class="link">
 							<li><a href="mailfind.php">가입이메일 찾기</a></li>
-							<li><a href="pwfind.php">비밀번호 찾기</a></li>
+							<li><a href="{{route('remind.create')}}">비밀번호 찾기</a></li>
 						</ul>
 					</div>
 				</form>

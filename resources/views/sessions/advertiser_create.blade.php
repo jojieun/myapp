@@ -19,6 +19,7 @@
 			<div class="login-wrap">
 				<form action="{{ route('advertiser_sessions.store') }}" method="post" class="form__auth">
                      {!! csrf_field() !!}
+                    @include('flash::message')
 					<div class="login-group">
 						<p class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
 							<label for="">이메일</label>

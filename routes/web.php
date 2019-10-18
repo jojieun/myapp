@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('test', function(){
+    return Auth::guard('advertiser')->user()->brands()->first();
+});
 
 
 Route::get('/', [
@@ -26,9 +28,15 @@ Route::get('reviewer/mypage',[
 
 //광고주마이페이지
 Route::get('advertiser/mypage',[
-    'as'=>'radvertisers.mypage',
+    'as'=>'advertisers.mypage',
     'uses' => 'AdvertiserMypageController@home'
 ]);
+//임시인플루언서
+Route::view('influencer/index','influencers.index')->name('influencers.index'); 
+Route::view('influencer/show','influencers.show')->name('influencers.show'); 
+
+//임시캠페인보기
+ Route::view('campaign/show','campaigns.show')->name('campaigns.show1');   
 
 //임시 게시판보기
 Route::view('athome','athome')->name('athome');
@@ -39,50 +47,50 @@ Route::view('notice','notice')->name('notice');
 Route::view('ask_list','ask_list')->name('ask_list');
 
 //가입 선택화면
-Route::view('auth/register_select','register_select')->name('register.select');
+Route::view('register_select','register_select')->name('register.select');
+
 //reviewer 가입 관련
-Route::get('auth/register',[
-    
+Route::get('reviewer/register',[    
     'as'=>'reviewers.create',
     'uses' => 'ReviewersController@create'
 ]);
-Route::post('auth/register',[
+Route::post('reviewer/register',[
     'as'=>'reviewers.store',
     'uses' => 'ReviewersController@store'
 ]);
 //reviewer 인증 관련
-Route::get('auth/login',[
+Route::get('reviewer/login',[
     'as'=>'sessions.create',
     'uses' => 'SessionsController@create'
 ]);
-Route::post('auth/login',[
+Route::post('reviewer/login',[
     'as'=>'sessions.store',
     'uses' => 'SessionsController@store'
 ]);
-Route::get('auth/logout',[
+Route::get('reviewer/logout',[
     'as'=>'sessions.destory',
     'uses' => 'SessionsController@destory'
 ]);
 
 //advertiser 가입 관련
-Route::get('auth/advertiser_register',[
+Route::get('advertiser/register',[
     'as'=>'advertisers.create',
     'uses' => 'AdvertisersController@create'
 ]);
-Route::post('auth/advertiser_register',[
+Route::post('advertiser/register',[
     'as'=>'advertisers.store',
     'uses' => 'AdvertisersController@store'
 ]);
 //advertiser 인증 관련
-Route::get('auth/advertiser_login',[
+Route::get('advertiser/login',[
     'as'=>'advertiser_sessions.create',
     'uses' => 'AdvertisersSessionsController@create'
 ]);
-Route::post('auth/advertiser_login',[
+Route::post('advertiser/login',[
     'as'=>'advertiser_sessions.store',
     'uses' => 'AdvertisersSessionsController@store'
 ]);
-Route::get('auth/advertiser_logout',[
+Route::get('advertiser/logout',[
     'as'=>'advertiser_sessions.destory',
     'uses' => 'AdvertisersSessionsController@destory'
 ]);
@@ -94,21 +102,23 @@ Route::get('social/{provider}', [
 ]);
 
 /* 비밀번호 초기화 */
-Route::get('auth/remind', [
+Route::get('remind', [
     'as' => 'remind.create',
     'uses' => 'PasswordsController@getRemind',
 ]);
-Route::post('auth/remind', [
+Route::post('remind', [
     'as' => 'remind.store',
     'uses' => 'PasswordsController@postRemind',
 ]);
-Route::get('auth/reset/{token}', [
+Route::get('reset', [
     'as' => 'reset.create',
     'uses' => 'PasswordsController@getReset',
 ]);
-    
-//    ->where('token', '[\pL-\pN]{64}');
-Route::post('auth/reset', [
+//Route::get('reset', [
+//    'as' => 'reset.create',
+//    'uses' => 'PasswordsController@getReset',
+//]);
+Route::post('reset', [
     'as' => 'reset.store',
     'uses' => 'PasswordsController@postReset',
 ]);
@@ -117,7 +127,8 @@ Route::post('auth/reset', [
 /* 커뮤니티 관련 */
 Route::resource('communities', 'CommunitiesController');
 
-
+/* 캠페인 관련 */
+Route::resource('campaigns', 'CampaignsController');
 
 
 

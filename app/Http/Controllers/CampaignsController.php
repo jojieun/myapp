@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class CampaignsController extends Controller
 {
@@ -13,9 +14,14 @@ class CampaignsController extends Controller
      */
     public function index()
     {
-        //
+        
+        $campaigns = \App\Campaign::get();
+        return view('campaigns.index', compact('campaigns'));
     }
 
+    
+    
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -23,7 +29,11 @@ class CampaignsController extends Controller
      */
     public function create()
     {
-        //
+        return view('campaigns.create',[
+            'user'=>auth()->guard('advertiser')->user(),
+            'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
+            'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+        ]);
     }
 
     /**
@@ -45,7 +55,7 @@ class CampaignsController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('campaigns.show');
     }
 
     /**

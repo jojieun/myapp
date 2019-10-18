@@ -47,8 +47,14 @@ class Advertiser extends Authenticatable
         'password', 'remember_token',
 
     ];
+    public function brands(){
+        return $this->hasMany(brand::class);
+    }
     public function communities(){
         return $this->hasMany(Community::class);
+    }
+    public function campaigns(){
+        return $this->hasMany(Campaign::class);
     }
 
 }

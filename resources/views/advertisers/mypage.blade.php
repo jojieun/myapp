@@ -1,23 +1,11 @@
 @extends('layouts.main')
 @section('content')
-<span class="m-bar2"></span>
-	<!-- 모바일 마이페이지 -->
-	<p class="m-top-title">
-		<b class="name">{{$user->name}}님</b>
-		<span>{{$user->email}}</span>
-	</p>
-	<!-- //모바일 마이페이지 -->
-	<div class="sub-container bt-ddd w-pc-fixed">		
 
-		<!-- 상세 컨텐츠내용 -->
-		<div class="content-in-sub">
-			<!-- 왼쪽메뉴 -->
-			@include('layouts.advertiser_leftmenu')		
-						
-			<!-- 오른쪽 컨텐츠 -->
+			@include('layouts.advertiser_leftmenu')	
+                        <!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
 				<p class="my-btn">
-					<span><a href="client_0101.php" class="btn w50">새 캠페인 등록하기</a></span>
+					<span><a href="{{ route('campaigns.create') }}" class="btn w50">새 캠페인 등록하기</a></span>
 					<span><a href="#" class="btn w50 fl-r">캠페인 대행 의뢰하기</a></span>
 				</p>
 
@@ -148,13 +136,10 @@
 					<span><a href="#">인플루언서 검색</a></span>
 					<span><a href="client_0501.php">회원정보수정</a></span>
 				</p>
-
-			</div>
+                             </div>
 			<!-- //오른쪽 컨텐츠 -->
-		</div>
-		<!-- //상세 컨텐츠내용 -->	
-	</div>
 
+@include('layouts.advertiser_leftmenu_tail')
 <script type="text/javascript">	
 	$('.campaign-banner').slick({
 		infinite: true,

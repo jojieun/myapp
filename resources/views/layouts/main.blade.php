@@ -22,13 +22,16 @@
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700&amp;subset=korean" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
+<!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
 	<!-- script -->
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="{{ asset('plugin/slick-1.8.1/slick.js') }}"></script>
+<!--    <script src="{{ asset('js/app.js') }}" defer></script>-->
     <script src="{{ asset('js/main.js') }}" defer></script>
     <title>{{ config('app.name') }}</title>
     <meta name="title" content="{{ config('app.name') }}"/>
@@ -59,7 +62,7 @@
                                 <span class="my"><a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a></span>
 								<span class="logout"><a href="{{route('sessions.destory')}}">로그아웃</a></span>
                                 @elseif(Auth::guard('advertiser')->check())
-                                <span class="my"><a href="#"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a></span>
+                                <span class="my"><a href="{{route('advertisers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a></span>
 								<span class="logout"><a href="{{route('advertiser_sessions.destory')}}">로그아웃</a></span>
 								@else
 								<span><a href="{{route('sessions.create')}}">로그인</a></span>
@@ -77,7 +80,7 @@
 								</ol>
 							</li>
 							<li><a href="{{ route('communities.index') }}"  class="mainmenu" id="mainmenu04">커뮤니티</a></li>	
-							<li><a href="#"  class="mainmenu" id="mainmenu05"><b>인플루언서</b></a></li>
+							<li><a href="{{route('influencers.index')}}"  class="mainmenu" id="mainmenu05"><b>인플루언서</b></a></li>
 						</ul>
 						<div class="" name="back_z" id="back_z" style="left: 0px; display: block;"></div>
 					</div>
@@ -102,7 +105,7 @@
             <li class="my">
 				<a href="#"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a>
 				<ul class="my_list" style="display:none">
-					<li><a href="#"><span>마이페이지</span></a></li>
+					<li><a href="{{route('advertisers.mypage')}}"><span>마이페이지</span></a></li>
 					<li><a href="{{route('advertiser_sessions.destory')}}"><span>로그아웃</span></a></li>
 				</ul>
 			</li>

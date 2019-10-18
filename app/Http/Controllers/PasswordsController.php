@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App;
 
 class PasswordsController extends Controller
 {
@@ -21,7 +22,7 @@ class PasswordsController extends Controller
      */
     public function getRemind()
     {
-        return view('passwords.remind');
+        return view('remind');
     }
 
     /**
@@ -32,24 +33,24 @@ class PasswordsController extends Controller
      */
     public function postRemind(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|exists:users',
-        ]);
-
         $email = $request->get('email');
-        $token = str_random(64);
-
-        \DB::table('password_resets')->insert([
-            'email' => $email,
-            'token' => $token,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString()
+        
+        if(App\Reviewer::where('email', $email)->first()){
+            $this->validate($request, [
+            'email' => 'required|email|exists:reviewers',
+            ]);
+            $who='Reviewer';
+        } else{
+            $this->validate($request, [
+            'email' => 'required|email|exists:advertisers',
+            ]);
+            $who='Advertiser';
+        }
+        
+        return redirect(route('reset.create'))->with([
+            'email'=>$email,
+            'who'=>$who,
         ]);
-
-        event(new \App\Events\PasswordRemindCreated($email, $token));
-
-        return $this->respondSuccess(
-            trans('auth.passwords.sent_reminder')
-        );
     }
 
     /**
@@ -58,9 +59,12 @@ class PasswordsController extends Controller
      * @param string|null $token
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getReset($token = null)
+    public function getReset()
     {
-        return view('passwords.reset', compact('token'));
+        return view('pwreset', [
+            'email'=>session()->get('email'),
+            'who'=>session()->get('who'), 
+        ]);
     }
 
     /**
@@ -72,27 +76,15 @@ class PasswordsController extends Controller
     public function postReset(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email|exists:users',
-            'password' => 'required|confirmed',
-            'token' => 'required'
+            'password' => 'required|confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
         ]);
-
-        $token = $request->get('token');
-
-        if (! \DB::table('password_resets')->whereToken($token)->first()) {
-            return $this->respondError(
-                trans('auth.passwords.error_wrong_url')
-            );
-        }
-
-        \App\User::whereEmail($request->input('email'))->first()->update([
+        $who='App\\'.$request->input('who');
+        
+        $who::whereEmail($request->input('email'))->first()->update([
             'password' => bcrypt($request->input('password'))
         ]);
-        \DB::table('password_resets')->whereToken($token)->delete();
 
-        return $this->respondSuccess(
-            trans('auth.passwords.success_reset')
-        );
+        return view('pwresetdone');
     }
 
     /**
