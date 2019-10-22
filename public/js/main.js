@@ -88,3 +88,15 @@ $(document).ready(function () {
 		}
 	});
 });
+
+//날짜더하기함수
+function dateAdd(sDate, v) {
+		var yy = parseInt(sDate.substr(0, 4), 10);
+		var mm = parseInt(sDate.substr(5, 2), 10);
+		var dd = parseInt(sDate.substr(8), 10);
+			var d = new Date(yy, mm - 1, dd + v);
+		yy = d.getFullYear();
+		mm = d.getMonth() + 1; mm = (mm < 10) ? '0' + mm : mm;
+		dd = d.getDate(); dd = (dd < 10) ? '0' + dd : dd;
+		return '' + yy + '-' +  mm  + '-' + dd;
+	}

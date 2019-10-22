@@ -103,7 +103,7 @@
 			</li>
             @elseif(Auth::guard('advertiser')->check())
             <li class="my">
-				<a href="#"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a>
+				<a href="{{route('advertisers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a>
 				<ul class="my_list" style="display:none">
 					<li><a href="{{route('advertisers.mypage')}}"><span>마이페이지</span></a></li>
 					<li><a href="{{route('advertiser_sessions.destory')}}"><span>로그아웃</span></a></li>

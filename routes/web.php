@@ -10,11 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test', function(){
-    return Auth::guard('advertiser')->user()->brands()->first();
-});
 
 
+
+Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
+Route::post('campaigns/firststore','CampaignsController@firstStore')->name('campaigns.firststore');
+Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
