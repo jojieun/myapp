@@ -2,7 +2,7 @@
 @section('content')
 @include('layouts.advertiser_leftmenu')	
 <? $opbrand_id = Request::get('opbrand_id') ?>
-<form action="{{ route('campaigns.store') }}" method="post" class="form__auth">
+<form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
 			<!-- 오른쪽 컨텐츠 1 -->
 			<div class="right-content">
@@ -162,80 +162,101 @@
 				<!-- 기본정보 입력 -->
 				<div class="table_form2">
 					<dl>
-						<dt class="lh120">캠페인<br/>대표이미지</dt>
+						<dt class="lh120">캠페인<br/>대표이미지<br/><small>(필수사항)</small></dt>
 						<dd class="{{ $errors->has('main_image') ? 'has-error' : '' }}">
 							<div class="file-area">
 								<span class="upload">
 									<label for="file">									
-										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" />	
+										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>	
 									</label>
 								</span>
 								<span class="add-txt">※ 대표이미지는 530*530 이상 정육면체 사이즈로 작업하여 업로드해주세요.</span>
-                                <span class="red"></span>
+                                <span class="red" id="main_image"></span>
 							</div>
                             {!! $errors->first('main_image','<span class="red">:message</span>')!!}
 						</dd>
 					</dl>
-                    <script>
-//                        $('input[name=main_image]').change(function(){
-//                        alert(this.files[0]);
-//                           $('label[for=file]').css({
-//                               backgroundImage: 'url('+this.files[0]+')'
-//                           });
-//                        });
-                    </script>
-                    
 					<dl class="bar">
 						<dt class="lh120">상세이미지<br/><small>(선택사항)</small></dt>
 						<dd class="">
 							<div class="file-area">
 								<span class="upload2 {{ $errors->has('detail_image1') ? 'has-error' : '' }}">
-									<label for="file1"><input name="detail_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" /></label>
+									<label for="file1"><input name="detail_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image1','<span class="red">:message</span>')!!}
 								</span>
+                                <span class="red" id="detail_image1"></span>
 								<span class="upload2 {{ $errors->has('detail_image2') ? 'has-error' : '' }}">
-									<label for="file2"><input name="detail_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" /></label>
+									<label for="file2"><input name="detail_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image2','<span class="red">:message</span>')!!}
 								</span>
+                                <span class="red" id="detail_image2"></span>
 								<span class="upload2 {{ $errors->has('detail_image3') ? 'has-error' : '' }}">
-									<label for="file3"><input name="detail_image3" type="file" id="file3" value="{{ old('detail_image3') }}" placeholder="상세이미지" class="mb10" /></label>
+									<label for="file3"><input name="detail_image3" type="file" id="file3" value="{{ old('detail_image3') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image3','<span class="red">:message</span>')!!}
 								</span>
+                                <span class="red" id="detail_image3"></span>
 							</div>
 						</dd>
 					</dl>
+                    <div id="visit_only">
+                        <dl>
+                            <dt>캠페인지역</dt>
+                            <dd>
+                                <select id="regions" class="select_po">
+                                    <option>선택</option>
+                                     @forelse($regions as $region)
+										<option value="{{ $region->id }}" @if( $brand->id == old('brand_id') ) selected @endif>{{ $region->name }}</option>		
+                                        @empty
+										<option value="">지역이 없습니다</option>
+                                        @endforelse
+                                </select>
+                                <select id='areas' class='select_po hide' name='area_id'>
+                                    <option value="">지역이 없습니다</option>
+                                </select>
+                                {!! $errors->first('area_id','<span class="red">:message</span>')!!}
+                                <span class="red" id="area_id"></span>
+                            </dd>
+                        </dl>
 					<dl>
 						<dt>방문가능 시간</dt>
 						<dd class="{{ $errors->has('visit_time') ? 'has-error' : '' }}">
                             <input name="visit_time" type="text" id="" value="{{ old('visit_time') }}" placeholder="예) 평일 10:00~17:00" class="full_width" />
                         {!! $errors->first('visit_time','<span class="red">:message</span>')!!}
+                            <span class="red" id="visit_time"></span>
                         </dd>
 					</dl>
 					<dl>
 						<dt>주소</dt>
 						<dd class="{{ $errors->has('detail_address') ? 'has-error' : '' }} {{ $errors->has('address') ? 'has-error' : '' }}">
-							<input name="address" type="text" id="" placeholder="주소" class="w150 mb10" value="{{ old('address') }}"/><button type="button" name="button" class="btn btn-check">주소검색</button>
-							<input name="detail_address" type="text" id="" placeholder="상세주소" class="full_width" value="{{ old('detail_address') }}" />
+                            <input type="hidden" name="zipcode" placeholder="우편번호" value="{{old('zipcode')}}" id="sample6_postcode"/>
+							<input name="address" type="text" placeholder="주소" class="w150 mb10" value="{{ old('address') }}" id="sample6_address"/><button type="button" name="button" class="btn btn-check" onclick="sample6_execDaumPostcode()">주소검색</button>
+							<input name="detail_address" type="text" placeholder="상세주소" class="full_width" value="{{ old('detail_address') }}" id="sample6_detailAddress"/>
                             {!! $errors->first('address','<span class="red">:message</span>')!!}
                             {!! $errors->first('detail_address','<span class="red">:message</span>')!!}
+                            <span class="red" id="address"></span>
+                            <span class="red" id="detail_address"></span>
 						</dd>
 					</dl>
+                        </div>
 					<dl class="bar">
 						<dt>담당자 연락처</dt>
 						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact') }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" /></dd>
                         {!! $errors->first('contact','<span class="red">:message</span>')!!}
+                        <span class="red" id="contact"></span>
 					</dl>
 					<dl>
 						<dt>리뷰미션</dt>
 						<dd class="{{ $errors->has('mission') ? 'has-error' : '' }}">
 							<textarea name="mission" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 캠페인 상세 미션과 요청사항을 입력해주세요" class="border2">{{ old('mission') }}</textarea>
                             {!! $errors->first('mission','<span class="red">:message</span>')!!}
+                            <span class="red" id="mission"></span>
 						</dd>
 					</dl>
 					<dl>
 						<dt>리뷰키워드</dt>
 						<dd class="{{ $errors->has('keyword') ? 'has-error' : '' }}"><input name="keyword" type="text" id="" value="{{ old('keyword') }}" placeholder="리뷰어가 리뷰 작성시 사용할 키워드 또는 해시태그를 입력해주세요" class="full_width" />
                         {!! $errors->first('keyword','<span class="red">:message</span>')!!}
+                            <span class="red" id="keyword"></span>
                         </dd>
 					</dl>
 				</div>
@@ -261,74 +282,69 @@
 						<dl>
 							<dt class="lh120">노출옵션 선택</dt>
 							<dd>
-								<span class="pay-option">
-									<input name="" type="radio" id="option1" value="" />	
-									<label for="option1">
-										<h3>플래티넘</h3>
-										<p class="txt">체험단 캠페인이 <span class="point">최상단에 노출</span>되어 다른 캠페인보다 더욱 많이 노출됩니다.</p>
-										<p class="price"><b>+00,000</b>원</p>
+								
+                                    @forelse($exposures as $exposure)
+                                    <span class="pay-option">
+									<input name="exposure_id" type="radio" value="{{$exposure->id}}" id="option{{$exposure->id}}"/>	
+									<label for="option{{$exposure->id}}" class="expo @if($exposure->limit < count($exposure->campaignexposures)) notwork @endif">
+                                        <p>{{count($exposure->campaignexposures)}}</p>
+										<h3>{{$exposure->name}}</h3>
+										<p class="txt">{!!$exposure->instruction!!}</p>
+                                        <p class="price"><b>+</b><b class="mm">{{number_format($exposure->price)}}</b>원</p>
 									</label>
 								</span>
-								<span class="pay-option">
-									<input name="" type="radio" id="option2" value="" />	
-									<label for="option2">
-										<h3>프라임</h3>
-										<p class="txt">체험단 캠페인이 <span class="point">상단에 노출</span>되어 다른 캠페인보다 더욱 많이 노출됩니다.</p>
-										<p class="price"><b>+00,000</b>원</p>
-									</label>
-								</span>
-								<span class="pay-option">
-									<input name="" type="radio" id="option3" value="" />	
-									<label for="option3">
-										<h3>그랜드</h3>
-										<p class="txt">체험단 캠페인이 <span class="point">중단에 노출</span>되어 다른 캠페인보다 더욱 많이 노출됩니다.</p>
-										<p class="price"><b>+00,000</b>원</p>
-									</label>
-								</span>
+                                    @empty
+                                    노출옵션이 없습니다.
+                                    @endforelse
 							</dd>
 						</dl>
 						<dl class="bar">
 							<dt class="lh120">홍보옵션 선택</dt>
 							<dd>
+                                @forelse($promotions as $promotion)
 								<span class="pay-option">
-									<input name="" type="radio" id="option4" value="" />	
-									<label for="option4">
-										<h3>홍보배너게재</h3>
-										<p class="txt">사이트 최상단에 홍보 배너를 게재합니다.<br/>(블록션 디자이너가 배너 제작에 대한 내용을 연락드립니다.)</p>
-										<p class="price"><b>+00,000</b>원</p>
+									<input name="promotion_id" type="radio" id="poption{{$promotion->id}}" value="{{$promotion->id}}"/>	
+									<label for="poption{{$promotion->id}}" class="promo @if($promotion->limit!= null && $promotion->limit < count($promotion->campaignpromotions)) notwork @endif">
+										<h3>{{$promotion->name}}</h3>
+										<p class="txt">{!!$promotion->instruction!!}</p>
+										<p class="price"><b>+</b><b class="mm">{{number_format($promotion->price)}}</b>원</p>
 									</label>
 								</span>
-								<span class="pay-option">
-									<input name="" type="radio" id="option5" value="" />	
-									<label for="option5">
-										<h3>푸시 알림</h3>
-										<p class="txt">추천되는 인플루언서 회원 100명에게 푸시 알림을 보내드립니다.</p>
-										<p class="price"><b>+00,000</b>원</p>
-									</label>
-								</span>
+								@empty
+                                홍보옵션이 없습니다.
+                                @endforelse
 							</dd>
 						</dl>
 						<dl>
 							<dt>결제내역</dt>
 							<dd>
 								<div class="price-list">
+                                    <p>
+										<span>기본 이용요금</span>
+										<span class="price"><b id="basic_price">10,000</b>원</span>
+									</p>
 									<p>
 										<span>리뷰어 제공 포인트</span>
-										<span class="price"><b>25,000</b>원</span>
+										<span class="price"><b id="point_price">25,000</b>원</span>
 									</p>										
-									<p>
-										<span>프라임 노출 옵션</span>
-										<span class="price"><b>25,000</b>원</span>
-									</p>										
+									<p id="exposure_price_wrap" class="hide">
+										<span>노출 옵션</span>
+										<span class="price"><b id="exposure_price">0</b>원</span>
+									</p>
+                                    <p id="promotion_price_wrap" class="hide">
+										<span>홍보 옵션</span>
+										<span class="price"><b id="promotion_price">0</b>원</span>
+									</p>
 									<p class="total-price">
 										<span>합계</span>
-										<span class="price"><b class="orange">25,000</b><span class="orange">원</span></span>
+										<span class="price"><b class="orange" id="total_price">25,000</b><span class="orange">원</span></span>
 									</p>
 								</div>
 								<div class="price-pay">
-									<p>+부가세(10%) 000원</p>
+									<p>+부가세(10%) <span id="vat">000</span>원</p>
 									<p class="txt">총 결제금액</p>
-									<p class="price"><b>50,000</b>원</p>
+									<p class="price"><b id="final_price">50,000</b>원</p>
+                                    <input type="hidden" name="payment">
 								</div>
 							</dd>
 						</dl>
@@ -341,13 +357,13 @@
 							</dd>
 						</dl>
 					</div>
-					<p class="{{ $errors->has('') ? 'has-error' : '' }} fl-r"><span class="input-button mr0"><input type="checkbox" id="checkAgree1" name=""><label for="checkAgree1">개인정보 제3자 제공에 동의합니다.</label></span></p>
+					<p class="{{ $errors->has('provide_agreement') ? 'has-error' : '' }} fl-r"><span class="input-button mr0"><input type="hidden" value="0" name="provide_agreement" /><input type="checkbox" value="1" id="checkAgree1" name="provide_agreement" @if(old('provide_agreement')!==null) checked @endif><label for="checkAgree1">개인정보 제3자 제공에 동의합니다.</label></span></p>
 				</div>
 				<!-- //기본정보 입력 -->
 
 				<div class="join_btn_wrap mt30">
-					<a href="client_0102.php" class="btn">이전단계</a>
-					<a href="client_0104.php" class="btn black">결제진행</a>
+					<a class="btn" onclick="contentShow(1)">이전단계</a>
+					<button type="submit" class="btn black">결제진행</button>
 				</div>
 		</div>
 </form>
@@ -375,11 +391,95 @@
 			</div>
             <a class="close" href="#close"></a>
         </div>
-		<!-- //popup : 비밀번호 재설정 -->
-
-
+		<!-- //popup : 브랜드추가 -->
+//개인정보 제3자 제공
+@component('help.pop_requir')
+    개인정보 제3자 제공
+@endcomponent
 @include('layouts.advertiser_leftmenu_tail')
 <script>
+    //    content보기 설정
+    $(function(){
+        contentShow(0);
+    });
+    
+//    폼 전송 전 체크
+    $('button[type=submit]').click(function(){
+       if($('#checkAgree1').is(':checked')) {
+           return true;
+       } else {
+           window.location.hash = "#popup_requir";
+           return false;
+       }
+    });
+    
+    function contentShow(now){
+        $('.right-content').css({
+            height:0
+        }).eq(now).removeAttr('style');
+        if(now==2){
+            var pp = $('input[name=offer_point]').val()*$('input[name=recruit_number]').val();
+            $('#point_price').html(money(pp));
+            totalprice();
+        }
+    };
+//    -----content보기 설정 끝
+//    노출옵션선택
+    $('.expo:not(.notwork)').click(function(e){
+        e.preventDefault();
+        if($(this).prev().is(':checked')){
+            $(this).prev().prop('checked', false);
+            $('#exposure_price').html(0);
+            $('#exposure_price_wrap').addClass('hide');
+        }else {
+            $(this).prev().prop('checked', true);
+            var ep = $(this).find('.price').children('.mm').html();
+            $('#exposure_price_wrap').removeClass('hide');
+            $('#exposure_price').html(ep);
+        }
+        totalprice();
+    });
+//    ----------노출옵션선택
+    //    홍보옵션선택
+    $('.promo').click(function(e){
+        e.preventDefault();
+        if($(this).prev().is(':checked')){
+            $(this).prev().prop('checked', false);
+            $('#promotion_price').html(0);
+            $('#promotion_price_wrap').addClass('hide');
+        }else {
+            $(this).prev().prop('checked', true);
+            var ep = $(this).find('.price').children('.mm').html();
+            $('#promotion_price_wrap').removeClass('hide');
+            $('#promotion_price').html(ep);
+        }
+        totalprice();
+    });
+//    ----------홍보옵션선택
+//    결제총합
+    function totalprice(){
+       var total = notmoney($('#basic_price').html())+notmoney($('#point_price').html())+notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
+        var vat = total*0.1;
+        var final = total+vat;
+        $('#total_price').html(money(total));
+        $('#vat').html(money(vat));
+        $('#final_price').html(money(final));
+        $('input[name=payment]').val(final);
+    }
+//    --------결제총합
+    
+//    방문재택선택
+    $('input[name=form]').change(function(){
+       if($('input[name=form]:checked').val()=='v'){
+           $('#visit_only').removeAttr('style');
+       } else{
+           $('#visit_only').css({
+               height:0
+           })
+       }
+    });
+    
+    
 //    일정지정
     var endD;
     var pickD;
@@ -406,17 +506,7 @@
     });
 //    -----일정지정끝
     
-//    content보기 설정
-    $(function(){
-        contentShow(1);
-    });
-    
-    function contentShow(now){
-        $('.right-content').css({
-            height:0
-        }).eq(now).removeAttr('style');
-    };
-//    -----content보기 설정 끝
+
     
     $.ajaxSetup({
        headers: {
@@ -468,32 +558,86 @@
     });
 //    -------첫번째페이지오류검사 끝
     
-    //    두번째페이지오류검사
+    //    이미지업로드바로보기
     $('input[name=main_image]').change(function(e){
        e.preventDefault();
-        var main_image = $("input[name=main_image]").val();
+        $('label[for=file]').css({
+                   backgroundImage:"url('"+ URL.createObjectURL(event.target.files[0])+"')"
+               });
+         });
+        //-----이미지업로드바로보기
+    
+    // 캠페인 지역 선택
+    $('#regions').change(function(e){
+       e.preventDefault();
+        var now = $(this).val();
+        if(now!='선택'){
+        var $data = new FormData();
+        $data.append('region', now);
         $.ajax({
-           type:"POST",
-           url:"{{ route('campaigns.secondstore') }}",
-           data:{
-               main_image:main_image
-           },
-           success:function(data){
-               alert(data.img);
-               $('label[for=file]').css({
-                   backgroundImage:'url('+data.img+')'
-               })
-          },
-            error: function(data) {
-                if(data.status==422){
+        type: 'POST',
+        url: "{{ route('campaigns.makearea') }}",
+        data: $data,
+        success: function(data) {
+            var obj = data.areas;
+            $('#areas').removeClass('hide');
+            var your_html = "";
+            $.each(obj, function (key, val) {
+                your_html += "<option value='"+val.id+"'>" +  val.name + "</option>"
+            });
+         $("#areas").html(your_html) 
+        },
+        error: function(data) {
+        },
+        processData: false,
+        contentType: false
+            });
+        } else {
+            $('#areas').addClass('hide');
+            $('#areas').val('');
+        }
+        
+    });
+    // ------캠페인 지역 선택
+       
+        
+        //    두번째페이지오류검사
+    $('#second_btn').on('click', function(e){
+       e.preventDefault();
+var $data = new FormData();
+    $data.append('main_image', $("input[name=main_image]")[0].files[0]);
+        $data.append('visit_time', $("input[name=visit_time]").val());
+        $data.append('contact', $("input[name=contact]").val());
+        $data.append('mission', $("textarea[name=mission]").val());
+        $data.append('keyword', $("input[name=keyword]").val());
+        $data.append('address', $("input[name=address]").val());
+        $data.append('area_id', $("select[name=area_id]").val());
+        $data.append('form', $("input[name=form]:checked").val());
+    $.ajax({
+        type: 'POST',
+        url: "{{ route('campaigns.secondstore') }}",
+        data: $data,
+        success: function(data) {
+            $('span').filter('.red').html('');
+                contentShow(data.now);
+//               $('label[for=file]').css({
+//                   backgroundImage:"url('../files/"+data.img+"')"
+//               })
+        },
+        error: function(data) {
+            if(data.status==422){
                     $('span').filter('.red').html('');
                     $.each(data.responseJSON.errors, function (i, error) {
                         var el = $('.red').filter('#'+i);
                         el.html(error[0]);
                     });
                   }
-               }
-        });
+        },
+        processData: false,
+        contentType: false
+    });
+        
+        
     });
 //    -------두번째페이지오류검사 끝
     
@@ -520,4 +664,7 @@
         });
     });
 </script>
+@include('help.addjs')	
+@include('help.money')	
+@include('layouts.advertiser_leftmenu_tail')
 @endsection

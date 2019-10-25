@@ -53,7 +53,7 @@
 				<div class="campaign-list sub6">
 					<ul>
                         @forelse($campaigns as $campaign)
-				            @include('campaign.campaign', compact('campaign'))
+				            @include('campaigns.campaign', compact('campaign'))
                         @empty
                             <div class="text-center">
                             캠페인이 없습니다.

@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+//        이미지저장관련
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -227,6 +229,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         
         'Flash' => Laracasts\Flash\Flash::class,
+        
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

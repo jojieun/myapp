@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
 {
+    
+    protected $guarded = [];
     public function advertiser(){
         return $this->belongsTo(Advertiser::class);
     }
@@ -17,5 +19,11 @@ class Campaign extends Model
     }
     public function area(){
         return $this->belongsTo(Area::class);
+    }
+    public function campaignexposure(){
+        return $this->belongsTo(CampaignExposure::class);
+    }
+    public function campaignpromotion(){
+        return $this->belongsTo(CampaignPromotion::class);
     }
 }

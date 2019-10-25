@@ -10,7 +10,7 @@
 
 			<div class="login-group">				
 				<a href="{{route('radvertisers.mypage')}}" class="btn big w50">마이페이지</a>
-				<a href="#" class="btn black big w50">캠페인 등록</a>
+				<a href="{{route('campaigns.create')}}" class="btn black big w50">캠페인 등록</a>
 			</div>
 
 		</div>

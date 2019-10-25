@@ -136,5 +136,9 @@ return [
         'end_recruit' => '모집마감일',
         'end_submit' => '리뷰제출마감일',
         'recruit_number' => '모집인원',
+        'area_id' => '캠페인지역',
+        'visit_time' => '방문가능시간',
+        'contact' => '담당자연락처',
+        'v' => '방문',
     ],
 ];

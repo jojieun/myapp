@@ -16,6 +16,8 @@
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
 Route::post('campaigns/firststore','CampaignsController@firstStore')->name('campaigns.firststore');
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
+Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
+Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns.storeend');
 Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
