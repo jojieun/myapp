@@ -21,7 +21,7 @@ class CampaignsController extends Controller
     public function index()
     {
         
-        $campaigns = \App\Campaign::get();
+        $campaigns = \App\Campaign::with('brand')->get();
         return view('campaigns.index', compact('campaigns'));
     }
 
@@ -129,43 +129,41 @@ class CampaignsController extends Controller
             $file = $request->file('main_image');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = public_path('files/').$filename;
-            Image::make($file)->save($location);
+            $img = Image::make($file);
+            $img->fit(530,530);
+            $img->save($location);
             $campaign->main_image = $filename;
         }
-        if($request->hasfile('detail_image1')){
-            $file = $request->file('detail_image1');
+        if($request->hasfile('sub_image1')){
+            $file = $request->file('sub_image1');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = public_path('files/').$filename;
             Image::make($file)->save($location);
-            $campaign->detail_image1 = $filename;
+            $campaign->sub_image1 = $filename;
         }
-        if($request->hasfile('detail_image2')){
-            $file = $request->file('detail_image2');
+        if($request->hasfile('sub_image2')){
+            $file = $request->file('sub_image2');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = public_path('files/').$filename;
             Image::make($file)->save($location);
-            $campaign->detail_image2 = $filename;
+            $campaign->sub_image2 = $filename;
         }
-        if($request->hasfile('detail_image3')){
-            $file = $request->file('detail_image3');
+        if($request->hasfile('sub_image3')){
+            $file = $request->file('sub_image3');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = public_path('files/').$filename;
             Image::make($file)->save($location);
-            $campaign->detail_image3 = $filename;
+            $campaign->sub_image3 = $filename;
         }
         $campaign -> save();
         
         $campaignexposure = \App\CampaignExposure::create([
             'campaign_id'=>$campaign->id,
             'exposure_id'=>$request->input('exposure_id'),
-            'start'=>'2019-10-31',
-            'end'=>'2019-11-20',
         ]);
         $campaignpromotion = \App\CampaignPromotion::create([
             'campaign_id'=>$campaign->id,
             'promotion_id'=>$request->input('promotion_id'),
-            'start'=>'2019-10-31',
-            'end'=>'2019-11-20',
         ]);
         if(! $campaign || ! $campaignexposure || ! $campaignpromotion){
             return back()->withInput();

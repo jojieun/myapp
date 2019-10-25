@@ -372,7 +372,7 @@ select {
   -webkit-appearance: none;
 }
 
-.table_form2 dl dd .upload label {display: inline-block; width: 159px; height: 159px; background: url(/img/sub/ico_file_upload.gif) no-repeat 0 0; background-size: auto 100%;}
+.table_form2 dl dd .upload label {display: inline-block; width: 159px; height: 159px; background: url(/img/sub/ico_file_upload.gif) no-repeat center center; background-size: auto 100%;}
 .table_form2 dl dd .upload input{ 
 	display: inline-block;
     opacity: 0;
@@ -881,6 +881,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .campaign-statistics dl.area li:first-child .num,
 .campaign-statistics dl.area li:first-child .area-txt,
 .campaign-statistics dl.area li:first-child .fl-r { font-weight:bold; color: #b56cdf;}
+
 
 .reviewer{ position:relative; margin:30px 0; font-size:15px;}
 .reviewer a.btn-down{ position:absolute; top:15px; right:0px; background:url('/img/common/ico_download.gif') no-repeat 0 2px; background-size:21px; padding-left:30px ; color:#222; }

@@ -61,8 +61,8 @@
 방문 type01
 재택 type02
 */
-.campaign-list .info span.type01{ background:#b56cdf ;}
-.campaign-list .info span.type02{ background:#46d5c1;}
+.campaign-list .info span.v{ background:#b56cdf ;}
+.campaign-list .info span.h{ background:#46d5c1;}
 .campaign-list .info span.bg-bl{ background:#222;}
 .campaign-list .info span.dday{ background:#f7f7f7; color:#000; font-size:14px; font-weight:500;}
 .campaign-list .info span.dday.on{ background: #ff4e4e; color:#fff; }

@@ -19,7 +19,7 @@
 					<div class="select-style01 mb20">
 						<select name="" type="text" id="">
 							@forelse($campaigns as $campaign)
-							<option value="{{ $campaign->id }}">[{{ $campaign->updated_at }}] {{ $campaign->name }}</option>		
+							<option value="{{ $campaign->id }}">{{ $campaign->name }} [등록일 : {{ $campaign->updated_at }}]</option>		
                                      @empty
 							<option value="">이전 캠페인이 없습니다</option>
                                      @endforelse
@@ -180,21 +180,21 @@
 						<dt class="lh120">상세이미지<br/><small>(선택사항)</small></dt>
 						<dd class="">
 							<div class="file-area">
-								<span class="upload2 {{ $errors->has('detail_image1') ? 'has-error' : '' }}">
-									<label for="file1"><input name="detail_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+								<span class="upload2 {{ $errors->has('sub_image1') ? 'has-error' : '' }}">
+									<label for="file1"><input name="sub_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image1','<span class="red">:message</span>')!!}
 								</span>
-                                <span class="red" id="detail_image1"></span>
-								<span class="upload2 {{ $errors->has('detail_image2') ? 'has-error' : '' }}">
-									<label for="file2"><input name="detail_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                <span class="red" id="sub_image1"></span>
+								<span class="upload2 {{ $errors->has('sub_image2') ? 'has-error' : '' }}">
+									<label for="file2"><input name="sub_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image2','<span class="red">:message</span>')!!}
 								</span>
-                                <span class="red" id="detail_image2"></span>
-								<span class="upload2 {{ $errors->has('detail_image3') ? 'has-error' : '' }}">
-									<label for="file3"><input name="detail_image3" type="file" id="file3" value="{{ old('detail_image3') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                <span class="red" id="sub_image2"></span>
+								<span class="upload2 {{ $errors->has('sub_image3') ? 'has-error' : '' }}">
+									<label for="file3"><input name="sub_image3" type="file" id="file3" value="{{ old('detail_image3') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image3','<span class="red">:message</span>')!!}
 								</span>
-                                <span class="red" id="detail_image3"></span>
+                                <span class="red" id="sub_image3"></span>
 							</div>
 						</dd>
 					</dl>
@@ -287,7 +287,6 @@
                                     <span class="pay-option">
 									<input name="exposure_id" type="radio" value="{{$exposure->id}}" id="option{{$exposure->id}}"/>	
 									<label for="option{{$exposure->id}}" class="expo @if($exposure->limit < count($exposure->campaignexposures)) notwork @endif">
-                                        <p>{{count($exposure->campaignexposures)}}</p>
 										<h3>{{$exposure->name}}</h3>
 										<p class="txt">{!!$exposure->instruction!!}</p>
                                         <p class="price"><b>+</b><b class="mm">{{number_format($exposure->price)}}</b>원</p>

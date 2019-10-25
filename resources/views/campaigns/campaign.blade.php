@@ -2,12 +2,12 @@
 	<div class="campaign-item">
 		<a href="campaign_view.php">
 		<div class="thum">
-			<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
+			<img src="/files/{{$campaign->main_image}}" alt="플래티넘 캠페인 이미지">
 		</div>
 		<div class="info">
 			<span class="ico-tag">
-				<span class="type01">방문</span>
-				<span class="bg-bl">뷰티</span>
+				<span class="{{$campaign->form}}">@if($campaign->form=='v')방문@else재택@endif</span>
+				<span class="bg-bl">{{$campaign->brand->category->name}}</span>
 				<span class="dday on">D-DAY</span>
 			</span>
 			<div class="txt-box">
