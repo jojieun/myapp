@@ -26,9 +26,9 @@ class Campaign extends Model
     public function campaignpromotion(){
         return $this->belongsTo(CampaignPromotion::class);
     }
-//    public function brandCategory()
-//    {
-//        return $this->hasManyThrough(Category::class, Brand::class);
-//    }   
+    public function brandCategory()
+    {
+//        return $this->hasMay(Category::class)->using(Brand::class);
+    }   
 }
 

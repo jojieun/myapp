@@ -8,15 +8,15 @@
 			<span class="ico-tag">
 				<span class="{{$campaign->form}}">@if($campaign->form=='v')방문@else재택@endif</span>
 				<span class="bg-bl">{{$campaign->brand->category->name}}</span>
-				<span class="dday on">D-DAY</span>
+				<span class="dday @if($campaign->rightNow=='Day') on @endif">D-{{$campaign->rightNow}}</span>
 			</span>
 			<div class="txt-box">
 				<p class="txt-top">
-					<span class="sns"><span class="channel2">인스타그램</span></span>
-					<span class="num"><b>신청 22</b> / 10명</span>
+					<span class="sns"><span class="channel{{$campaign->channel->id}}">{{$campaign->channel->name}}</span></span>
+					<span class="num"><b>신청 22</b> / {{$campaign->recruit_number}}명</span>
 				</p>
-				<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-				<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
+				<span class="subject">{{$campaign->name}}</span>
+				<span class="subtxt">{{number_format($campaign->offer_point)}}point / {{$campaign->offer_goods}} 제공</span>							
 			</div>
 		</div>
 		</a>

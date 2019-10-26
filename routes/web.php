@@ -18,6 +18,15 @@ Route::post('campaigns/firststore','CampaignsController@firstStore')->name('camp
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
 Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns.storeend');
+
+
+Route::get('visit','CampaignsController@index')->name('visit');
+Route::get('athome','CampaignsController@index2')->name('athome');
+
+
+
+
+//Route::view('visit','visit')->name('visit');
 Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
@@ -42,8 +51,8 @@ Route::view('influencer/show','influencers.show')->name('influencers.show');
  Route::view('campaign/show','campaigns.show')->name('campaigns.show1');   
 
 //임시 게시판보기
-Route::view('athome','athome')->name('athome');
-Route::view('visit','visit')->name('visit');
+//Route::view('athome','athome')->name('athome');
+//Route::view('visit','visit')->name('visit');
 Route::view('ask','ask')->name('ask');
 Route::view('faq','faq')->name('faq');
 Route::view('notice','notice')->name('notice');

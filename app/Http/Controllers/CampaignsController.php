@@ -7,6 +7,7 @@ use Auth;
 use App\Campaign;
 use Image;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CampaignsController extends Controller
 {
@@ -20,11 +21,33 @@ class CampaignsController extends Controller
     
     public function index()
     {
+        $campaigns = \App\Campaign::where('form','v')->with('channel')->get();
         
-        $campaigns = \App\Campaign::with('brand')->get();
-        return view('campaigns.index', compact('campaigns'));
+//        디데이 구하기
+        $nowdate = Carbon::now();
+        $cate = \App\Category::get();
+        foreach ($campaigns as $key => $loop)
+		{
+
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $dif = $er->diff($nowdate)->days;//날짜차이
+			$loop->rightNow = $dif<1?'Day':$dif;
+//            카테고리이름구하기
+//            $bcate = \App\brand::where('id',$loop->brand_id)->get();
+//            $loop->catename
+                 
+		}
+        
+        return view('campaigns.visit', compact('campaigns'));
+    }
+    
+    public function index2()
+    {
+        $campaigns = \App\Campaign::where('form','h')->get();
+        return view('campaigns.athome', compact('campaigns'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      *
