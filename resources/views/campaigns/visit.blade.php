@@ -15,22 +15,19 @@
 				<dl>
 					<dt>활동채널</dt>
 					<dd>
-						<span class="input-button2"><input name="" type="checkbox" id="channel01"><label for="channel01">전체</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel02"><label for="channel02">네이버블로그</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel03"><label for="channel03">인스타그램</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel04"><label for="channel04">유튜브</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel05"><label for="channel05">기타</label></span>
+						<span class="input-button2"><input name="channel" type="checkbox" id="channel00" value="0"><label for="channel00">전체</label></span>
+                        @foreach($channels as $chl)
+						<span class="input-button2"><input name="channel" type="checkbox" id="channel0{{$chl->id}}" value="{{$chl->id}}"><label for="channel0{{$chl->id}}">{{$chl->name}}</label></span>
+                        @endforeach
 					</dd>
 				</dl>
 				<dl>
 					<dt>카테고리</dt>
 					<dd>
-						<span class="input-button"><input name="" type="checkbox" id="category01"><label for="category01">전체</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category02"><label for="category02">맛집</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category03"><label for="category03">뷰티</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category04"><label for="category04">숙박</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category05"><label for="category05">문화</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category06"><label for="category06">기타</label></span>				
+						<span class="input-button"><input name="category" type="checkbox" id="category00"><label for="category00">전체</label></span>
+                        @foreach($categories as $cate)
+						<span class="input-button"><input name="category" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
+                        @endforeach
 					</dd>
 				</dl>
 			</div>
@@ -41,7 +38,7 @@
 			<section class="content-in2">
 				<!-- 상단 리스트 필터 -->
 				<div class="list-filter">
-					<p>96,263개의 캠페인</p>
+					<p>{{$campaigns->count()}}개의 캠페인</p>
 					<ul>
 						<li class="on"><a href="#">최신순</a></li>
 						<li><a href="#">마감임박순</a></li>
@@ -53,7 +50,11 @@
 				<div class="campaign-list sub6">
 					<ul>
                         @forelse($campaigns as $campaign)
-				            @include('campaigns.campaign', compact('campaign'))
+                        <?
+//                        캠페인 형태 방문으로 지정
+                        $campaign->form = 'v';
+                        ?>
+				            @include('campaigns.campaign')
                         @empty
                             <div class="text-center">
                             캠페인이 없습니다.
@@ -61,7 +62,17 @@
                         @endforelse
 					</ul>
 				</div>
+                @if($campaigns->count())
+                <div class="text-center paginator__article">
+                  {!! $campaigns->render() !!}
+                </div>
+                @endif
 			</section>
 		</div>
 	</div>
+<script>
+$('input[name=channel]').change(function(){
+    
+});
+</script>
 @endsection

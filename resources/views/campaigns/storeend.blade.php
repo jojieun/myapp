@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-@include('layouts.advertiser_leftmenu')	
+@include('advertisers.advertiser_leftmenu')	
 						
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
@@ -10,9 +10,9 @@
 
 					<div class="login-group">				
 						<a href="{{ route('main') }}" class="btn big w50">메인으로</a>
-						<a href="client_0201.php" class="btn black big w50">캠페인 관리 페이지로</a>
+						<a href="{{ route('advertisers.managecampaign').'#waitCampaigns' }}" class="btn black big w50">캠페인 관리 페이지로</a>
 					</div>
 				</div>
 			</div>
-@include('layouts.advertiser_leftmenu_tail')
+@include('advertisers.advertiser_leftmenu_tail')
 @endsection

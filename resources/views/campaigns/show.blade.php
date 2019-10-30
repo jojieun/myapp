@@ -1,13 +1,14 @@
 @extends('layouts.main')
 @section('content')
 <div class="sub-container">
-
-		<ul class="campaign_tab">
+		<ul class="campaign_tab @if($campaign->form=='h') w5 @endif">
 			<li class="on"><a href="#"><span>캠페인</span><span>개요</span></a></li>
 			<li><a href="#campaign01"><span>상세</span><span>이미지</span></a></li>
 			<li><a href="#campaign02"><span>리뷰</span><span>미션</span></a></li>
 			<li><a href="#campaign03"><span>리뷰</span><span>키워드</span></a></li>
+            @if($campaign->form=='v')
 			<li><a href="#campaign04"><span>방문</span><span>안내</span></a></li>
+            @endif
 			<li><a href="#campaign05"><span>기타</span><span>사항</span></a></li>
 		</ul>
 	
@@ -15,26 +16,29 @@
 		<section class="bg-gray">
 			<div class="content-in-sub-top pt2 mt120">
 				<div class="campaign-detail-img">
-					<img src="/img/sub/img_detail.jpg" alt="">
+					<img src="/files/{{$campaign->main_image}}" alt="">
 				</div> 
 
 				<div class="campaign-detail-info">
 					<div class="detail-info-top ">
 						<p class="tag-area">
-							<span class="type01">방문</span>
-							<span class="bg-bl">동탄 목동</span>
-							<span class="sns"><span class="insta">인스타그램</span></span>
+							@if($campaign->form == 'v')
+                            <span class="v">방문</span>
+                            @else
+                            <span class="h">재택</span>
+                            @endif
+							<span class="bg-bl">{{ $locaOrCate }}</span>
+							<span class="sns"><span class="channel{{$campaign->channel->id}}">{{$campaign->channel->name}}</span></span>
 						</p>
 						<p class="tag-area-right">
-							<span class="num"><b>신청 22</b> / 10명</span>
-							<span class="dday">D-11</span>
+							<span class="num"><b>신청 22</b> / {{$campaign->recruit_number}}명</span>
+							<span class="dday @if($d=='Day') on @endif">D-{{$d}}</span>
 						</p>
-						<h3>[동탄]닭장수후라이드 목동점 [동탄]닭장수후라이드 목동점</h3>
+						<h3>{{$campaign->name}}</h3>
 						<dl class="detail-info">
 							<dt>제공내역</dt>
 							<dd>
-								3만원 식사권 지급 + 5,000 포인트 지급 - 추가금 발생시 본인부담, 현장결제입니다. - 남은 금액은 환불되지 않습니다.<br/>
-								- 추가금 발생시 본인부담, 현장결제입니다.
+								{{$campaign->offer_goods}}
 							</dd>
 						</dl>
 						<p class="btn-share"><a href="#"><img src="/img/common/ico_share.gif" alt="공유하기"></a></p>
@@ -42,10 +46,10 @@
 					<dl class="detail-info">
 						<dt>캠페인일정</dt>
 						<dd>
-							<p><span class="detail-title">리뷰어 신청기간</span><span><b>07.15 ~ 07.21</b></span></p>
-							<p><span class="detail-title">리뷰어 발표</span><span>07.22</span></p>
-							<p><span class="detail-title">리뷰 등록기간</span><span>07.23 ~ 07.31</span></p>
-							<p><span class="detail-title">캠페인 결과발표</span><span>08.06</span></p>
+							<p><span class="detail-title">리뷰어 신청기간</span><span><b>{{$campaign->start_recruit}} ~ {{$campaign->end_recruit}}</b></span></p>
+							<p><span class="detail-title">리뷰어 발표</span><span>{{$reviewer_announce}}</span></p>
+							<p><span class="detail-title">리뷰 등록기간</span><span>{{$start_submit}} ~ {{$campaign->end_submit}}</span></p>
+							<p><span class="detail-title">캠페인 결과발표</span><span>{{$result_announce}}</span></p>
 						</dd>
 					</dl>
 					<span class="detail-btn">
@@ -68,7 +72,9 @@
 					<li><a href="#campaign01">상세이미지</a></li>
 					<li><a href="#campaign02">리뷰미션</a></li>
 					<li><a href="#campaign03">리뷰키워드</a></li>
-					<li><a href="#campaign04">방문안내</a></li>
+                    @if($campaign->form=='v')
+			         <li><a href="#campaign04">방문안내</a></li>
+                    @endif
 					<li><a href="#campaign05">기타사항</a></li>
 				</ul>
 				<a href="#" class="btn black">신청하기</a>
@@ -76,23 +82,26 @@
 			<!-- //우측메뉴 -->
 			<div class="campaign-detail-txt">
 				<div id="campaign01">
-					<img src="/img/sub/img_detail2.jpg" alt="상세이미지영역">
+                    @if($campaign->sub_image1)
+                    <img src="/files/{{$campaign->sub_image1}}" alt="상세이미지영역">
+                    @endif
+                    @if($campaign->sub_image2)
+                    <img src="/files/{{$campaign->sub_image2}}" alt="상세이미지영역">
+                    @endif
+                    @if($campaign->sub_image3)
+                    <img src="/files/{{$campaign->sub_image3}}" alt="상세이미지영역">
+                    @endif
+
 				</div>
 				<dl id="campaign02" class="detail-txt">
 					<dt>리뷰미션</dt>
 					<dd>
-						동탄목동치킨 키워드를 제목 맨 앞에 넣어주세요<br/>
-						ex) 동탄목동치킨 가성비좋은 닭장수 후라이드 본문에 동탄목동치킨 키워드를 3번이상 사용해주세요<br/>
-						메뉴사진+매장 내 외부사진 + 메뉴판 사진 등 사진 5장이상 첨부해주세요 짤막한 동영상도 넣어주시면 감사하겠습니다.<br/>
-						* https://blog.naver.com/dakjangsu78 공식블로그 이웃 추가 해주시면 <br/>
-						다양한 정보를 받아보실수 있으시고.... 무한 감사드리고^^;;; <br/>
-						인스타도 하신다면 센스있게 올려주시면 더욱 감사하겠죵 ㅎㅎㅎ <br/>
-						하단 매장지도 첨부 부탁드립니다.
+						{{$campaign->mission}}
 					</dd>
 				</dl>
 				<dl id="campaign03" class="detail-txt">
 					<dt>리뷰키워드</dt>
-					<dd>#동탄맛집 #동탄목동맛집 #동탄치킨 #동탄목동치킨 #동탄2치킨집</dd>
+					<dd>{{$campaign->keyword}}</dd>
 				</dl>
 				<dl id="campaign04" class="detail-txt">
 					<dt>방문안내</dt>
@@ -101,15 +110,13 @@
 							<img src="/img/sub/img_map.jpg" alt="지도영역">
 						</p>
 						<p>
-							11:30~22:00 / 토, 일 방문 불가<br/>
-							＊ 체험기간(7/23-7/31)이 짧은 캠페인입니다. 기간 내 체험이 가능하신 분들만 신청해주세요.<br/>
-							＊ 1일 전 예약 필수 / 당일 예약 불가 / 예약없이 방문 시 체험불가
+							{{$campaign->visit_time}}
 						</p>
 					</dd>
 				</dl>
 				<dl id="campaign05" class="detail-txt">
 					<dt>기타사항</dt>
-					<dd>초과비용 본인 부담 / 타쿠폰 중복적용 불가 / 핸드폰카메라 촬영불가 / 테이크 아웃 불가</dd>
+					<dd>{{$campaign->etc}}</dd>
 				</dl>
 			</div>
 		</section>

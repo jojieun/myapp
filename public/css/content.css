@@ -213,18 +213,17 @@ select {
 .list-filter ul li a:active{ border:none; }
 
 /* 캠페인 : 뷰 */
-.campaign-detail-img{ float:left;}
+.campaign-detail-img{ float:left; width:530px;}
 .campaign-detail-info{ position:relative; float:right; width: 50%; height: 530px;}
 .detail-info-top{ position:relative; margin:15px 10px 0 0; border-bottom:1px solid #ddd; overflow:hidden;}
 .detail-info-top .tag-area{ float:left; margin-bottom:14px; }
 .detail-info-top .tag-area-right{ float:right;}
 .detail-info-top .tag-area span,
 .detail-info-top .tag-area-right span{ display:inline-block; height: 28px; line-height: 28px; float:left; font-size:15px; }
-.detail-info-top .tag-area span.type01{ background:#b56cdf ; color:#fff; padding:0 14px; }
-.detail-info-top .tag-area span.type02{ background:#46d5c1; color:#fff; padding:0 14px; }
+.detail-info-top .tag-area span.v{ background:#b56cdf ; color:#fff; padding:0 14px; }
+.detail-info-top .tag-area span.h{ background:#46d5c1; color:#fff; padding:0 14px; }
 .detail-info-top .tag-area span.bg-bl{ background:#222; color:#fff; padding:0 14px; margin-right:10px;  }
-.detail-info-top .tag-area .sns .blog,
-.detail-info-top .tag-area .sns .insta { padding: 0 14px; border-radius:14px;}
+.detail-info-top .tag-area .sns span{ padding: 0 14px; border-radius:14px;}
 .detail-info-top .tag-area-right span.dday{ font-size:17px; font-weight:500; margin-left:10px; }
 .detail-info-top .tag-area-right span.dday.on{ color: #ff4e4e; }
 .detail-info-top h3{ clear:both; font-size:33px; color:#222; font-weight:500; line-height:140%; }
@@ -841,17 +840,18 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .my-btn-bottom span:nth-child(2) a{ background:url(/img/common/ico_moustache.png) no-repeat 40px 24px;}
 .my-btn-bottom span:nth-child(2):before{ content:''; display:inline-block; width: 1px; height: 24px; margin-top:22px; background: #cacaca;}
 
-.campaign-list-view{ width: 760px;  float:right; }
+.campaign-list-view{ width: 760px;  float:right; display: none;}
+.campaign-list-view:target {display: block;}
+
 .campaign-list-view .campaign-list-info{ position:relative; width: 100%; padding: 30px; border:1px solid #ddd; margin-bottom:10px; overflow:hidden;}
 .campaign-list-info2{ position:relative; width: 100%; padding-bottom: 30px; border-bottom:1px solid #ddd; margin-bottom:30px; overflow:hidden;}
 .list-info-top{ position:relative; width: 440px; float:left;  overflow:hidden;}
 .list-info-top .tag-area{ overflow:hidden; margin-bottom:14px; }
 .list-info-top .tag-area span{ display:inline-block; height: 28px; line-height: 28px; float:left; font-size:15px; }
-.list-info-top .tag-area span.type01{ background:#b56cdf ; color:#fff; padding:0 14px; }
-.list-info-top .tag-area span.type02{ background:#46d5c1; color:#fff; padding:0 14px; }
+.list-info-top .tag-area span.type01, .list-info-top .tag-area span.v{ background:#b56cdf ; color:#fff; padding:0 14px; }
+.list-info-top .tag-area span.type02, .list-info-top .tag-area span.h{ background:#46d5c1; color:#fff; padding:0 14px; }
 .list-info-top .tag-area span.bg-bl{ background:#222; color:#fff; padding:0 14px; margin-right:10px;  }
-.list-info-top .tag-area .sns .blog,
-.list-info-top .tag-area .sns .insta { padding: 0 14px; border-radius:14px;}
+.list-info-top .tag-area .sns span { padding: 0 14px; border-radius:14px;}
 .list-info-top .tag-area span.num{ margin:0 10px; }
 .list-info-top .tag-area span.dday{ font-size:17px; font-weight:500; }
 .list-info-top .tag-area span.dday.on{ color: #ff4e4e; }
@@ -1634,8 +1634,7 @@ ul.pagination li a[aria-label="Next »"]{
 	.list-info-top .tag-area span.type01{ padding:0 8px; }
 	.list-info-top .tag-area span.type02{ padding:0 8px; }
 	.list-info-top .tag-area span.bg-bl{ padding:0 8px; margin-right:5px;  }
-	.list-info-top .tag-area .sns .blog,
-	.list-info-top .tag-area .sns .insta { padding: 0 10px;}
+	.list-info-top .tag-area .sns span { padding: 0 10px;}
 	.list-info-top .tag-area span.num{ margin:5px 7px 0 0;  font-size:12px; }
 	.list-info-top .tag-area span.dday{ font-size:12px; margin-top:5px; font-size:13px; }
 	.list-info-top .subject{ font-size:18px; margin:5px 0 0;}

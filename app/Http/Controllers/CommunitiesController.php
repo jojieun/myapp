@@ -20,7 +20,7 @@ class CommunitiesController extends Controller
     
     public function index()
     {
-        $communities = \App\Community::with('reviewer','advertiser')->latest()->paginate(2);
+        $communities = \App\Community::with('reviewer','advertiser')->latest()->paginate(15);
         return view('communities.index', compact('communities'));
     }
 

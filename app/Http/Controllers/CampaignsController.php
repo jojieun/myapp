@@ -21,30 +21,74 @@ class CampaignsController extends Controller
     
     public function index()
     {
-        $campaigns = \App\Campaign::where('form','v')->with('channel')->get();
-        
+//        방문 캠페인 목록 출력
+        $campaigns = \App\Campaign::where('form','v')
+            ->where('confirm',1)
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','regions.id','=','areas.region_id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->select(
+            'campaigns.id',
+            'campaigns.name',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+        )->latest()->paginate(20);
 //        디데이 구하기
-        $nowdate = Carbon::now();
-        $cate = \App\Category::get();
+        $nowdate = Carbon::now();    
         foreach ($campaigns as $key => $loop)
 		{
-
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-			$loop->rightNow = $dif<1?'Day':$dif;
-//            카테고리이름구하기
-//            $bcate = \App\brand::where('id',$loop->brand_id)->get();
-//            $loop->catename
-                 
+            $loop->rightNow = $dif;
 		}
-        
-        return view('campaigns.visit', compact('campaigns'));
+        return view('campaigns.visit', [
+            'campaigns'=>$campaigns,
+            'channels'=>\App\Channel::select('id','name')->get(),
+            'categories'=>\App\Category::get(),
+        ]);
     }
     
-    public function index2()
+    public function indexH()
     {
-        $campaigns = \App\Campaign::where('form','h')->get();
-        return view('campaigns.athome', compact('campaigns'));
+//        재택 캠페인 목록 출력
+        $campaigns = \App\Campaign::where('form','h')
+            ->where('confirm',1)
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->select(
+            'campaigns.id',
+            'campaigns.name',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'categories.name as category_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+        )->latest('campaigns.created_at')->paginate(20);
+
+//        디데이 구하기
+         $nowdate = Carbon::now();    
+        foreach ($campaigns as $key => $loop)
+		{
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->rightNow = $dif;
+		}
+        return view('campaigns.athome', [
+            'campaigns'=>$campaigns,
+            'channels'=>\App\Channel::select('id','name')->get(),
+            'categories'=>\App\Category::get(),
+        ]);
     }
 
     
@@ -140,6 +184,7 @@ class CampaignsController extends Controller
         $campaign->contact=$request->contact;
         $campaign->mission=$request->mission;
         $campaign->keyword=$request->keyword;
+        $campaign->etc=$request->etc;
         $campaign->payment=$request->payment;
         $campaign->provide_agreement=$request->provide_agreement;
         $campaign->area_id=$request->area_id;
@@ -207,9 +252,16 @@ class CampaignsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Campaign $campaign, $d, $locaOrCate=null)
     {
-        return view('campaigns.show');
+        return view('campaigns.show', [
+            'campaign'=>$campaign,
+            'd' =>$d,
+            'locaOrCate' =>$locaOrCate,
+            'reviewer_announce' => Carbon::parse($campaign->end_recruit)->addDays(1)->format('Y-m-d'),
+            'start_submit' => Carbon::parse($campaign->end_recruit)->addDays(2)->format('Y-m-d'),
+            'result_announce' => Carbon::parse($campaign->end_submit)->addDays(1)->format('Y-m-d'),
+             ]);
     }
 
     /**

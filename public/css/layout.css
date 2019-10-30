@@ -51,6 +51,11 @@
 
 /* 플래티넘 캠페인 */
 .campaign-list { position:relative; clear:both; }
+.campaign-list::after{
+    content:'';
+    display: block;
+    clear: both;
+}
 .campaign-list ul li{ width: calc(25% - 15px); float:left; margin-right: 20px;}
 .campaign-list ul li:last-child{margin-right: 0;}
 .campaign-list .thum img{ width:100%;}

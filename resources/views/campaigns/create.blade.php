@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-@include('layouts.advertiser_leftmenu')	
+@include('advertisers.advertiser_leftmenu')	
 <? $opbrand_id = Request::get('opbrand_id') ?>
 <form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
@@ -259,6 +259,14 @@
                             <span class="red" id="keyword"></span>
                         </dd>
 					</dl>
+                    <dl>
+						<dt>기타사항</dt>
+						<dd class="{{ $errors->has('etc') ? 'has-error' : '' }}">
+							<textarea name="etc" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 기타 사항을 입력해주세요" class="border2">{{ old('etc') }}</textarea>
+                            {!! $errors->first('etc','<span class="red">:message</span>')!!}
+                            <span class="red" id="etc"></span>
+						</dd>
+					</dl>
 				</div>
 				<!-- //기본정보 입력 -->
 
@@ -391,11 +399,11 @@
             <a class="close" href="#close"></a>
         </div>
 		<!-- //popup : 브랜드추가 -->
-//개인정보 제3자 제공
+<!--개인정보 제3자 제공-->
 @component('help.pop_requir')
     개인정보 제3자 제공
 @endcomponent
-@include('layouts.advertiser_leftmenu_tail')
+
 <script>
     //    content보기 설정
     $(function(){
@@ -665,5 +673,5 @@ var $data = new FormData();
 </script>
 @include('help.addjs')	
 @include('help.money')	
-@include('layouts.advertiser_leftmenu_tail')
+@include('advertisers.advertiser_leftmenu_tail')
 @endsection

@@ -19,14 +19,18 @@ Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('ca
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
 Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns.storeend');
 
-
+//캠페인관련
 Route::get('visit','CampaignsController@index')->name('visit');
-Route::get('athome','CampaignsController@index2')->name('athome');
+Route::get('athome','CampaignsController@indexH')->name('athome');
+Route::get('campaign/show/{campaign}/{d}/{locaOrCate?}','CampaignsController@show')->name('campaigns.show')->where('locaOrCate', '.*');
+
+//관리자페이지
+Route::get('admin','AdminController@index')->name('admin');
+//캠페인검수 승인
+Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
 
 
-
-
-//Route::view('visit','visit')->name('visit');
+//메인페이지
 Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
@@ -43,6 +47,13 @@ Route::get('advertiser/mypage',[
     'as'=>'advertisers.mypage',
     'uses' => 'AdvertiserMypageController@home'
 ]);
+Route::get('advertiser/managecampaign',[
+    'as'=>'advertisers.managecampaign',
+    'uses' => 'AdvertiserMypageController@manageCampaign'
+]);
+
+
+
 //임시인플루언서
 Route::view('influencer/index','influencers.index')->name('influencers.index'); 
 Route::view('influencer/show','influencers.show')->name('influencers.show'); 
@@ -51,8 +62,6 @@ Route::view('influencer/show','influencers.show')->name('influencers.show');
  Route::view('campaign/show','campaigns.show')->name('campaigns.show1');   
 
 //임시 게시판보기
-//Route::view('athome','athome')->name('athome');
-//Route::view('visit','visit')->name('visit');
 Route::view('ask','ask')->name('ask');
 Route::view('faq','faq')->name('faq');
 Route::view('notice','notice')->name('notice');
@@ -140,7 +149,9 @@ Route::post('reset', [
 Route::resource('communities', 'CommunitiesController');
 
 /* 캠페인 관련 */
-Route::resource('campaigns', 'CampaignsController');
+Route::resource('campaigns', 'CampaignsController')->except([
+    'show'
+]);
 
 
 
