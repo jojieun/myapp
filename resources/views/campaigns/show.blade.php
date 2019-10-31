@@ -31,7 +31,7 @@
 							<span class="sns"><span class="channel{{$campaign->channel->id}}">{{$campaign->channel->name}}</span></span>
 						</p>
 						<p class="tag-area-right">
-							<span class="num"><b>신청 22</b> / {{$campaign->recruit_number}}명</span>
+							<span class="num"><b>신청 {{ $applyCount }}</b> / {{$campaign->recruit_number}}명</span>
 							<span class="dday @if($d=='Day') on @endif">D-{{$d}}</span>
 						</p>
 						<h3>{{$campaign->name}}</h3>
@@ -53,7 +53,7 @@
 						</dd>
 					</dl>
 					<span class="detail-btn">
-						<a href="#" class="btn black big">신청하기</a>
+						<a class="btn black big apply_check" href="#popup_term">신청하기</a>
 						<a href="#" class="btn gray">관심캠페인</a>
 					</span>
 				</div>
@@ -77,7 +77,7 @@
                     @endif
 					<li><a href="#campaign05">기타사항</a></li>
 				</ul>
-				<a href="#" class="btn black">신청하기</a>
+				<a  class="btn black apply_check">신청하기</a>
 			</div>
 			<!-- //우측메뉴 -->
 			<div class="campaign-detail-txt">
@@ -254,4 +254,50 @@
 		</section>
 		<!-- //추천 캠페인 -->
 	</div>
+<!--캠페인신청시필요-->
+@component('help.pop_review')
+@endcomponent
+<!--신청약관-->
+@include('campaigns.pop_term')
+@component('help.popup_ok')
+신청
+@endcomponent
+<script>
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
+    });
+     $('.apply_check').on('click', function(e){
+         e.preventDefault();
+         @if(isset(auth()->user()->name))
+         window.location.hash = '#popup_term';
+         @else
+         window.location.hash = '#pop_review';
+         @endif
+         
+     });
+ $('#campaign_apply').on('click', function(e){
+     e.preventDefault();
+     if($('#checkAgree1').is(':checked') && $('#checkAgree2').is(':checked')){
+         var camid = $(this).attr('value');
+        $.ajax({
+           type:"POST",
+           url:"{{ route('reviewers.apply') }}",
+           data:{camid:camid},
+           success:function(){
+                window.location.hash = '#popup_ok';
+            },
+            error: function(data) {
+                if(data.status==401){
+                    window.location.hash = '#pop_review';
+                }
+            },
+        });
+         
+     } else {
+         alert('약관에 동의해주세요');
+     }
+    });
+</script>
 @endsection

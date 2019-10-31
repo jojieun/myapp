@@ -23,7 +23,7 @@ class CampaignsController extends Controller
     {
 //        방문 캠페인 목록 출력
         $campaigns = \App\Campaign::where('form','v')
-            ->where('confirm',1)
+//            ->where('confirm',1)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','regions.id','=','areas.region_id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
@@ -47,6 +47,7 @@ class CampaignsController extends Controller
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         return view('campaigns.visit', [
             'campaigns'=>$campaigns,
@@ -59,7 +60,7 @@ class CampaignsController extends Controller
     {
 //        재택 캠페인 목록 출력
         $campaigns = \App\Campaign::where('form','h')
-            ->where('confirm',1)
+//            ->where('confirm',1)
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
@@ -83,6 +84,7 @@ class CampaignsController extends Controller
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         return view('campaigns.athome', [
             'campaigns'=>$campaigns,
@@ -252,7 +254,7 @@ class CampaignsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Campaign $campaign, $d, $locaOrCate=null)
+    public function show(Campaign $campaign, $d, $applyCount, $locaOrCate=null)
     {
         return view('campaigns.show', [
             'campaign'=>$campaign,
@@ -261,6 +263,7 @@ class CampaignsController extends Controller
             'reviewer_announce' => Carbon::parse($campaign->end_recruit)->addDays(1)->format('Y-m-d'),
             'start_submit' => Carbon::parse($campaign->end_recruit)->addDays(2)->format('Y-m-d'),
             'result_announce' => Carbon::parse($campaign->end_submit)->addDays(1)->format('Y-m-d'),
+            'applyCount' => $applyCount
              ]);
     }
 

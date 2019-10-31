@@ -22,7 +22,7 @@ Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns
 //캠페인관련
 Route::get('visit','CampaignsController@index')->name('visit');
 Route::get('athome','CampaignsController@indexH')->name('athome');
-Route::get('campaign/show/{campaign}/{d}/{locaOrCate?}','CampaignsController@show')->name('campaigns.show')->where('locaOrCate', '.*');
+Route::get('campaign/show/{campaign}/{d}/{applyCount}/{locaOrCate?}','CampaignsController@show')->name('campaigns.show')->where('locaOrCate', '.*');
 
 //관리자페이지
 Route::get('admin','AdminController@index')->name('admin');
@@ -40,6 +40,11 @@ Route::get('/', [
 Route::get('reviewer/mypage',[
     'as'=>'reviewers.mypage',
     'uses' => 'ReviewerMypageController@home'
+]);
+//리뷰어캠페인신청
+Route::post('reviewer/apply',[
+    'as'=>'reviewers.apply',
+    'uses' => 'ReviewerMypageController@apply'
 ]);
 
 //광고주마이페이지

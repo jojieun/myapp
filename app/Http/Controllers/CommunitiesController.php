@@ -15,7 +15,7 @@ class CommunitiesController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
     
     public function index()
@@ -46,7 +46,7 @@ class CommunitiesController extends Controller
         
         $this->validate($request,[
             'title' => 'required',
-            'content' => 'required|min:10',
+            'content' => 'required',
         ]);
         if(auth()->guard('web')->check()){
         $community = auth()->user()->communities()->create($request->all());

@@ -2,7 +2,7 @@
 @section('content')
 
 			<!-- 왼쪽메뉴 -->
-			@include('layouts.reviewer_leftmenu')
+			@include('reviewers.reviewer_leftmenu')
 						
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
@@ -12,10 +12,10 @@
 						<dd><b>{{ $user->point }}</b>P</dd>
 					</dl>
 					<ul>
-						<li><span class="title">미제출리뷰</span><span class="txt"><b>1</b><em>건</em></span></li>
-						<li><span class="title">리뷰제안</span><span class="txt"><b>2</b><em>건</em></span></li>
-						<li><span class="title">리뷰전략열람</span><span class="txt"><b>5</b><em>건</em></span></li>
-						<li><span class="title">관심캠페인</span><span class="txt"><b>999</b><em>건</em></span></li>
+						<li><span class="title">미제출리뷰</span><span class="txt"><b>0</b><em>건</em></span></li>
+						<li><span class="title">리뷰제안</span><span class="txt"><b>0</b><em>건</em></span></li>
+						<li><span class="title">리뷰전략열람</span><span class="txt"><b>0</b><em>건</em></span></li>
+						<li><span class="title">관심캠페인</span><span class="txt"><b>0</b><em>건</em></span></li>
 					</ul>
 				</div>
 
@@ -35,90 +35,11 @@
 					<!-- //탭 -->
 					<div class="my-reviewer">
 						<ul>
-							<li>
-								<div class="reviewer-list-thum">
-									<img src="/img/sub/img_detail.jpg" alt="">
-								</div>
-								<div class="reviewer-list-info">
-									<div class="list-info-top">
-										<p class="tag-area">
-											<span class="type01">방문</span>
-											<span class="bg-bl">동탄 목동</span>
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num"><b>신청 22</b> / 10명</span>
-											<span class="dday">D-11</span>
-										</p>									
-										<p class="subject">[동탄]닭장수후라이드 목동점</p>
-										<p class="subtxt">3만원 식사권 지급 + 5,000 포인트 지급 </p>
-									</div>
-									<div class="campaign-list-info-right">
-										<a href="#" class="btn btn-check w125 black">리뷰제출</a>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="reviewer-list-thum">
-									<img src="/img/sub/img_detail.jpg" alt="">
-								</div>
-								<div class="reviewer-list-info">
-									<div class="list-info-top">
-										<p class="tag-area">
-											<span class="type01">방문</span>
-											<span class="bg-bl">동탄 목동</span>
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num"><b>신청 22</b> / 10명</span>
-											<span class="dday">D-11</span>
-										</p>									
-										<p class="subject">[동탄]닭장수후라이드 목동점</p>
-										<p class="subtxt">3만원 식사권 지급 + 5,000 포인트 지급 </p>
-									</div>
-									<div class="campaign-list-info-right">
-										<a href="#" class="btn btn-check w125">리뷰보기</a>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="reviewer-list-thum">
-									<img src="/img/sub/img_detail.jpg" alt="">
-								</div>
-								<div class="reviewer-list-info">
-									<div class="list-info-top">
-										<p class="tag-area">
-											<span class="type01">방문</span>
-											<span class="bg-bl">동탄 목동</span>
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num"><b>신청 22</b> / 10명</span>
-											<span class="dday">D-11</span>
-										</p>									
-										<p class="subject">[동탄]닭장수후라이드 목동점</p>
-										<p class="subtxt">3만원 식사권 지급 + 5,000 포인트 지급 </p>
-									</div>
-									<div class="campaign-list-info-right">
-										<a href="#" class="btn btn-check w125 black">리뷰제출</a>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="reviewer-list-thum">
-									<img src="/img/sub/img_detail.jpg" alt="">
-								</div>
-								<div class="reviewer-list-info">
-									<div class="list-info-top">
-										<p class="tag-area">
-											<span class="type01">방문</span>
-											<span class="bg-bl">동탄 목동</span>
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num"><b>신청 22</b> / 10명</span>
-											<span class="dday">D-11</span>
-										</p>									
-										<p class="subject">[동탄]닭장수후라이드 목동점</p>
-										<p class="subtxt">3만원 식사권 지급 + 5,000 포인트 지급 </p>
-									</div>
-									<div class="campaign-list-info-right">
-										<a href="#" class="btn btn-check w125">리뷰보기</a>
-									</div>
-								</div>
-							</li>
+                            @forelse($applyCampaigns as $campaign)
+                                @include('reviewers.particle_mycampaign')
+                            @empty
+                                신청캠페인이 없습니다
+                            @endforelse
 						</ul>
 					</div>
 				</div>				
@@ -128,4 +49,5 @@
 		</div>
 		<!-- //상세 컨텐츠내용 -->	
 	</div>
+@include('reviewers.reviewer_bottommenu')
 @endsection

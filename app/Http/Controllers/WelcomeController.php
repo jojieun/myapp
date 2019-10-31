@@ -12,8 +12,8 @@ class WelcomeController extends Controller
 //        플래티넘캠페인
         $plCampaigns = \App\CampaignExposure::where('exposure_id',1)
             ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
-                    ->where('campaigns.confirm',1);
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
+//                    ->where('campaigns.confirm',1);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -40,13 +40,14 @@ class WelcomeController extends Controller
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
 //        프라임캠페인
         $prCampaigns = \App\CampaignExposure::where('exposure_id',2)
             ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
-                    ->where('campaigns.confirm',1);
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
+//                    ->where('campaigns.confirm',1);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -73,13 +74,14 @@ class WelcomeController extends Controller
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
         //        그랜드캠페인
         $gCampaigns = \App\CampaignExposure::where('exposure_id',2)
             ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
-                    ->where('campaigns.confirm',1);
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
+//                    ->where('campaigns.confirm',1);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -106,6 +108,7 @@ class WelcomeController extends Controller
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
         return view('welcome', [

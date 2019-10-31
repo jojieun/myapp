@@ -8,6 +8,10 @@ use Carbon\Carbon;
 
 class AdvertiserMypageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.advertiser', ['except' => []]);
+    }
     //    마이페이지메인
     public function home(){
         $nowuser = auth()->guard('advertiser')->user();
