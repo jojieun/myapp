@@ -48,7 +48,7 @@ class Advertiser extends Authenticatable
 
     ];
     public function brands(){
-        return $this->hasMany(brand::class);
+        return $this->hasMany(Brand::class);
     }
     public function communities(){
         return $this->hasMany(Community::class);

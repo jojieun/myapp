@@ -38,7 +38,7 @@ class CampaignsController extends Controller
             'areas.name as area_name',
             'regions.name as region_name',
             'channels.name as channel_name',
-            'channels.id as channel_id',
+            'channels.id as channel_id'
         )->latest()->paginate(20);
 //        디데이 구하기
         $nowdate = Carbon::now();    
@@ -74,7 +74,7 @@ class CampaignsController extends Controller
             'campaigns.end_recruit',
             'categories.name as category_name',
             'channels.name as channel_name',
-            'channels.id as channel_id',
+            'channels.id as channel_id'
         )->latest('campaigns.created_at')->paginate(20);
 
 //        디데이 구하기
@@ -198,7 +198,7 @@ class CampaignsController extends Controller
         if($request->hasfile('main_image')){
             $file = $request->file('main_image');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
-            $location = public_path('files/').$filename;
+            $location = 'files/'.$filename;
             $img = Image::make($file);
             $img->fit(530,530);
             $img->save($location);
@@ -207,21 +207,21 @@ class CampaignsController extends Controller
         if($request->hasfile('sub_image1')){
             $file = $request->file('sub_image1');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
-            $location = public_path('files/').$filename;
+            $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image1 = $filename;
         }
         if($request->hasfile('sub_image2')){
             $file = $request->file('sub_image2');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
-            $location = public_path('files/').$filename;
+            $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image2 = $filename;
         }
         if($request->hasfile('sub_image3')){
             $file = $request->file('sub_image3');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
-            $location = public_path('files/').$filename;
+            $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image3 = $filename;
         }

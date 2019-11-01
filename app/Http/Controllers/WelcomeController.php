@@ -31,8 +31,7 @@ class WelcomeController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name',
-                 )->get();
+             'categories.name as category_name')->get();
         //        디데이 구하기
         $nowdate = Carbon::now();    
         foreach ($plCampaigns as $key => $loop)
@@ -65,7 +64,7 @@ class WelcomeController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name',
+             'categories.name as category_name'
                  )->get();
         //        디데이 구하기
         $nowdate = Carbon::now();    
@@ -78,7 +77,7 @@ class WelcomeController extends Controller
 		}
         
         //        그랜드캠페인
-        $gCampaigns = \App\CampaignExposure::where('exposure_id',2)
+        $gCampaigns = \App\CampaignExposure::where('exposure_id',3)
             ->join('campaigns', function($join){
                 $join->on('campaign_exposure.campaign_id','=','campaigns.id');
 //                    ->where('campaigns.confirm',1);
@@ -99,7 +98,7 @@ class WelcomeController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name',
+             'categories.name as category_name'
                  )->get();
         //        디데이 구하기
         $nowdate = Carbon::now();    

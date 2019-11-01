@@ -1,7 +1,13 @@
 @extends('layouts.main')
 @section('content')
-@include('advertisers.advertiser_leftmenu')	
-<? $opbrand_id = Request::get('opbrand_id') ?>
+@include('advertisers.advertiser_leftmenu')
+
+@if(null !== Request::get('opbrand_id'))
+<?php $opbrand_id = Request::get('opbrand_id'); ?>
+@else
+<?php $opbrand_id = 1; ?>
+@endif
+
 <form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
 			<!-- 오른쪽 컨텐츠 1 -->

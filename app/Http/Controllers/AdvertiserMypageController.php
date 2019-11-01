@@ -69,7 +69,7 @@ class AdvertiserMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-            'categories.name as category_name',
+            'categories.name as category_name'
         )->get();
         
     //        리뷰어 선정 대기중
@@ -93,7 +93,7 @@ class AdvertiserMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-            'categories.name as category_name',
+            'categories.name as category_name'
         )->get();
 //        디데이 구하기
         $nowdate = Carbon::now();    
@@ -124,7 +124,7 @@ class AdvertiserMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-            'categories.name as category_name',
+            'categories.name as category_name'
         )->get();
 //        완료
         $endCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
@@ -146,7 +146,7 @@ class AdvertiserMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-            'categories.name as category_name',
+            'categories.name as category_name'
         )->get();
         return view('advertisers.managecampaign',[
             'waitCampaigns'=>$waitCampaigns,

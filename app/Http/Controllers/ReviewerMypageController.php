@@ -36,7 +36,7 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name',
+             'categories.name as category_name'
                  )->get();
         //        디데이-신청인원 구하기
         $nowdate = Carbon::now();    
