@@ -18,12 +18,12 @@
 						<li><span class="title">관심캠페인</span><span class="txt"><b>0</b><em>건</em></span></li>
 					</ul>
 				</div>
-
+                @if(!$user->plan_count)
 				<p class="login-info2">
 					<span class="txt">리뷰전략 등록으로 캠페인 리뷰어로 신청해보세요!</span>
-					<a href="#" class="btn h46 fl-r">리뷰전략등록</a>
+					<a href="{{route('plans.create')}}" class="btn h46 fl-r">리뷰전략등록</a>
 				</p>
-				
+				@endif
 				<!-- 캠페인 리스트 -->
 				<div>
 					<!-- 탭 -->

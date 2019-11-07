@@ -4,6 +4,7 @@
 			@include('advertisers.advertiser_leftmenu')	
                         <!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
+                
 				<p class="my-btn">
 					<span><a href="{{ route('campaigns.create') }}" class="btn w50">새 캠페인 등록하기</a></span>
 					<span><a href="#" class="btn w50 fl-r">캠페인 대행 의뢰하기</a></span>

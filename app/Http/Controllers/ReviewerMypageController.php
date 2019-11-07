@@ -12,8 +12,9 @@ class ReviewerMypageController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
     //    마이페이지
-    public function home(){
-        $nowUser = auth()->user();
+    public function home(Request $request){
+        $nowUser = auth()->user()->id;
+        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->first();
 //        신청캠페인
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join){
@@ -50,7 +51,7 @@ class ReviewerMypageController extends Controller
         
         return view('reviewers.mypage',[
             'user'=>$nowUser,
-            'applyCampaigns'=>$applyCampaigns
+            'applyCampaigns'=>$applyCampaigns,
         ]);
     }
      public function apply(Request $request){

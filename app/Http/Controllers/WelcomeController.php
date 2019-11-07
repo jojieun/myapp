@@ -38,7 +38,7 @@ class WelcomeController extends Controller
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-            $loop->rightNow = $dif;
+            $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
@@ -72,7 +72,7 @@ class WelcomeController extends Controller
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-            $loop->rightNow = $dif;
+            $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
@@ -106,7 +106,7 @@ class WelcomeController extends Controller
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-            $loop->rightNow = $dif;
+            $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         

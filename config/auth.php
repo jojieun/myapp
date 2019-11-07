@@ -40,7 +40,6 @@ return [
             'driver' => 'session',
             'provider' => 'reviewers',
         ],
-
         'api' => [
             'driver' => 'token',
             'provider' => 'reviewers',
@@ -75,10 +74,10 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
+//        'users' => [
+//            'driver' => 'eloquent',
+//            'model' => App\User::class,
+//        ],
 
          'reviewers' => [
              'driver' => 'eloquent',
@@ -106,11 +105,11 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
+//        'users' => [
+//            'provider' => 'users',
+//            'table' => 'password_resets',
+//            'expire' => 60,
+//        ],
         'reviewers' => [
             'provider' => 'reviewers',
             'table' => 'password_resets',

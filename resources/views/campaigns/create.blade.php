@@ -168,7 +168,7 @@
 				<!-- 기본정보 입력 -->
 				<div class="table_form2">
 					<dl>
-						<dt class="lh120">캠페인<br/>대표이미지<br/><small>(필수사항)</small></dt>
+						<dt class="lh120">캠페인<br/>대표이미지<br/></dt>
 						<dd class="{{ $errors->has('main_image') ? 'has-error' : '' }}">
 							<div class="file-area">
 								<span class="upload">
@@ -177,13 +177,13 @@
 									</label>
 								</span>
 								<span class="add-txt">※ 대표이미지는 530*530 이상 정육면체 사이즈로 작업하여 업로드해주세요.</span>
-                                <span class="red" id="main_image"></span>
 							</div>
+                            <span class="red" id="main_image"></span>
                             {!! $errors->first('main_image','<span class="red">:message</span>')!!}
 						</dd>
 					</dl>
 					<dl class="bar">
-						<dt class="lh120">상세이미지<br/><small>(선택사항)</small></dt>
+						<dt class="lh120">상세이미지<br/></dt>
 						<dd class="">
 							<div class="file-area">
 								<span class="upload2 {{ $errors->has('sub_image1') ? 'has-error' : '' }}">
@@ -209,15 +209,15 @@
                             <dt>캠페인지역</dt>
                             <dd>
                                 <select id="regions" class="select_po">
-                                    <option>선택</option>
+                                    <option value="선택">선택</option>
                                      @forelse($regions as $region)
 										<option value="{{ $region->id }}" @if( $brand->id == old('brand_id') ) selected @endif>{{ $region->name }}</option>		
                                         @empty
 										<option value="">지역이 없습니다</option>
                                         @endforelse
                                 </select>
-                                <select id='areas' class='select_po hide' name='area_id'>
-                                    <option value="">지역이 없습니다</option>
+                                <select id='areas' class='select_po hide' name='area_id' value="null">
+                                    <option value="null">지역이 없습니다</option>
                                 </select>
                                 {!! $errors->first('area_id','<span class="red">:message</span>')!!}
                                 <span class="red" id="area_id"></span>
@@ -246,9 +246,10 @@
                         </div>
 					<dl class="bar">
 						<dt>담당자 연락처</dt>
-						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact') }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" /></dd>
+						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact') }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" />
                         {!! $errors->first('contact','<span class="red">:message</span>')!!}
                         <span class="red" id="contact"></span>
+                        </dd>
 					</dl>
 					<dl>
 						<dt>리뷰미션</dt>
@@ -618,7 +619,7 @@
     $('#second_btn').on('click', function(e){
        e.preventDefault();
 var $data = new FormData();
-    $data.append('main_image', $("input[name=main_image]")[0].files[0]);
+        $data.append('main_image', $("input[name=main_image]").val());
         $data.append('visit_time', $("input[name=visit_time]").val());
         $data.append('contact', $("input[name=contact]").val());
         $data.append('mission', $("textarea[name=mission]").val());
@@ -642,7 +643,7 @@ var $data = new FormData();
                     $('span').filter('.red').html('');
                     $.each(data.responseJSON.errors, function (i, error) {
                         var el = $('.red').filter('#'+i);
-                        el.html(error[0]);
+                            el.html(error[0]);
                     });
                   }
         },

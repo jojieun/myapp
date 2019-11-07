@@ -21,6 +21,8 @@ class CampaignsController extends Controller
     
     public function index()
     {
+//        $myTest = \App\Campaign::where('form','v')->withCount('campaignReviewers')->get();
+//        dd($myTest);
 //        방문 캠페인 목록 출력
         $campaigns = \App\Campaign::where('form','v')
 //            ->where('confirm',1)
@@ -46,7 +48,7 @@ class CampaignsController extends Controller
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-            $loop->rightNow = $dif;
+            $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         return view('campaigns.visit', [
@@ -83,7 +85,7 @@ class CampaignsController extends Controller
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
-            $loop->rightNow = $dif;
+            $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         return view('campaigns.athome', [
@@ -151,14 +153,16 @@ class CampaignsController extends Controller
     }
     public function secondStore(Request $request)
     {
-        $v = $this->validate($request, [
-//            'main_image' => 'required',
+        $this->validate($request, [
+            'main_image' => 'required',
             'contact' => 'required|max:255',
             'mission' => 'max:255',
             'keyword' => 'max:255',
-            'area_id' => 'required_if:form,v',
+            'area_id' => $request->form == 'v' ?'required|numeric': '',
             'address' => $request->form == 'v' ?'required': '',
             'visit_time' => $request->form == 'v' ?'required|max:255': 'max:255',
+        ], [
+            'area_id.numeric'=>'캠페인지역은 필수 입력사항입니다.'
         ]);
       
         return response()->json(['now'=>'2']);
@@ -166,7 +170,7 @@ class CampaignsController extends Controller
     public function makeArea(Request $request){
         $nowr = $request->region;
         $myareas = \App\Region::find($nowr)->areas()->get();
-    return response()->json(array('areas' => $myareas));
+        return response()->json(array('areas' => $myareas));
     }
     
     public function store(Request $request)

@@ -140,5 +140,6 @@ return [
         'visit_time' => '방문가능시간',
         'contact' => '담당자연락처',
         'v' => '방문',
+        'main_image' => '대표이미지',
     ],
 ];

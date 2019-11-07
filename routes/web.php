@@ -158,6 +158,9 @@ Route::resource('campaigns', 'CampaignsController')->except([
     'show'
 ]);
 
+/* 리뷰전략 관련 */
+Route::resource('plans', 'PlansController');
+
 
 
 

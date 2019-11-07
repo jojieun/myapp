@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Campaign extends Model
 {
     
-    protected $guarded = [];
+    protected $guarded = ['id'];
     public function advertiser(){
         return $this->belongsTo(Advertiser::class);
     }
@@ -26,9 +26,14 @@ class Campaign extends Model
     public function campaignpromotion(){
         return $this->belongsTo(CampaignPromotion::class);
     }
-    public function brandCategory()
+    
+    public function brandCategory() //카테고리 구하기
     {
-//        return $this->hasMay(Category::class)->using(Brand::class);
-    }   
+        return $this->hasOneThrough('App\Category', 'App\Brand', 'id', 'id', 'brand_id', 'category_id');
+    }
+    public function campaignReviewers() //신청인원 구하기
+    {
+        return $this->hasMany(CampaignReviewer::class);
+    }
 }
 
