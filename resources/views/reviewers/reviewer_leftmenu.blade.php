@@ -18,7 +18,7 @@
 		  	<ul> 
 		  		<li class="on"><a href="reviewer_0101.php"><span>나의 캠페인</span></a></li>
 		  		<li><a href="#"><span>미제출 리뷰</span></a></li>
-		  		<li><a href="#"><span>나의 리뷰전략 관리</span></a></li>
+		  		<li><a href="{{route('plans.showmy',$user->plan->id)}}"><span>나의 리뷰전략 관리</span></a></li>
 		  		<li><a href="#"><span>리뷰전략 열람 정보</span></a></li>
 		  		<li><a href="#"><span>리뷰어 제안</span></a></li>
 		  		<li><a href="#"><span>관심 캠페인</span></a></li>

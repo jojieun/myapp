@@ -7,7 +7,7 @@
 		<div class="content-in-sub member">
 			<h2 class="m-text-left">
 				<b>회원가입</b>
-				<p>블록션에서 다양한 체험을 경험해보세요:)</p>
+				<p>{{ config('app.name') }}에서 다양한 체험을 경험해보세요:)</p>
 			</h2>		
 
 			<div class="join-btn01">

@@ -29,6 +29,6 @@ class SessionsController extends Controller
     {
         auth()->logout();
 
-        return redirect()->intended(url()->previous());
+        return redirect('/');
     }
 }

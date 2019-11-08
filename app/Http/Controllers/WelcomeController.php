@@ -8,6 +8,9 @@ use Carbon\Carbon;
 
 class WelcomeController extends Controller
 {
+    public function tempindex(){
+        return view('temp_welcome');
+    }
     public function index(){
 //        플래티넘캠페인
         $plCampaigns = \App\CampaignExposure::where('exposure_id',1)

@@ -329,6 +329,12 @@ select {
 .table_form2 dl dd{ width:calc(100% - 160px); float:right; padding:5px 0; text-align:left; font-size:17px; }
 .table_form2 dl dd b{ font-weight:400; }
 .table_form2 dl dd input[type=text], .table_form2 dl dd input[type=date], .table_form2 dl dd input[type=number]{ width: 175px; height: 40px; line-height:40px ; border:1px solid #ddd; font-size:17px; color:#222; font-weight:300;}
+
+.table_form2 dl dd input[name=reward]{
+    width:200px !important;
+    vertical-align:baseline;
+}
+
 .table_form2 dl dd input[type=text].w150 { width: calc( 100% - 150px); }
 .table_form2 dl dd select {
 	width: 100%;
@@ -561,7 +567,7 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .table_default.influencer-view .table_td_line{ padding: 40px 0;}
 .table_default.influencer-view .table_td .view-img,
 .table_default.influencer-view .table_td .view-title{ width: 220px; float:left;  text-align:left; }
-.table_default.influencer-view .table_td .view-img img{ width:100%; height: 230px;}
+.table_default.influencer-view .table_td .view-img img{ width:100%; height: 220px;}
 .table_default.influencer-view .table_td .view-title h3{ font-size:26px; color:#222;}
 .table_default.influencer-view .table_td .view-info{ width: calc(100% - 270px); float:right; text-align:left; font-size:18px; }
 .table_default.influencer-view .table_td .view-info dl{ margin-bottom:22px; overflow:hidden; }
@@ -673,7 +679,7 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 /*-------------------------------------------------------*/
 .member{ width: 640px !important; margin:90px auto; padding: 0 !important;}
 .member h2{ font-size:38px; color:#000; }
-.member h2 p{font-weight:300; color:#000; }
+.member h2 p{font-weight:300; color:#000; font-size:37px;}
 .member.mtb150{ width: 640px; margin:170px auto 0;}
 .member.mtb150 h2{ font-size:42px; line-height:160%; }
 .member.mtb150 p{ font-size:38px; }

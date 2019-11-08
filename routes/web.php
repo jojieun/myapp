@@ -75,6 +75,31 @@ Route::view('ask_list','ask_list')->name('ask_list');
 //가입 선택화면
 Route::view('register_select','register_select')->name('register.select');
 
+///////////////////////////////////
+//reviewer **임시** 가입 관련
+Route::get('/pre_home', [
+    'as'=>'temp_home',
+    'uses'=>'WelcomeController@tempindex'
+]);
+Route::get('reviewer/pre_register',[    
+    'as'=>'reviewers.temp_create',
+    'uses' => 'ReviewersController@tempcreate'
+]);
+Route::post('reviewer/pre_register',[
+    'as'=>'reviewers.temp_store',
+    'uses' => 'ReviewersController@tempstore'
+]);
+Route::get('plan/pre_create',[
+    'as'=>'plans.temp_create',
+    'uses' => 'PlansController@tempcreate'
+]);
+Route::post('plan/pre_create',[
+    'as'=>'plans.temp_store',
+    'uses' => 'PlansController@tempstore'
+]);
+
+/////////////////////////////////////////
+
 //reviewer 가입 관련
 Route::get('reviewer/register',[    
     'as'=>'reviewers.create',
@@ -159,6 +184,10 @@ Route::resource('campaigns', 'CampaignsController')->except([
 ]);
 
 /* 리뷰전략 관련 */
+Route::get('plans/showmy/{id}',[
+    'as'=>'plans.showmy',
+    'uses' => 'PlansController@showMy'
+]);
 Route::resource('plans', 'PlansController');
 
 

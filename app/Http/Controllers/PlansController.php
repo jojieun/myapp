@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Image;
+use App\Plan;
 
 class PlansController extends Controller
 {
@@ -29,6 +31,14 @@ class PlansController extends Controller
             'regions' => \App\Region::get(),
         ]);
     }
+    public function tempcreate()
+    {
+        return view('reviewers.temp_createplan', [
+            'user'=>auth()->user(),
+            'categories' => \App\Category::get(),
+            'regions' => \App\Region::get(),
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +48,82 @@ class PlansController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'title' => 'required',
+            'profile_image' => 'image',
+        ]);
+        
+        $plan = new Plan;
+        $plan->reviewer_id= auth()->user()->id;
+        $plan->title= $request->title;
+        $plan->call_time = $request->call_time;
+        $plan->reward = $request->reward;
+        $plan->review_plan = $request->review_plan;
+        if($request->hasfile('profile_image')){
+            $file = $request->file('profile_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/profile/'.$filename;
+            $img = Image::make($file);
+            $img->fit(220,220);
+            $img->save($location);
+            $plan->profile_image = $filename;
+        }
+        $plan->save();
+        foreach($request->area as $narea){
+            $newarea = new \App\AreaPlan([
+               'area_id' => $narea,
+                'plan_id' => $plan->id,
+            ]);
+            $newarea->save();
+        }
+        foreach($request->category as $ncategory){
+            $newcate = new \App\CategoryPlan([
+               'category_id' => $ncategory,
+                'plan_id' => $plan->id,
+            ]);
+            $newcate->save();
+        }
+        return redirect(route('plans.showmy'), $plan->id);
+    }
+    
+     public function tempstore(Request $request)
+    {
+        $this->validate($request,[
+            'title' => 'required',
+            'profile_image' => 'image',
+        ]);
+        
+        $plan = new Plan;
+        $plan->reviewer_id= auth()->user()->id;
+        $plan->title= $request->title;
+        $plan->call_time = $request->call_time;
+        $plan->reward = $request->reward;
+        $plan->review_plan = $request->review_plan;
+        if($request->hasfile('profile_image')){
+            $file = $request->file('profile_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/profile/'.$filename;
+            $img = Image::make($file);
+            $img->fit(220,220);
+            $img->save($location);
+            $plan->profile_image = $filename;
+        }
+        $plan->save();
+        foreach($request->area as $narea){
+            $newarea = new \App\AreaPlan([
+               'area_id' => $narea,
+                'plan_id' => $plan->id,
+            ]);
+            $newarea->save();
+        }
+        foreach($request->category as $ncategory){
+            $newcate = new \App\CategoryPlan([
+               'category_id' => $ncategory,
+                'plan_id' => $plan->id,
+            ]);
+            $newcate->save();
+        }
+        return view('reviewers.temp_planok',['name'=>auth()->user()->name]);
     }
 
     /**
@@ -50,6 +135,19 @@ class PlansController extends Controller
     public function show($id)
     {
         //
+    }
+    
+    //리뷰어 마이페이지 나의 리뷰전략 관리
+    public function showMy($id=null)
+    {
+        $plan =null;
+        if($id){
+            $plan = \App\Plan::whereId($id);
+        }
+        return view('reviewers.showplan', [
+            'user'=>auth()->user(),
+            'plan' => $plan,
+        ]);
     }
 
     /**

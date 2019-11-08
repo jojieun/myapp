@@ -11,4 +11,11 @@ class Plan extends Model
     public function reviewer(){
         return $this->belongsTo(Reviewer::class);
     }
+    public function areaplans(){
+        return $this->hasMay('App\AreaPlan');
+    }
+    public function categoryplans(){
+        return $this->hasMay('App\CategoryPlan');
+    }
+
 }

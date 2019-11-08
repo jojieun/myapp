@@ -1,26 +1,17 @@
-@extends('layouts.main')
+@extends('layouts.temp_main')
 @section('content')
-
-			<!-- 왼쪽메뉴 -->
-			@include('reviewers.reviewer_leftmenu')
-						
+<div class="sub-container bt-ddd w-pc-fixed">
+			<div class="content-in-sub">			
 			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content">
+			<div class="right-content" style="margin:0 auto; float:none;">
 				<div class="my-reviewer-top top2">
 					<dl class="full_width">
 						<dt><b>나의 리뷰전략</b></dt>
-						<dd>
-							<div class="my_graph">
-								<span class="g-bar" style="width:0%">
-									<span class="num black">0%</span>
-								</span>
-							</div>
-						</dd>
 					</dl>
 				</div>
 
 				<!-- 리뷰전략 등록-->
-				<form method="post" action="{{ route('plans.store') }}" enctype="multipart/form-data">
+				<form method="post" action="{{ route('plans.temp_store') }}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
 					<div class="table_form2 bt0">
 						<dl>
@@ -106,7 +97,7 @@
 			<!-- //오른쪽 컨텐츠 -->
 		</div>
 		<!-- //상세 컨텐츠내용 -->	
-	</div>
+    </div>
 <script>
     $.ajaxSetup({
        headers: {
