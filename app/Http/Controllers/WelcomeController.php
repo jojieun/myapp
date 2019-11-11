@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class WelcomeController extends Controller
 {
     public function tempindex(){
+        auth()->logout();
         return view('temp_welcome');
     }
     public function index(){

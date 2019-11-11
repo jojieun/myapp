@@ -31,7 +31,7 @@ Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('a
 
 
 //메인페이지
-Route::get('/', [
+Route::get('/origin', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
 ]);
@@ -77,7 +77,7 @@ Route::view('register_select','register_select')->name('register.select');
 
 ///////////////////////////////////
 //reviewer **임시** 가입 관련
-Route::get('/pre_home', [
+Route::get('/', [
     'as'=>'temp_home',
     'uses'=>'WelcomeController@tempindex'
 ]);

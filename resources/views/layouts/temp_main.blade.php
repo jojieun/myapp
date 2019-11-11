@@ -42,7 +42,7 @@
 <div class="wrap" id="page_top">
 <div class="header_wrap">
 	<div class="header">
-		<h1 style="left:50%;transform:translate(-50%,0);"><a href="{{route('main')}}"><img src="/img/main/logo.png" alt="{{ config('app.name') }}" /></a></h1>
+		<h1 style="left:50%;transform:translate(-50%,0);"><a href="{{route('temp_home')}}"><img src="/img/main/logo.png" alt="{{ config('app.name') }}" /></a></h1>
 	</div>
 </div>
 
