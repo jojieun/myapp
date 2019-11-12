@@ -1,4 +1,4 @@
-@servers(['web' => 'myapp_deployer'])
+@servers(['web' => 'bloxion'])
 
 
 @setup

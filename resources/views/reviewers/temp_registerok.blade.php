@@ -8,7 +8,8 @@
 				<p>{{ config('app.name') }}에서 다양한 체험을 경험해보세요:) </p>
 			</h2>
 
-			<div class="login-group">				
+			<div class="login-group">
+                <a href="{{route('temp_home')}}" class="btn white big w50">메인으로</a>
 				<a href="{{route('plans.temp_create')}}" class="btn black big w50">리뷰전략 작성하기</a>
 			</div>
 

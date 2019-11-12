@@ -25,7 +25,7 @@
 								<div class="file-area">
 									<span class="upload">
 										<label for="file">									
-											<input name="profile_image" type="file" id="file" value="" placeholder="상세이미지" class="full_width mb10" />
+											<input name="profile_image" type="file" id="file" value="" placeholder="상세이미지" class="full_width mb10" accept="images/*"/>
 										</label>
 									</span>
 								</div>
@@ -98,6 +98,7 @@
 		</div>
 		<!-- //상세 컨텐츠내용 -->	
     </div>
+<!--<script src="../js/load-image-orientation.js"></script>-->
 <script>
     $.ajaxSetup({
        headers: {
@@ -107,10 +108,18 @@
     //    이미지업로드바로보기
     $('input[name=profile_image]').change(function(e){
        e.preventDefault();
+//        loadImage(
+//            e.target.files[0],
+//        function (img) {
+//                document.body.appendChild(img);
+//            },
+//{orientation:true} // Options
+//);
+
         $('label[for=file]').css({
-                   backgroundImage:"url('"+ URL.createObjectURL(event.target.files[0])+"')"
+                   backgroundImage:"url('"+ URL.createObjectURL(e.target.files[0])+"')"
                });
-         });
+    });
         //-----이미지업로드바로보기
     
     // 캠페인 region 선택 area_s출력
@@ -156,6 +165,4 @@
     })
 </script>
 
-
-@include('reviewers.reviewer_bottommenu')
 @endsection

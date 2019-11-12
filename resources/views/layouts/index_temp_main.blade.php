@@ -14,6 +14,7 @@
 
 	<meta property="og:type" content="website">
 	<meta property="og:url"	content="">
+    <meta property="og:image" content="/img/main/logo.png">
 	<!--meta property="og:image" content="/img/common/snsicon.jpg">
 	<meta property="og:description" content="">
 	<link rel="shortcut icon" type="image/x-icon" href="/img/common/favicon.ico" />
@@ -23,7 +24,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=0.4') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=0.6') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
@@ -40,9 +41,10 @@
 
 <body>
 <div class="wrap" id="page_top">
-<div class="header_wrap">
+<div class="header_wrap" id="temp_header">
 	<div class="header">
 		<h1><a href="{{route('temp_home')}}"><img src="/img/main/logo.png" alt="{{ config('app.name') }}" /></a></h1>
+        <a class="btn black apply_check" style="position:absolute; top:50%; transform:translateY(-50%); right:15px;" href="{{route('reviewers.temp_create')}}">리뷰어 가입하기</a>
 	</div>
 </div>
 
