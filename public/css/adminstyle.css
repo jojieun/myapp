@@ -3,8 +3,6 @@ li{
     list-style: none;
 }
 a{
-    text-decoration: none;
-    color:#444;
 }
 body{
     background: #eee;
@@ -25,6 +23,7 @@ body{
     line-height: 50px;
     padding-left:10px;
     font-weight: 900;
+    text-decoration: none;
 }
 #gnb {
     position: absolute;
@@ -39,6 +38,7 @@ body{
     padding:10px;
     color:#eee;
     line-height: 30px;
+    text-decoration: none;
 }
 #main_nav{
     position: fixed;
@@ -55,6 +55,7 @@ body{
     display: block;
     color:white;
     line-height: 25px;
+    text-decoration: none;
 }
 .main:hover{
     background-color: #ccc;
@@ -78,6 +79,8 @@ body{
     border-bottom:1px solid #ddd;
     display: block;
     line-height: 25px;
+    text-decoration: none;
+    color:#222;
 }
 .sub a:hover{
  background-color: #ddd;   
@@ -94,6 +97,9 @@ h1{
 }
 table{
     
+}
+tbody:nth-child(odd) td{
+    background-color: #f8f8f8;
 }
 th{
     background-color:#ddd;

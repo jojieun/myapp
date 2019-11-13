@@ -19,7 +19,7 @@
 </head>
 <body>
 <header id="main_header">
-    <a href="" id="logo">{{ config('app.name') }} 관리자페이지</a>
+    <a href="{{ route('admin') }}" id="logo">{{ config('app.name') }} 관리자페이지</a>
     <nav id="gnb">
         <ul>
             <li>
@@ -32,6 +32,14 @@
     </nav>
     <nav id="main_nav">
         <ul>
+            <li class="main">
+                <a href="" class="main_a">회원관리</a>
+                <ul class="sub">
+                    <li><a href="{{route('admin.reviewers')}}">리뷰어회원</a></li>
+                    <li><a href="">광고주회원</a></li>
+                    <li><a href="">하위메뉴</a></li>
+                </ul>
+            </li>
             <li class="main">
                 <a href="" class="main_a">캠페인관리</a>
                 <ul class="sub">

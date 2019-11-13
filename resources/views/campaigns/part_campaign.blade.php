@@ -1,3 +1,4 @@
+@forelse($campaigns as $campaign)
 <li>
     <? $locaOrCate = $campaign->region_name?$campaign->region_name.' '.$campaign->area_name:$campaign->category_name;//위치 또는 카테고리 표시?>
 	<div class="campaign-item">
@@ -29,3 +30,8 @@
 		</a>
 	</div>
 </li>
+ @empty
+                            <div class="text-center">
+                            캠페인이 없습니다.
+						  </div>
+                        @endforelse

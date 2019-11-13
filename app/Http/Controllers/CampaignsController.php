@@ -19,29 +19,52 @@ class CampaignsController extends Controller
     
     protected $dontFlash = ['main_image'];
     
-    public function index()
+    public function indexV(Request $request)
     {
-//        $myTest = \App\Campaign::where('form','v')->withCount('campaignReviewers')->get();
-//        dd($myTest);
-//        방문 캠페인 목록 출력
+        //선택채널구하기
+        $chl = $request->chl?:null;
+        //선택카테고리구하기
+        $cate = $request->cate ?:null;
+        //정렬방법
+        $myorder = $request->myorder?:'campaigns.created_at';
         $campaigns = \App\Campaign::where('form','v')
 //            ->where('confirm',1)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','regions.id','=','areas.region_id')
-            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->when($chl, function($query, $chl){
+                 return $query->join('channels', function ($join) use ($chl) {
+                    $join->on('channels.id', '=', 'campaigns.channel_id')
+                    ->whereIn('campaigns.channel_id',$chl);
+                 });
+                }, function($query){
+                     return $query->join('channels', function ($join) {
+                    $join->on('channels.id', '=', 'campaigns.channel_id');
+                 });
+            })
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->when($cate, function($query, $cate){
+                 return $query->join('categories', function ($join) use ($cate) {
+                    $join->on('categories.id','=','brands.category_id')
+                    ->whereIn('categories.id',$cate);
+                 });
+            })
             ->select(
             'campaigns.id',
+            'campaigns.form',
             'campaigns.name',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',
             'campaigns.offer_goods',
             'campaigns.end_recruit',
+            'campaigns.view_count',
             'areas.name as area_name',
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id'
-        )->latest()->paginate(20);
+        )
+            ->orderBy($myorder, 'desc')
+            ->paginate(60);
 //        디데이 구하기
         $nowdate = Carbon::now();    
         foreach ($campaigns as $key => $loop)
@@ -51,6 +74,13 @@ class CampaignsController extends Controller
             $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
+        
+        if ($request->ajax()) {
+        return \Response::json([
+            'finhtml' => \View::make('campaigns.part_campaign', array('campaigns' => $campaigns))->render(),
+            'count' => $campaigns->count()
+        ]);
+        }
         return view('campaigns.visit', [
             'campaigns'=>$campaigns,
             'channels'=>\App\Channel::select('id','name')->get(),
@@ -58,7 +88,7 @@ class CampaignsController extends Controller
         ]);
     }
     
-    public function indexH()
+    public function indexH(Request $request)
     {
 //        재택 캠페인 목록 출력
         $campaigns = \App\Campaign::where('form','h')
@@ -68,6 +98,7 @@ class CampaignsController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->select(
             'campaigns.id',
+            'campaigns.form',
             'campaigns.name',
             'campaigns.main_image',
             'campaigns.recruit_number',
@@ -110,7 +141,7 @@ class CampaignsController extends Controller
             'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
             'categories' => \App\Category::get(),
             'channels' => \App\Channel::get(),
-            'regions' => \App\Region::get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
             'exposures' => \App\Exposure::with('campaignexposures')->get(),
             'promotions' => \App\Promotion::with('campaignpromotions')->get(),
         ]);

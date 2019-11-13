@@ -36,7 +36,7 @@ class PlansController extends Controller
         return view('reviewers.temp_createplan', [
             'user'=>auth()->user(),
             'categories' => \App\Category::get(),
-            'regions' => \App\Region::get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
         ]);
     }
 
