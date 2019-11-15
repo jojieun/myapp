@@ -99,7 +99,7 @@ table{
     
 }
 tbody:nth-child(odd) td{
-    background-color: #f8f8f8;
+    background-color: #f6f6f6;
 }
 th{
     background-color:#ddd;
@@ -110,5 +110,13 @@ th{
 td{
     background-color:white;
     padding:5px;
+}
+
+/*로그인 화면 관련*/
+.login-group{
+    padding-top:20px;
+}
+.login-group p {
+    margin-bottom:10px;
 }
 

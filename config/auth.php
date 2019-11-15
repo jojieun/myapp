@@ -50,9 +50,13 @@ return [
             'provider' => 'advertisers',
         ],
         'advertiser-api' => [
-        'driver' => 'token',
-        'provider' => 'advertisers',
-    ],
+            'driver' => 'token',
+            'provider' => 'advertisers',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
 
     ],
 
@@ -87,6 +91,10 @@ return [
              'driver' => 'eloquent',
              'model' => App\Advertiser::class,
          ],
+        'admins' => [
+             'driver' => 'eloquent',
+             'model' => App\Admin::class,
+         ],
     ],
 
     /*
@@ -117,6 +125,11 @@ return [
         ],
         'advertisers' => [
             'provider' => 'advertisers',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60,
         ],

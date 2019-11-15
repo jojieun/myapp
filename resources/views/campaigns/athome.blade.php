@@ -13,7 +13,7 @@
 					<dd>
 						<span class="input-button2"><input name="channel" type="checkbox" id="channel00" value="0"><label for="channel00">전체</label></span>
                         @foreach($channels as $chl)
-						<span class="input-button2"><input name="channel" type="checkbox" id="channel0{{$chl->id}}" value="{{$chl->id}}"><label for="channel0{{$chl->id}}">{{$chl->name}}</label></span>
+						<span class="input-button2"><input name="channel[]" type="checkbox" id="channel0{{$chl->id}}" value="{{$chl->id}}"><label for="channel0{{$chl->id}}">{{$chl->name}}</label></span>
                         @endforeach
 					</dd>
 				</dl>
@@ -22,7 +22,7 @@
 					<dd>
 						<span class="input-button"><input name="category" type="checkbox" id="category00"><label for="category00">전체</label></span>
                         @foreach($categories as $cate)
-						<span class="input-button"><input name="category" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
+						<span class="input-button"><input name="category[]" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
                         @endforeach		
 					</dd>
 				</dl>
@@ -36,25 +36,16 @@
 				<div class="list-filter">
 					<p>{{$campaigns->count()}}개의 캠페인</p>
 					<ul>
-						<li class="on"><a href="#">최신순</a></li>
-						<li><a href="#">마감임박순</a></li>
-						<li><a href="#">인기순</a></li>
+						<li class="myorder on"><a href="#">최신순</a></li>
+						<li class="myorder" data-o="campaigns.end_recruit"><a href="#">마감임박순</a></li>
+						<li class="myorder" data-o="campaigns.view_count"><a href="#">인기순</a></li>
 					</ul>
 				</div>
 				<!-- //상단 리스트 필터 -->
 
 				<div class="campaign-list sub6">
 					<ul>
-                        @forelse($campaigns as $campaign)
-                        <?
-                        $campaign->form = 'h';
-                        ?>
-				            @include('campaigns.campaign')
-                        @empty
-                            <div class="text-center">
-                            캠페인이 없습니다.
-						  </div>
-                        @endforelse
+				            @include('campaigns.part_campaign')
 					</ul>
 				</div>
               @if($campaigns->count())
@@ -65,4 +56,79 @@
 			</section>
 		</div>
 	</div>
+<script>
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
+    });
+    var chl = []; //필터채널
+    //채널 전체를 선택하면 다른 체널을 해제한다
+   $('#channel00').change(function(){
+        if($('#channel00').is(':checked')){
+            $('input[name="channel[]"]').prop("checked", false);
+            chl = '';
+            getDatas();
+        }
+    });
+    //채널 선택시
+    $('input[name="channel[]"]').change(function(){
+        chl = [];
+        $('#channel00').prop("checked", false);
+        $('input[name="channel[]"]:checked').each(function(){
+            chl.push($(this).val());
+        });
+        getDatas();
+    });
+    var cate = []; //필터카테고리
+    //카테고리 전체를 선택하면 다른 카테고리를 해제한다
+   $('#category00').change(function(){
+        if($('#category00').is(':checked')){
+            $('input[name="category[]"]').prop("checked", false);
+            cate = [];
+            getDatas();
+        }
+    });
+    //카테고리 선택시
+    $('input[name="category[]"]').change(function(){
+        cate = [];
+        $('#category00').prop("checked", false);
+        $('input[name="category[]"]:checked').each(function(){
+            cate.push($(this).val());
+        });
+        getDatas();
+    });
+    //정렬방법
+    var myorder = ''
+    $('.myorder').click(function(){
+       myorder = $(this).attr('data-o'); 
+        getDatas();
+        $('.myorder').removeClass('on');
+        $(this).addClass('on');
+    });
+    
+    //지역선택관련
+    
+    //필터 ajax
+    function getDatas() {
+    $.ajax({
+        url : "{{ route('athome') }}",
+        type : "post",
+        dataType: 'json',
+        data:{
+            chl: chl,
+            cate: cate,
+            myorder: myorder,
+        },
+        success:function(data){
+          $('.campaign-list ul').html(data.finhtml);
+            $('#nowcount').html(data.count+'개의 캠페인')
+        },
+        error: function(request,status,error) {
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+        });
+    }
+    
+</script>
 @endsection

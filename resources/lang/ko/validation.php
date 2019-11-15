@@ -141,5 +141,6 @@ return [
         'contact' => '담당자연락처',
         'v' => '방문',
         'main_image' => '대표이미지',
+        'gender' => '성별',
     ],
 ];

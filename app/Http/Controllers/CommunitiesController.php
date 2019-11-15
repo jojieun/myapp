@@ -69,6 +69,8 @@ class CommunitiesController extends Controller
      */
     public function show(\App\Community $community)
     {
+        $community->view_count += 1;
+        $community->save();
         return view('communities.show', compact('community'));
     }
 

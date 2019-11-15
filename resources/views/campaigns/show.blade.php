@@ -41,7 +41,8 @@
 								{{$campaign->offer_goods}}
 							</dd>
 						</dl>
-						<p class="btn-share"><a href="#"><img src="/img/common/ico_share.gif" alt="공유하기"></a></p>
+						<p class="btn-share"><img src="/img/common/ico_share.gif" alt="공유하기" class="share" data-clipboard-text="{{url()->full()}}">
+                        </p>
 					</div>
 					<dl class="detail-info">
 						<dt>캠페인일정</dt>
@@ -103,17 +104,22 @@
 					<dt>리뷰키워드</dt>
 					<dd>{{$campaign->keyword}}</dd>
 				</dl>
+                 @if($campaign->form=='v')
 				<dl id="campaign04" class="detail-txt">
 					<dt>방문안내</dt>
 					<dd>
-						<p class="map">
-							<img src="/img/sub/img_map.jpg" alt="지도영역">
+						<p class="map" id="map">
+						</p>
+                        <p>
+							{{$campaign->address}}
+                            {{$campaign->detail_address}}
 						</p>
 						<p>
-							{{$campaign->visit_time}}
+							방문가능시간 : {{$campaign->visit_time}}
 						</p>
 					</dd>
 				</dl>
+                @endif
 				<dl id="campaign05" class="detail-txt">
 					<dt>기타사항</dt>
 					<dd>{{$campaign->etc}}</dd>
@@ -127,127 +133,9 @@
 			<div class="content-in-sub mt7b4">
 				<h3>추천 캠페인</h3>
 				<div class="campaign-list w5">
-					<ul>					
-						<li>
-							<div class="campaign-item">
-								<a href="#">
-								<div class="thum">
-									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-								</div>
-								<div class="info">
-									<span class="ico-tag">
-										<span class="type01">방문</span>
-										<span class="bg-bl">뷰티</span>
-										<span class="dday">D-11</span>
-									</span>
-									<div class="txt-box">
-										<p class="txt-top">
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num">10명 모집</span>
-										</p>
-										<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-										<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-									</div>
-								</div>
-								</a>
-							</div>
-						</li>
-						<li>
-							<div class="campaign-item">
-								<a href="#">
-								<div class="thum">
-									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-								</div>
-								<div class="info">
-									<span class="ico-tag">
-										<span class="type01">방문</span>
-										<span class="bg-bl">뷰티</span>
-										<span class="dday">D-11</span>
-									</span>
-									<div class="txt-box">
-										<p class="txt-top">
-											<span class="sns"><span class="insta">인스타그램</span></span>
-											<span class="num">10명 모집</span>
-										</p>
-										<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-										<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-									</div>
-								</div>
-								</a>
-							</div>
-						</li>
-						<li>
-							<div class="campaign-item">
-								<a href="#">
-								<div class="thum">
-									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-								</div>
-								<div class="info">
-									<span class="ico-tag">
-										<span class="type01">방문</span>
-										<span class="bg-bl">뷰티</span>
-										<span class="dday">D-11</span>
-									</span>
-									<div class="txt-box">
-										<p class="txt-top">
-											<span class="sns"><span class="blog">네이버블로그</span></span>
-											<span class="num">10명 모집</span>
-										</p>
-										<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-										<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-									</div>
-								</div>
-								</a>
-							</div>
-						</li>
-						<li>
-							<div class="campaign-item">
-								<a href="#">
-								<div class="thum">
-									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-								</div>
-								<div class="info">
-									<span class="ico-tag">
-										<span class="type01">방문</span>
-										<span class="bg-bl">뷰티</span>
-										<span class="dday">D-11</span>
-									</span>
-									<div class="txt-box">
-										<p class="txt-top">
-											<span class="sns"><span class="blog">네이버블로그</span></span>
-											<span class="num">10명 모집</span>
-										</p>
-										<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-										<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-									</div>
-								</div>
-								</a>
-							</div>
-						</li>
-						<li>
-							<div class="campaign-item">
-								<a href="#">
-								<div class="thum">
-									<img src="/img/main/img_thumb.jpg" alt="플래티넘 캠페인 이미지">
-								</div>
-								<div class="info">
-									<span class="ico-tag">
-										<span class="type01">방문</span>
-										<span class="bg-bl">뷰티</span>
-										<span class="dday">D-11</span>
-									</span>
-									<div class="txt-box">
-										<p class="txt-top">
-											<span class="sns"><span class="blog">네이버블로그</span></span>
-											<span class="num">10명 모집</span>
-										</p>
-										<span class="subject">[휴랩] 마르지 않는 물걸레 청소기</span>
-										<span class="subtxt">아르투아 산토리니 폼클렌저 제공</span>							
-									</div>
-								</div>
-								</a>
-							</div>
-						</li>
+					<ul>
+                        <? $campaigns = $recommends ?>
+						@include('campaigns.part_campaign')
 					</ul>
 				</div>
 			</div>
@@ -262,12 +150,55 @@
 @component('help.popup_ok')
 신청
 @endcomponent
+@component('help.copy_ok')
+@endcomponent
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2014fb587b83de3123a5fcf612f0b7c9&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 <script>
     $.ajaxSetup({
        headers: {
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+    //*******지도 띄우기
+    if('{{$campaign->form}}'=='v'){
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch('울산 남구 개운로 121', function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+    } 
+});
+};
+    //클립보드에 주소 복사
+var clipboard =  new ClipboardJS( '.share' );   // 클래스의 값이 btn인 요소를 복사
+clipboard.on( 'success', function() {       // 복사에 성공했을 때
+ window.location.hash = '#copy_ok';
+} );
+    
      $('.apply_check').on('click', function(e){
          e.preventDefault();
          @if(isset(auth()->user()->name))

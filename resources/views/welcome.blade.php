@@ -17,11 +17,8 @@
 			<h2>플래티넘 캠페인</h2>
 			<div class="campaign-list">
 				<ul>
-                    @forelse($plCampaigns as $campaign)
-					@include('campaigns.campaign')
-                    @empty
-                        <div>플래티넘 캠페인을 등록해보세요!</div>
-                    @endforelse
+                    <? $campaigns = $plCampaigns ?>
+                    @include('campaigns.part_campaign', ['empty_msg' => '플래티넘 캠페인을 등록해보세요!'])
 				</ul>
 			</div>
 		</section>		
@@ -41,11 +38,8 @@
 			<h2>프라임 캠페인</h2>
 			<div class="campaign-list w5">
 				<ul>
-                   @forelse($prCampaigns as $campaign)
-					@include('campaigns.campaign')
-                    @empty
-                        <div>프라임 캠페인을 등록해보세요!</div>
-                    @endforelse
+                    <? $campaigns = $prCampaigns ?>
+                    @include('campaigns.part_campaign', ['empty_msg' => '프라임 캠페인을 등록해보세요!'])
 				</ul>
 			</div>
 		</section>		
@@ -65,11 +59,8 @@
 			<h2>그랜드 캠페인</h2>
 			<div class="campaign-list w6">
 				<ul>
-                   @forelse($gCampaigns as $campaign)
-					@include('campaigns.campaign')
-                    @empty
-                        <div>그랜드 캠페인을 등록해보세요!</div>
-                    @endforelse
+                    <? $campaigns = $gCampaigns ?>
+                    @include('campaigns.part_campaign', ['empty_msg' => '그랜드 캠페인을 등록해보세요!'])
 				</ul>
 			</div>
 		</section>		

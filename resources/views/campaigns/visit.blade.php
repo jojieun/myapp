@@ -7,8 +7,16 @@
 			<div class="list_title">
 				<h2>방문 캠페인</h2>
 				<div class="map">
-					<a href="#" class="btn-map">지역전체</a>
-					<div class="map-on">&nbsp;</div>
+					<a href="#" class="btn-map" id="now_area">지역전체</a>
+					<div class="map-on">
+                        <span type="button" id="all_area" class="input-button2">지역전체</span>
+                    @include('campaigns.map')
+                        <div id="show_area">
+                            <div id="region_name"></div>
+                            <div id="area_close" class="close"></div>
+                            <div id="area_area"></div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<div class="category">
@@ -60,6 +68,8 @@
 			</section>
 		</div>
 	</div>
+<script src="js/d3.min.js"></script>
+  
 <script>
     $.ajaxSetup({
        headers: {
@@ -111,6 +121,87 @@
         $(this).addClass('on');
     });
     
+    //지역선택관련
+    var now_area = '지역전체';
+    
+    $('#now_area').click(function(e){
+        e.preventDefault();
+        $('.map-on').toggle();
+    })
+    
+    //지역별값넣기
+    $('#sejong').attr('data-r',17);
+    $('#chungnam').attr('data-r',5);
+    $('#jeju').attr('data-r',13);
+    $('#gyeongnam').attr('data-r',9);
+    $('#gyeongbuk').attr('data-r',7);
+    $('#jeonbuk').attr('data-r',15);
+    $('#chungbuk').attr('data-r',14);
+    $('#gangwon').attr('data-r',12);
+    $('#gyeonggi').attr('data-r',2);
+    $('#jeonnam').attr('data-r',11);
+    $('#ulsan').attr('data-r',16);
+    $('#busan').attr('data-r',8);
+    $('#daegu').attr('data-r',6);
+    $('#daejeon').attr('data-r',4);
+    $('#incheon').attr('data-r',3);
+    $('#seoul').attr('data-r',1);
+    $('#gwangju').attr('data-r',10);
+
+    $('.regions').attr('style','');
+  function go_branch(city_do) {
+      var Arr = Array("sejong","chungnam","jeju","gyeongnam","gyeongbuk","jeonbuk","chungbuk","gangwon","gyeonggi","jeonnam","ulsan","busan","daegu","daejeon","incheon","seoul","gwangju");
+    var strArr = Array("세종특별자치시","충청남도","제주특별자치도","경상남도","경상북도","전라북도","충청북도","강원도","경기도","전라남도","울산광역시","부산광역시","대구광역시","대전광역시","인천광역시","서울특별시","광주광역시");
+      var idx = Arr.indexOf(city_do);
+      now_area = strArr[idx]+' ';
+      $('#region_name').html(now_area);
+  }
+    $('#show_area').hide();
+    //지역닫기
+    $('#area_close').click(function(){
+       $('#show_area').hide(); 
+    });
+    $('.regions').click(function(e){
+       e.preventDefault();
+        $('.regions').attr('style','');
+      $(this).attr('style','fill: rgb(190, 190, 190);');
+        var now = $(this).attr('data-r');
+        var $data = new FormData();
+        $data.append('region', now);
+        $.ajax({
+        type: 'POST',
+        url: "{{ route('campaigns.makearea') }}",
+        data: $data,
+        success: function(data) {
+            var obj = data.areas;
+            var your_html = "";
+            $.each(obj, function (key, val) {
+                your_html += "<span data-a='"+val.id+"' class='input-button2'>" +  val.name + "</span>"
+            });
+            $('#show_area').show(); 
+            $('#area_area').html(your_html); 
+        },
+        error: function(data) {
+        },
+        processData: false,
+        contentType: false
+        });
+    });
+    //지역선택
+    var myarea = '';
+    $('#area_area').on('click', 'span', function(){
+       myarea = $(this).attr('data-a');
+        $('#now_area, #area_close').trigger('click');
+        now_area += $(this).html();
+        getDatas();
+    });
+    $('#all_area').on('click', function(){
+        myarea = '';
+        now_area = '지역전체';
+        $('#now_area, #area_close').trigger('click');
+        getDatas();
+    });
+    
     //필터 ajax
     function getDatas() {
     $.ajax({
@@ -120,16 +211,19 @@
         data:{
             chl: chl,
             cate: cate,
-            myorder: myorder
+            myorder: myorder,
+            myarea: myarea
         },
         success:function(data){
           $('.campaign-list ul').html(data.finhtml);
             $('#nowcount').html(data.count+'개의 캠페인')
+            $('#now_area').html(now_area)
         },
         error: function(request,status,error) {
             alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
         }
         });
     }
+    
 </script>
 @endsection

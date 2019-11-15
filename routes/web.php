@@ -21,19 +21,24 @@ Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns
 
 //캠페인관련
 Route::match(['get', 'post'], 'visit','CampaignsController@indexV')->name('visit');
-Route::get('athome','CampaignsController@indexH')->name('athome');
+Route::match(['get', 'post'],'athome', 'CampaignsController@indexH')->name('athome');
 Route::get('campaign/show/{campaign}/{d}/{applyCount}/{locaOrCate?}','CampaignsController@show')->name('campaigns.show')->where('locaOrCate', '.*');
-//카테고리별로보기
-//Route::post('campaigns/visit','CampaignsController@index_cate')->name('campaigns.index_cate');
 
 
-//관리자페이지메인
+/******** 관리자admin **********/
+//관리자admin페이지메인
 Route::get('admin','AdminController@index')->name('admin');
+//admin로그인
+Route::get('admin/login','AdminController@login')->name('admin.login');
+//admin로그인저장
+Route::post('admin/login','AdminController@store')->name('admin.loginstore');
+//admin로그아웃
+Route::get('admin/logout','AdminController@destory')->name('admin.logout');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
 //관리자-리뷰어회원목록
 Route::get('admin/reviewers','AdminController@reveiwerslist')->name('admin.reviewers');
-//관리자-리뷰어회원목록
+//관리자-리뷰어회원->리뷰전략보기
 Route::get('admin/plan/{id}','AdminController@plan')->name('admin.plan');
 
 //메인페이지

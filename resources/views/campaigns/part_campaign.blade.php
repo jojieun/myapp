@@ -1,6 +1,6 @@
 @forelse($campaigns as $campaign)
 <li>
-    <? $locaOrCate = $campaign->region_name?$campaign->region_name.' '.$campaign->area_name:$campaign->category_name;//위치 또는 카테고리 표시?>
+    <? $locaOrCate = $campaign->form == 'v'?$campaign->region_name.' '.$campaign->area_name:$campaign->category_name;//위치 또는 카테고리 표시?>
 	<div class="campaign-item">
 		<a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}">
 		<div class="thum">
@@ -31,7 +31,7 @@
 	</div>
 </li>
  @empty
-                            <div class="text-center">
-                            캠페인이 없습니다.
-						  </div>
-                        @endforelse
+<div class="text-center">
+    @if( isset($empty_msg) ){{$empty_msg}} @else 조건에 맞는 캠페인이 없습니다! @endif
+</div>
+@endforelse

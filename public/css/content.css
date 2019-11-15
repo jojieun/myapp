@@ -208,8 +208,82 @@ select {
 .list_title{ position:relative; height: 36px; line-height: 36px;}
 .list_title h2{ float:left; padding-right:35px; margin-right:20px; background:url("/img/common/g_arrow.gif") no-repeat right center; }
 .list_title h2.bg-none{ background: none;}
-.list_title .map a{ display:inline-block; padding-right:22px; font-size:24px; color:#000; background:url("/img/common/b_arrow.gif") no-repeat 99% center;}
-.list_title .map div.map-on{ position:absolute; top:56px; left:0; width: 500px; height: 451px; border:1px solid #111; z-index:999; background: #fff; display:none; }
+.map {
+    position: relative;
+}
+.list_title .map a{ display:inline-block; padding-right:22px; font-size:24px; color:#000; background:url("/img/common/b_arrow.gif") no-repeat 99% center; }
+.list_title .map div.map-on{ position:absolute; top:56px; left:230px; max-width: 350px; height: 470px; 
+    border:1px solid #999;
+    z-index:999; background: #fff; display:none; }
+
+#all_area {
+    position: absolute;
+    top:10px;
+    left: 10px;
+    padding-left:20px;
+    padding-right:20px;
+    font-size: 14px;
+    color:#000;
+    cursor:pointer;
+}
+/*지도 관련*/
+.dg-map{
+  text-align: center;
+  background: #eee;
+}
+.dg-map svg{
+  margin:0;
+}
+.dg-map-in{
+  height: 100%;
+}
+#show_area{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    left:2%;
+    width:96%;
+    padding:50px 10px 15px 10px;
+    box-sizing: border-box;
+    border:1px solid black;
+    background-color: rgba(255,255,255,0.65);
+}
+#show_area span{
+    cursor: pointer;
+    font-size: 14px;
+    color:#000;
+    padding-left:20px;
+    padding-right:20px;
+}
+#area_close{
+    cursor: pointer;
+}
+#show_area span:hover, #all_area:hover{
+    background-color: black;
+    color:white;
+}
+#region_name{
+    position: absolute;
+    top:3px;
+    left:0;
+    font-weight: 400;
+    color:#222;
+    width:90%;
+    text-align: center;
+    border-bottom:1px solid #aaa;
+    margin:0 5%;
+}
+.regions{
+    fill: rgb(255, 255, 255);
+    stroke: rgb(192, 192, 192);
+    stroke-miterlimit: 1;
+}
+.regions:hover{
+    fill: rgb(200, 200, 200);
+}
+@media (max-width: 770px){
+    .list_title .map div.map-on{ top:35px; left:0px;}
+}
 
 .category{ width: 100%; clear:both; display:table;}
 .category dl{ display:table-cell; width: 50%; padding: 20px 30px; background:#f4f4f4 ; border:1px solid #ddd; border-right:0; }
@@ -249,7 +323,7 @@ select {
 	.detail-info dd span{ line-height:195%; letter-spacing:0;}
 	.detail-info dd span.detail-title{ display:inline-block; width: 130px;  letter-spacing:-1px;}
 
-.detail-info-top .btn-share{ position:absolute; right:0; bottom:20px;}
+.detail-info-top .btn-share{ position:absolute; right:0; bottom:20px; cursor:pointer;}
 .detail-info-top .btn-share img{ width: 30px; }
 .detail-btn{ position:absolute; left:0; bottom:0;}
 .detail-btn a.black{ width: 280px;}

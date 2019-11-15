@@ -16,7 +16,7 @@
             <td><img src="/files/{{$waitCampaign->main_image}}" width="50"></td>
             <td>{{$waitCampaign->name}}</td>
             <td>{{$waitCampaign->brand->name}}</td>
-            <td><button class="confirm" value="{{$waitCampaign->id}}">검수완료</button></td>
+            <td><button class="confirm" value="{{$waitCampaign->id}}">검수하기</button></td>
         </tr>
         @empty
         <tr>

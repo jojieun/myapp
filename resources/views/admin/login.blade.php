@@ -21,7 +21,7 @@
 <header id="main_header">
     <a href="{{ route('admin') }}" id="logo">{{ config('app.name') }} 관리자페이지</a>
     <nav id="gnb">
-        <ul>
+        <ul>            
             <li>
                 @if(Auth::guard('admin')->check())
                 <a href="{{route('admin.logout')}}">로그아웃</a>
@@ -34,29 +34,33 @@
             </li>
         </ul>
     </nav>
-    <nav id="main_nav">
-        <ul>
-            <li class="main">
-                <a href="" class="main_a">회원관리</a>
-                <ul class="sub">
-                    <li><a href="{{route('admin.reviewers')}}">리뷰어회원</a></li>
-                    <li><a href="">광고주회원</a></li>
-                    <li><a href="">하위메뉴</a></li>
-                </ul>
-            </li>
-            <li class="main">
-                <a href="" class="main_a">캠페인관리</a>
-                <ul class="sub">
-                    <li><a href="">하위메뉴</a></li>
-                    <li><a href="">하위메뉴</a></li>
-                    <li><a href="">하위메뉴</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
     </header>
     <div id="con">
-        @yield('content')
-    </div>
+			<h2 class="m-text-left">
+				<b>관리자로그인</b>
+			</h2>
+
+			<div class="login-wrap">
+				<form action="{{ route('admin.loginstore') }}" method="post" class="form__auth">
+                     {!! csrf_field() !!}
+                    @include('flash::message')
+					<div class="login-group">
+						<p class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+							<label for="">이메일</label>
+                            <input type="email" name="email" class="form-control full_width" placeholder="이메일을 입력해주세요." value="{{ old('email') }}" autofocus/>
+                            {!! $errors->first('email', '<span class="red">:message</span>') !!}
+						</p>
+						<p class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+							<label for="">비밀번호</label>
+                            <input type="password" name="password" maxlength="20" class="form-control full_width" placeholder="비밀번호를 입력해주세요.">
+                            {!! $errors->first('password', '<span class="red">:message</span>')!!}
+						</p>
+                        <p>
+                        <button type="submit">로그인</button>
+                        </p>
+					</div>
+				</form> 
+			</div>
+		</div>
 </body>
 </html>

@@ -13,11 +13,13 @@ class WelcomeController extends Controller
         return view('temp_welcome');
     }
     public function index(){
+        $nowdate = Carbon::now();//오늘날짜
 //        플래티넘캠페인
         $plCampaigns = \App\CampaignExposure::where('exposure_id',1)
-            ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
-//                    ->where('campaigns.confirm',1);
+            ->join('campaigns', function($join) use ($nowdate){
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
+                    ->where('campaigns.confirm',1)
+                    ->whereDate('end_recruit','>',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -26,6 +28,7 @@ class WelcomeController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select('campaigns.id',
             'campaigns.name',
+                     'campaigns.form',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',
@@ -36,8 +39,7 @@ class WelcomeController extends Controller
             'channels.name as channel_name',
             'channels.id as channel_id',
              'categories.name as category_name')->get();
-        //        디데이 구하기
-        $nowdate = Carbon::now();    
+        //        디데이 구하기  
         foreach ($plCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
@@ -48,9 +50,10 @@ class WelcomeController extends Controller
         
 //        프라임캠페인
         $prCampaigns = \App\CampaignExposure::where('exposure_id',2)
-            ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
-//                    ->where('campaigns.confirm',1);
+            ->join('campaigns', function($join) use ($nowdate){
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
+                    ->where('campaigns.confirm',1)
+                    ->whereDate('end_recruit','>',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -59,6 +62,7 @@ class WelcomeController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select('campaigns.id',
             'campaigns.name',
+                     'campaigns.form',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',
@@ -70,8 +74,7 @@ class WelcomeController extends Controller
             'channels.id as channel_id',
              'categories.name as category_name'
                  )->get();
-        //        디데이 구하기
-        $nowdate = Carbon::now();    
+        //        디데이 구하기   
         foreach ($prCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
@@ -82,9 +85,10 @@ class WelcomeController extends Controller
         
         //        그랜드캠페인
         $gCampaigns = \App\CampaignExposure::where('exposure_id',3)
-            ->join('campaigns', function($join){
-                $join->on('campaign_exposure.campaign_id','=','campaigns.id');
-//                    ->where('campaigns.confirm',1);
+            ->join('campaigns', function($join) use ($nowdate){
+                $join->on('campaign_exposure.campaign_id','=','campaigns.id')
+                    ->where('campaigns.confirm',1)
+                    ->whereDate('end_recruit','>',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -93,6 +97,7 @@ class WelcomeController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select('campaigns.id',
             'campaigns.name',
+                     'campaigns.form',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',
@@ -104,8 +109,7 @@ class WelcomeController extends Controller
             'channels.id as channel_id',
              'categories.name as category_name'
                  )->get();
-        //        디데이 구하기
-        $nowdate = Carbon::now();    
+        //        디데이 구하기  
         foreach ($gCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일

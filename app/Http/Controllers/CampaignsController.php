@@ -20,16 +20,44 @@ class CampaignsController extends Controller
     protected $dontFlash = ['main_image'];
     
     public function indexV(Request $request)
-    {
+    {   
         //선택채널구하기
         $chl = $request->chl?:null;
         //선택카테고리구하기
         $cate = $request->cate ?:null;
         //정렬방법
         $myorder = $request->myorder?:'campaigns.created_at';
+        //지역구하기
+        if($request->myarea){
+            $myarea =[$request->myarea];
+            $nowmy = \App\Area::whereId($myarea)->first();
+            if($nowmy->name == '전체'){
+                $nowmys = \App\Area::where('region_id',$nowmy->region_id)->select('id')->get();
+                $myarea =array();
+                foreach($nowmys as $nowmy)
+                {
+                    $myarea[] = $nowmy->id;
+                }
+            }
+        }
+        else{
+            $myarea = null;
+        }
+        
+        $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','v')
-//            ->where('confirm',1)
-            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->where('confirm',1)
+            ->whereDate('end_recruit','>',$nowdate)
+            ->when($myarea, function($query, $myarea){
+                 return $query->join('areas', function ($join) use ($myarea) {
+                    $join->on('campaigns.area_id','=','areas.id')
+                    ->whereIn('campaigns.area_id',$myarea);
+                 });
+                 }, function($query){
+                     return $query->join('areas', function ($join) {
+                    $join->on('campaigns.area_id','=','areas.id');
+                });
+            })
             ->leftjoin('regions','regions.id','=','areas.region_id')
             ->when($chl, function($query, $chl){
                  return $query->join('channels', function ($join) use ($chl) {
@@ -65,8 +93,9 @@ class CampaignsController extends Controller
         )
             ->orderBy($myorder, 'desc')
             ->paginate(60);
+        
 //        디데이 구하기
-        $nowdate = Carbon::now();    
+  
         foreach ($campaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
@@ -76,10 +105,10 @@ class CampaignsController extends Controller
 		}
         
         if ($request->ajax()) {
-        return \Response::json([
+            return \Response::json([
             'finhtml' => \View::make('campaigns.part_campaign', array('campaigns' => $campaigns))->render(),
-            'count' => $campaigns->count()
-        ]);
+            'count' => $campaigns->count(),
+            ]);
         }
         return view('campaigns.visit', [
             'campaigns'=>$campaigns,
@@ -90,12 +119,38 @@ class CampaignsController extends Controller
     
     public function indexH(Request $request)
     {
-//        재택 캠페인 목록 출력
+        //선택채널구하기
+        $chl = $request->chl?:null;
+        //선택카테고리구하기
+        $cate = $request->cate ?:null;
+        //정렬방법
+        $myorder = $request->myorder?:'campaigns.created_at';
+        
+        $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','h')
-//            ->where('confirm',1)
+            ->where('confirm',1)
+            ->whereDate('end_recruit','>',$nowdate)
+            ->when($chl, function($query, $chl){
+                 return $query->join('channels', function ($join) use ($chl) {
+                    $join->on('channels.id', '=', 'campaigns.channel_id')
+                    ->whereIn('campaigns.channel_id',$chl);
+                 });
+                }, function($query){
+                     return $query->join('channels', function ($join) {
+                    $join->on('channels.id', '=', 'campaigns.channel_id');
+                 });
+            })
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
-            ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->when($cate, function($query, $cate){
+                 return $query->join('categories', function ($join) use ($cate) {
+                    $join->on('categories.id','=','brands.category_id')
+                    ->whereIn('categories.id',$cate);
+                 });
+            }, function($query){
+                     return $query->join('categories', function ($join) {
+                    $join->on('categories.id', '=', 'brands.category_id');
+                 });
+            })
             ->select(
             'campaigns.id',
             'campaigns.form',
@@ -108,7 +163,9 @@ class CampaignsController extends Controller
             'categories.name as category_name',
             'channels.name as channel_name',
             'channels.id as channel_id'
-        )->latest('campaigns.created_at')->paginate(20);
+        )
+            ->orderBy($myorder, 'desc')
+            ->paginate(60);
 
 //        디데이 구하기
          $nowdate = Carbon::now();    
@@ -119,6 +176,13 @@ class CampaignsController extends Controller
             $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
+        
+        if ($request->ajax()) {
+            return \Response::json([
+            'finhtml' => \View::make('campaigns.part_campaign', array('campaigns' => $campaigns))->render(),
+            'count' => $campaigns->count(),
+            ]);
+        }
         return view('campaigns.athome', [
             'campaigns'=>$campaigns,
             'channels'=>\App\Channel::select('id','name')->get(),
@@ -291,6 +355,73 @@ class CampaignsController extends Controller
      */
     public function show(Campaign $campaign, $d, $applyCount, $locaOrCate=null)
     {
+        $campaign->view_count += 1;
+        $campaign->save();
+        
+        //추천캠페인 출력 관련
+        $nowdate = Carbon::now();//오늘날짜
+        if($campaign->form == 'v'){
+            $recommends = \App\Campaign::where('area_id',$campaign->area_id)
+                ->where('confirm',1)
+                ->where('campaigns.id','!='.$campaign->id)
+                ->whereDate('end_recruit','>',$nowdate)
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select('campaigns.id',
+            'campaigns.name',
+            'campaigns.main_image',
+                     'campaigns.form',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->take(5)->get();
+
+        } else {
+            $recommends = \App\Brand::where('category_id',$campaign->brand->category_id)
+            ->join('campaigns', function($join) use ($nowdate, $campaign){
+                $join->on('campaigns.brand_id','=','brands.id')
+                    ->where('campaigns.confirm',1)
+                    ->where('campaigns.id','!='.$campaign->id)
+                    ->whereDate('end_recruit','>',$nowdate);
+            })
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+//            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select('campaigns.id',
+            'campaigns.name',
+            'campaigns.main_image',
+                     'campaigns.form',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->take(5)->get();
+        }
+        
+        //        디데이 구하기
+        foreach ($recommends as $key => $loop)
+        {
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->rightNow = $dif?:'Day';
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+        }
+        
+        
         return view('campaigns.show', [
             'campaign'=>$campaign,
             'd' =>$d,
@@ -298,7 +429,8 @@ class CampaignsController extends Controller
             'reviewer_announce' => Carbon::parse($campaign->end_recruit)->addDays(1)->format('Y-m-d'),
             'start_submit' => Carbon::parse($campaign->end_recruit)->addDays(2)->format('Y-m-d'),
             'result_announce' => Carbon::parse($campaign->end_submit)->addDays(1)->format('Y-m-d'),
-            'applyCount' => $applyCount
+            'applyCount' => $applyCount,
+            'recommends' => $recommends
              ]);
     }
 

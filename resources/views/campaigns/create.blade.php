@@ -216,8 +216,8 @@
 										<option value="">지역이 없습니다</option>
                                         @endforelse
                                 </select>
-                                <select id='areas' class='select_po hide' name='area_id' value="null">
-                                    <option value="null">지역이 없습니다</option>
+                                <select id='areas' class='select_po hide' name='area_id' value="">
+                                    <option value="">지역이 없습니다</option>
                                 </select>
                                 {!! $errors->first('area_id','<span class="red">:message</span>')!!}
                                 <span class="red" id="area_id"></span>
