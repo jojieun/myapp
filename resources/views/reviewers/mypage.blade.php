@@ -38,7 +38,7 @@
                             @forelse($applyCampaigns as $campaign)
                                 @include('reviewers.particle_mycampaign')
                             @empty
-                                신청캠페인이 없습니다
+                                모집중인 신청캠페인이 없습니다
                             @endforelse
 						</ul>
 					</div>

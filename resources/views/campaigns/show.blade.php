@@ -55,7 +55,7 @@
 					</dl>
 					<span class="detail-btn">
 						<a class="btn black big apply_check" href="#popup_term">신청하기</a>
-						<a href="#" class="btn gray">관심캠페인</a>
+						<a href="#" id="bookmark" class="btn gray" value="{{$campaign->id}}">관심캠페인</a>
 					</span>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 				<dl id="campaign02" class="detail-txt">
 					<dt>리뷰미션</dt>
 					<dd>
-						{{$campaign->mission}}
+						{!! nl2br($campaign->mission) !!}
 					</dd>
 				</dl>
 				<dl id="campaign03" class="detail-txt">
@@ -122,7 +122,7 @@
                 @endif
 				<dl id="campaign05" class="detail-txt">
 					<dt>기타사항</dt>
-					<dd>{{$campaign->etc}}</dd>
+					<dd>{!! nl2br($campaign->etc) !!}</dd>
 				</dl>
 			</div>
 		</section>
@@ -143,14 +143,57 @@
 		<!-- //추천 캠페인 -->
 	</div>
 <!--캠페인신청시필요-->
-@component('help.pop_review')
+@component('help.pop_require')
+    @slot('goId')
+        pop_review
+    @endslot
+    @slot('for')
+        캠페인 신청을 위해
+    @endslot
+    @slot('what')
+        로그인
+    @endslot
+    @slot('where')
+        {{ route('sessions.create') }}
+    @endslot
+@endcomponent
+<!--관심캠페인 등록시 로그인 필요-->
+@component('help.pop_require')
+    @slot('goId')
+        pop_login
+    @endslot
+    @slot('for')
+        관심캠페인 등록을 위해
+    @endslot
+    @slot('what')
+        로그인
+    @endslot
+    @slot('where')
+        {{ route('sessions.create') }}
+    @endslot
 @endcomponent
 <!--신청약관-->
 @include('campaigns.pop_term')
+<!--신청완료알림-->
 @component('help.popup_ok')
-신청
+    @slot('goId')
+        popup_ok
+    @endslot
+    신청이 완료되었습니다.
 @endcomponent
-@component('help.copy_ok')
+<!--공유url복사 안내-->
+@component('help.popup_ok')
+    @slot('goId')
+        copy_ok
+    @endslot
+    링크가 복사되었습니다.
+@endcomponent
+<!--공유url복사 안내-->
+@component('help.popup_ok')
+    @slot('goId')
+        bookmark_ok
+    @endslot
+    즐겨찾기에 등록되었습니다.
 @endcomponent
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2014fb587b83de3123a5fcf612f0b7c9&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
@@ -175,7 +218,7 @@ var map = new kakao.maps.Map(mapContainer, mapOption);
 var geocoder = new kakao.maps.services.Geocoder();
 
 // 주소로 좌표를 검색합니다
-geocoder.addressSearch('울산 남구 개운로 121', function(result, status) {
+geocoder.addressSearch('{{$campaign->address}}', function(result, status) {
 
     // 정상적으로 검색이 완료됐으면 
      if (status === kakao.maps.services.Status.OK) {
@@ -208,6 +251,7 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
          @endif
          
      });
+         //캠페인신청
  $('#campaign_apply').on('click', function(e){
      e.preventDefault();
      if($('#checkAgree1').is(':checked') && $('#checkAgree2').is(':checked')){
@@ -229,6 +273,25 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
      } else {
          alert('약관에 동의해주세요');
      }
+    });
+    $('#bookmark').on('click', function(e){
+     e.preventDefault();
+     @if(isset(auth()->user()->name))
+         var camid = $(this).attr('value');
+        $.ajax({
+           type:"POST",
+           url:"{{ route('reviewers.bookmark') }}",
+           data:{camid:camid},
+           success:function(){
+                window.location.hash = '#bookmark_ok';
+            },
+            error: function(data) {
+
+            },
+        });
+     @else
+         window.location.hash = '#pop_login';
+     @endif
     });
 </script>
 @endsection

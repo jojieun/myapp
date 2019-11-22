@@ -31,7 +31,6 @@ class Community extends Model
     public function reviewer() {
         return $this->belongsTo(Reviewer::class);
     }
-    
     public function advertiser() {
         return $this->belongsTo(Advertiser::class);
     }

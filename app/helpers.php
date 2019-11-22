@@ -10,5 +10,6 @@ if (! function_exists('attachments_path')) {
     {
         return public_path('files'.($path ? DIRECTORY_SEPARATOR.$path : $path));
     }
+    
 }
 ?>

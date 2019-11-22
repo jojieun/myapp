@@ -42,6 +42,9 @@ protected $guarded = ['id','last_login'];
     public function communities(){
         return $this->hasMany(Community::class);
     }
+    public function onetoones(){
+        return $this->hasMany(Onetoone::class);
+    }
     public function plan(){
         return $this->hasOne(Plan::class);
     }

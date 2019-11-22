@@ -9,17 +9,19 @@ class ReviewerMypageController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth.reviewer', ['except' => ['index', 'show']]);
     }
     //    마이페이지
     public function home(Request $request){
+        $nowdate = Carbon::now();
         $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
         $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->first();
 //        신청캠페인
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
-            ->join('campaigns', function($join){
-                $join->on('campaign_reviewers.campaign_id','=','campaigns.id');
-//                    ->where('campaigns.confirm',1);
+            ->join('campaigns', function($join) use($nowdate) {
+                $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -28,6 +30,7 @@ class ReviewerMypageController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select('campaigns.id',
             'campaigns.name',
+             'campaigns.form',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',
@@ -37,8 +40,7 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name'
-                 )->get();
+             'categories.name as category_name')->get();
         //        디데이-신청인원 구하기
         $nowdate = Carbon::now();    
         foreach ($applyCampaigns as $key => $loop)
@@ -49,13 +51,24 @@ class ReviewerMypageController extends Controller
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
+        //
+        
         return view('reviewers.mypage',[
             'user'=>$nowUser,
             'applyCampaigns'=>$applyCampaigns,
         ]);
     }
+    //캠페인신청
      public function apply(Request $request){
         $CampaignReviewer = \App\CampaignReviewer::create([
+            'campaign_id'=>$request->camid,
+            'reviewer_id'=>auth()->guard('web')->user()->id,
+        ]);
+         return;
+    }
+    //북마크등록
+    public function bookmark(Request $request){
+        $Bookmark = \App\Bookmark::create([
             'campaign_id'=>$request->camid,
             'reviewer_id'=>auth()->guard('web')->user()->id,
         ]);

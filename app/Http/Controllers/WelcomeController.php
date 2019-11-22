@@ -28,7 +28,7 @@ class WelcomeController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select('campaigns.id',
             'campaigns.name',
-                     'campaigns.form',
+             'campaigns.form',
             'campaigns.main_image',
             'campaigns.recruit_number',
             'campaigns.offer_point',

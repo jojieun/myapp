@@ -15,12 +15,12 @@ class CommunitiesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth.both', ['except' => ['index', 'show']]);
     }
     
     public function index()
     {
-        $communities = \App\Community::with('reviewer','advertiser')->latest()->paginate(15);
+        $communities = Community::with('reviewer','advertiser')->latest()->paginate(15);
         return view('communities.index', compact('communities'));
     }
 
@@ -67,7 +67,7 @@ class CommunitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(\App\Community $community)
+    public function show(Community $community)
     {
         $community->view_count += 1;
         $community->save();
@@ -80,7 +80,7 @@ class CommunitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(\App\Community $community)
+    public function edit(Community $community)
     {
         return view('communities.edit', compact('community'));
     }

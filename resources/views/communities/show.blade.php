@@ -33,8 +33,12 @@
 			</div>
 			
 			<div class="board_navi_box view">
+                @if((Auth::guard('advertiser')->check() && (auth()->guard('advertiser')->user()->id==$community->advertiser_id)) || (Auth::guard('web')->check() && (auth()->guard('web')->user()->id==$community->reviewer_id)) )
+
 				<a href="{{ route('communities.edit', $community->id) }}" class="btn_type btn_border">수정</a>
 				<a class="btn_type btn_border button__delete">삭제</a>
+
+                @endif
 			</div>
 
 			<!-- 댓글 -->
@@ -88,7 +92,7 @@
       if (confirm('글을 삭제합니다.')) {
         $.ajax({
           type: 'DELETE',
-          url: '/communities/' + communityId
+          url: '/communities/' + communityId,
         }).then(function () {
           window.location.href = '/communities';
         });

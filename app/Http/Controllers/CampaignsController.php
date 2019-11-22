@@ -95,14 +95,14 @@ class CampaignsController extends Controller
             ->paginate(60);
         
 //        디데이 구하기
-  
-        foreach ($campaigns as $key => $loop)
+foreach ($campaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
+        
         
         if ($request->ajax()) {
             return \Response::json([

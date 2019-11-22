@@ -7,27 +7,23 @@ use Route;
 
 class Authenticate extends Middleware
 {
+    public function handle($request, Closure $next, ...$guards)
+    {
+        if (!Auth::guard('web')->check()) {
+        return redirect()->guest(route('sessions.create'));
+        }
+        return $next($request);
+    }
     /*
      * Get the path the user should be redirected to when they are not authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-//            if (array_first($this->guards) === 'advertiser') {
-//                return route('advertiser_sessions.create');
-//            }
-//            dd($request->route()->uri);
-//            if(Route::is('advertiser.*')){
-//                
-//                return route('advertiser_sessions.create');
-//            }
-//            dd('여기');
             return route('sessions.create');
-
         }
     }
 }

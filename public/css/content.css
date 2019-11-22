@@ -86,6 +86,9 @@ a.btn.w125, button.btn.w125{ min-width: 125px; }
 button{ cursor:pointer; font-family: 'Montserrat', 'Noto Sans KR', 'Malgun Gothic', Dotum, Verdana, Arial, sans-serif !important; outline-style: none}
 input[type=text],input[type=tel],input[type=date],select,
 textarea,input[type=password],input[type=email],input[type=number]{ height:40px; line-height:38px; padding-left:15px; border:none; border-radius:0; box-shadow:none; background: #fff; font-size:14px; outline:none; font-family:'Montserrat', 'Noto Sans KR','Malgun Gothic', Dotum, Verdana, Arial, sans-serif !important; appearance: none; }
+select[name=qcategory_id]{
+    line-height: 1.4em;
+}
 
 input[type="date"] {
   background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  98% 50% no-repeat ;

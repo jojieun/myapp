@@ -52,6 +52,14 @@
                     <li><a href="">하위메뉴</a></li>
                 </ul>
             </li>
+            <li class="main">
+                <a href="{{route('admin.notanswer')}}" class="main_a">1:1문의</a>
+                <ul class="sub">
+                    <li><a href="{{route('admin.notanswer')}}">미답변</a></li>
+                    <li><a href="{{route('admin.answer')}}">답변완료</a></li>
+                    <li><a href="{{route('admin.showQCategory')}}">문의 카테고리 관리</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
     </header>

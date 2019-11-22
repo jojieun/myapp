@@ -2,6 +2,12 @@
 li{
     list-style: none;
 }
+button{
+    font-size: 1em;
+}
+input, button {
+    padding: 5px;
+}
 a{
 }
 body{
@@ -47,6 +53,9 @@ body{
     width: 150px;
     height: 100%;
     background-color: #555;
+}
+.main{
+    position: relative;
 }
 .main_a{
     padding:10px;
@@ -95,8 +104,16 @@ h1{
     font-weight: 400;
     margin-bottom:1em;
 }
+h2{
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom:0.6em;
+    border-top:1px solid #aaa;
+    color:#555;
+    padding-top:0.3em;
+}
 table{
-    
+    margin-bottom:1.4em;
 }
 tbody:nth-child(odd) td{
     background-color: #f6f6f6;
@@ -120,3 +137,72 @@ td{
     margin-bottom:10px;
 }
 
+.in{
+   width:100%;
+    max-width: 400px;
+}
+/*1:1문의 관련*/
+#answer input, #answer textarea {
+    min-width: 300px;
+}
+
+/*modal화면*/
+.overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    bottom: 0;
+    cursor: default;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+.popup {
+    background-color: #fff;
+    display: inline-block;
+	max-width: 500px;
+	max-height: 500px;
+    left: 50%;
+    opacity: 0;
+    position: fixed;
+    text-align: center;
+    top: 40%;
+    visibility: hidden;
+    z-index: 1010;
+    padding:30px;
+    overflow-y: auto;
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.overlay:target+.popup {
+    top: 48%;
+    opacity: 1;
+    visibility: visible;
+}
+.close {
+    background-color: rgba(0, 0, 0, 1);
+    height: 28px;
+    line-height: 28px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-decoration: none;
+    top: 0;
+    width: 28px;
+}
+.close:before {
+    color: rgba(255, 255, 255, 1);
+    content: "×";
+    font-size: 40px;
+	font-weight:100;
+}

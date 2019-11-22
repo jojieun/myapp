@@ -22,13 +22,13 @@ class SessionsController extends Controller
             flash('이메일 또는 비밀번호를 확인해주세요!<br>광고주 회원이시면 광고주 로그인창에서 로그인해주세요!')->warning();
             return back()->withInput();
         }
-        return redirect()->intended(url()->previous());
+        return redirect()->intended(route('reviewers.mypage'));
     }
     
     public function destory()
     {
         auth()->logout();
 
-        return redirect('/');
+        return redirect(route('main'));
     }
 }
