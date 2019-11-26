@@ -54,7 +54,7 @@
                 <td>{{ $reviewer->point }}</td>
                 <td>
                     @if($reviewer->plan)
-                    <a href="{{route('admin.plan',[$reviewer->plan->id])}}">리뷰전략</a>
+                    <a class="plan" data-id="{{$reviewer->plan->id}}" href="">리뷰전략</a>
                     @else
                     미작성
                     @endif
@@ -67,25 +67,30 @@
         </tr>
         @endforelse
 </table>
+{{ $reviewers->links() }}
+<a href="#close" class="overlay" id="answer"></a>
+<div class="popup">
+    
+</div>
+
 <script>
     $.ajaxSetup({
        headers: {
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
-$('.confirm').on('click', function(e){
+$('.plan').on('click', function(e){
        e.preventDefault();
-        var nowId = $(this).val();
+    var nowId = $(this).data('id');
         $.ajax({
-           type:"POST",
-           url:"{{ route('admin.confirmcampaign') }}",
-           data:{
-               nowId:nowId,
-           },
-            success: function(){
-            window.location.href = '/admin';
+           type:"get",
+           url:'/admin/plan/' + nowId,
+            success: function(data){
+                $('.popup').html(data.showhtml);
+                window.location.hash = '#answer'; 
             }
         });
+        
     });
     </script>
 @endsection

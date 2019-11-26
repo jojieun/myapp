@@ -142,7 +142,7 @@ td{
     max-width: 400px;
 }
 /*1:1문의 관련*/
-#answer input, #answer textarea {
+input, textarea {
     min-width: 300px;
 }
 
@@ -184,6 +184,9 @@ td{
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+.popup td{
+    text-align: left;
+}
 .overlay:target+.popup {
     top: 48%;
     opacity: 1;
@@ -205,4 +208,13 @@ td{
     content: "×";
     font-size: 40px;
 	font-weight:100;
+}
+.pagination::after{
+    content:'';
+    display: block;
+    clear: both;
+}
+.page-item {
+    float: left;
+    margin-right:20px;
 }

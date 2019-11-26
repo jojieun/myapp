@@ -12,9 +12,24 @@ class AdvertiserFaqController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+         //광고주 자주묻는 질문 카테고리 목록
+        $afcategories = \App\AdvertiserFaqCate::get();
+        //현재 카테고리 자주묻는질문목록
+        $nowC = $request->nowc?:($afcategories->first()?$afcategories->first()->id:0);
+        //광고주 자주묻는 질문 목록
+        $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')
+            ->where('advertiser_faq_cate_id',$nowC)
+            ->latest()
+            ->get();
+        if ($request->ajax()) {
+            return \Response::json([
+            'finhtml' => \View::make('cscenters.faqs.part', array('faqs' => $advertiserfaqs))->render(),
+            ]);
+        }
+        return view('cscenters.faqs.a_index')->with('faqs',$advertiserfaqs)
+            ->with('afcategories',$afcategories);
     }
 
     /**
@@ -24,7 +39,12 @@ class AdvertiserFaqController extends Controller
      */
     public function create()
     {
-        //
+        //광고주 자주묻는 질문 목록
+        $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')->latest()->get();
+        //광고주 자주묻는 질문 카테고리 목록
+        $afcategories = \App\AdvertiserFaqCate::get();
+        return view('admin.advertiserfaq_create')->with('advertiserfaqs',$advertiserfaqs)
+            ->with('afcategories',$afcategories);
     }
 
     /**
@@ -35,7 +55,22 @@ class AdvertiserFaqController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'question' => 'required|max:255',
+            'answer' => 'required',
+            'advertiser_faq_cate_id' => 'required',
+        ]);
+        $advertiserfaq = AdvertiserFaq::create($request->all());
+
+        if(! $advertiserfaq){
+            return back()->withInput();
+        }
+        
+       //광고주 자주묻는 질문 목록
+        $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_advertiserfaq', array('advertiserfaqs' => $advertiserfaqs))->render(),
+            ]);
     }
 
     /**
@@ -46,7 +81,10 @@ class AdvertiserFaqController extends Controller
      */
     public function show(AdvertiserFaq $advertiserFaq)
     {
-        //
+        $afcategories = \App\AdvertiserFaqCate::get();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_amakefaq', array('advertiserfaq' => $advertiserFaq, 'afcategories'=>$afcategories))->render(),
+            ]);
     }
 
     /**
@@ -57,7 +95,10 @@ class AdvertiserFaqController extends Controller
      */
     public function edit(AdvertiserFaq $advertiserFaq)
     {
-        //
+        $afcategories = \App\AdvertiserFaqCate::get();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_amakefaq', array('advertiserfaq' => $advertiserFaq, 'afcategories'=>$afcategories))->render(),
+            ]);
     }
 
     /**
@@ -69,7 +110,11 @@ class AdvertiserFaqController extends Controller
      */
     public function update(Request $request, AdvertiserFaq $advertiserFaq)
     {
-        //
+        $advertiserFaq->update($request->all());
+        $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_advertiserfaq', array('advertiserfaqs' => $advertiserfaqs))->render(),
+            ]);
     }
 
     /**
@@ -80,6 +125,11 @@ class AdvertiserFaqController extends Controller
      */
     public function destroy(AdvertiserFaq $advertiserFaq)
     {
-        //
+        $advertiserFaq->delete();
+        //광고주 자주묻는 질문 목록
+        $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_advertiserfaq', array('advertiserfaqs' => $advertiserfaqs))->render(),
+            ]);
     }
 }

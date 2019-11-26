@@ -12,10 +12,24 @@ class ReviewerFaqController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reviewerfaqs = ReviewerFaq::get();
-        return view('cscenters.faqs.r_index', compact('reviewerfaqs'));
+        //리뷰어 자주묻는 질문 카테고리 목록
+        $rfcategories = \App\ReviewerFaqCate::get();
+        //현재 카테고리 자주묻는질문목록
+        $nowC = $request->nowc?:($rfcategories->first()?$rfcategories->first()->id:0);
+        //리뷰어 자주묻는 질문 목록
+        $reviewerfaqs = ReviewerFaq::with('rFAQcategory')
+            ->where('reviewer_faq_cate_id',$nowC)
+            ->latest()
+            ->get();
+        if ($request->ajax()) {
+            return \Response::json([
+            'finhtml' => \View::make('cscenters.faqs.part', array('faqs' => $reviewerfaqs))->render(),
+            ]);
+        }
+        return view('cscenters.faqs.r_index')->with('faqs',$reviewerfaqs)
+            ->with('rfcategories',$rfcategories);
     }
 
     /**
@@ -25,7 +39,12 @@ class ReviewerFaqController extends Controller
      */
     public function create()
     {
-        //
+        //리뷰어 자주묻는 질문 목록
+        $reviewerfaqs = ReviewerFaq::with('rFAQcategory')->latest()->get();
+        //리뷰어 자주묻는 질문 카테고리 목록
+        $rfcategories = \App\ReviewerFaqCate::get();
+        return view('admin.reviewerfaq_create')->with('reviewerfaqs',$reviewerfaqs)
+            ->with('rfcategories',$rfcategories);
     }
 
     /**
@@ -36,7 +55,22 @@ class ReviewerFaqController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'question' => 'required|max:255',
+            'answer' => 'required',
+            'reviewer_faq_cate_id' => 'required',
+        ]);
+        $reviewerfaq = ReviewerFaq::create($request->all());
+
+        if(! $reviewerfaq){
+            return back()->withInput();
+        }
+        
+       //리뷰어 자주묻는 질문 목록
+        $reviewerfaqs = ReviewerFaq::with('rFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_reviewerfaq', array('reviewerfaqs' => $reviewerfaqs))->render(),
+            ]);
     }
 
     /**
@@ -47,7 +81,10 @@ class ReviewerFaqController extends Controller
      */
     public function show(ReviewerFaq $reviewerFaq)
     {
-        //
+$rfcategories = \App\ReviewerFaqCate::get();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_makefaq', array('reviewerfaq' => $reviewerFaq, 'rfcategories'=>$rfcategories))->render(),
+            ]);
     }
 
     /**
@@ -58,7 +95,10 @@ class ReviewerFaqController extends Controller
      */
     public function edit(ReviewerFaq $reviewerFaq)
     {
-        //
+        $rfcategories = \App\ReviewerFaqCate::get();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_makefaq', array('reviewerfaq' => $reviewerFaq, 'rfcategories'=>$rfcategories))->render(),
+            ]);
     }
 
     /**
@@ -70,7 +110,11 @@ class ReviewerFaqController extends Controller
      */
     public function update(Request $request, ReviewerFaq $reviewerFaq)
     {
-        //
+        $reviewerFaq->update($request->all());
+        $reviewerfaqs = ReviewerFaq::with('rFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_reviewerfaq', array('reviewerfaqs' => $reviewerfaqs))->render(),
+            ]);
     }
 
     /**
@@ -81,6 +125,12 @@ class ReviewerFaqController extends Controller
      */
     public function destroy(ReviewerFaq $reviewerFaq)
     {
-        //
+        $reviewerFaq->delete();
+        //리뷰어 자주묻는 질문 목록
+        $reviewerfaqs = ReviewerFaq::with('rFAQcategory')->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_reviewerfaq', array('reviewerfaqs' => $reviewerfaqs))->render(),
+            ]);
     }
+    
 }

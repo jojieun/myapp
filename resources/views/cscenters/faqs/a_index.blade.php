@@ -12,7 +12,7 @@
 						
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
-				<h2>FAQ 리뷰어</h2>
+				<h2>FAQ 광고주</h2>
 				
 				<!-- 탭-->				
 <!--
@@ -24,8 +24,8 @@
 				<!-- //탭-->
 				
 				<ul class="board-tab">
-                    @forelse($rfcategories as $rfcategory)
-                    <li data-id="{{$rfcategory->id}}"><a>{{$rfcategory->name}}</a></li>
+                    @forelse($afcategories as $afcategory)
+                    <li data-id="{{$afcategory->id}}"><a>{{$afcategory->name}}</a></li>
                     @empty
                     <li>카테고리가 없습니다</li>
                     @endforelse
@@ -52,7 +52,7 @@ $.ajaxSetup({
         $(this).addClass('on');
         var nowc = $(this).data('id');
         $.ajax({
-        url : "/reviewer_faqs_list/"+nowc,
+        url : "/advertiser_faqs_list/"+nowc,
         type : "post",
 //        dataType: 'json',
         data:{

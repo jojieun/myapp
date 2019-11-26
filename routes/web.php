@@ -35,16 +35,19 @@ Route::resource('campaigns', 'CampaignsController')->except([
 //1:1문의하기
 Route::resource('onetoones', 'OnetooneController');
 //리뷰어 자주묻는질문
-Route::resource('reveiwer_faqs', 'ReviewerFaqController');
+Route::post('reviewer_faqs/editShow/{reviewerFaq}', 'ReviewerFaqController@editShow');
+Route::match(['get', 'post'],'reviewer_faqs_list/{nowc}', 'ReviewerFaqController@index')->name('reviewer_faqs.index');
+Route::resource('reviewer_faqs', 'ReviewerFaqController');
 //광고주 자주묻는질문
+Route::post('advertiser_faqs/editShow/{advertiserFaq}', 'AdvertiserFaqController@editShow');
+Route::match(['get', 'post'],'advertiser_faqs_list/{nowc}', 'AdvertiserFaqController@index')->name('advertiser_faqs.index');
 Route::resource('advertiser_faqs', 'AdvertiserFaqController');
 //공지사항
 Route::resource('notices', 'NoticeController');
 
-Route::view('ask','ask')->name('ask');
-Route::view('faq','faq')->name('faq');
-Route::view('notice','notice')->name('notice');
-Route::view('ask_list','ask_list')->name('ask_list');
+
+/********커뮤니티**********/
+Route::resource('communities', 'CommunitiesController');
 
 /******** 관리자admin **********/
 //관리자admin페이지메인
@@ -55,12 +58,20 @@ Route::get('admin/login','AdminController@login')->name('admin.login');
 Route::post('admin/login','AdminController@store')->name('admin.loginstore');
 //admin로그아웃
 Route::get('admin/logout','AdminController@destory')->name('admin.logout');
-//캠페인검수 승인
-Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
+
+
 //관리자-리뷰어회원목록
 Route::get('admin/reviewers','AdminController@reveiwerslist')->name('admin.reviewers');
 //관리자-리뷰어회원->리뷰전략보기
 Route::get('admin/plan/{id}','AdminController@plan')->name('admin.plan');
+
+//관리자-광고주회원목록
+Route::get('admin/advertisers','AdminController@advertisers')->name('admin.advertisers');
+
+//캠페인검수대기목록
+Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admin.waitConfirmCam');
+//캠페인검수 승인
+Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
 
 //관리자-미답변 일대일문의 목록
 Route::get('admin/notanswer','AdminController@notAnswerO')->name('admin.notanswer');
@@ -80,6 +91,20 @@ Route::get('admin/showQCategory','AdminController@showQCategory')->name('admin.s
 Route::post('admin/makeQCategory','AdminController@makeQCategory')->name('admin.makeQCategory');
 //관리자-일대일문의 카테고리 삭제
 Route::delete('admin/delQCategory/{id}','AdminController@delQCategory');
+
+//관리자-리뷰어FAQ 카테고리 보기
+Route::get('admin/rFAQCategory','AdminController@rFAQCategory')->name('admin.rFAQCategory');
+//관리자-리뷰어FAQ 카테고리 저장 ajax
+Route::post('admin/saverFAQCategory','AdminController@saverFAQCategory')->name('admin.saverFAQCategory');
+//관리자-리뷰어FAQ 카테고리 삭제
+Route::delete('admin/delrFAQCategory/{id}','AdminController@delrFAQCategory');
+
+//관리자-광고주FAQ 카테고리 보기
+Route::get('admin/aFAQCategory','AdminController@aFAQCategory')->name('admin.aFAQCategory');
+//관리자-리뷰어FAQ 카테고리 저장 ajax
+Route::post('admin/saveaFAQCategory','AdminController@saveaFAQCategory')->name('admin.saveaFAQCategory');
+//관리자-리뷰어FAQ 카테고리 삭제
+Route::delete('admin/delaFAQCategory/{id}','AdminController@delaFAQCategory');
 
 
 

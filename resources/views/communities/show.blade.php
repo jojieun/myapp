@@ -25,7 +25,7 @@
 					</div>
 					<div class="txt_view">
 						<div class="txt_view_con">
-							{{$community->content}}
+							{!!nl2br($community->content)!!}
 						</div>
 					</div>					
 						

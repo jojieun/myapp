@@ -71,11 +71,11 @@
 							</li>
 							<li><a href="{{route('visit')}}"  class="mainmenu" id="mainmenu01"><b>방문</b></a></li>
 							<li><a href="{{route('athome')}}"  class="mainmenu" id="mainmenu02"><b>재택</b></a></li>
-							<li class="mainMenu"><a href="{{route('ask')}}"  class="mainmenu" id="mainmenu03">고객센터</a>
+							<li class="mainMenu"><a href="{{route('reviewer_faqs.index')}}"  class="mainmenu" id="mainmenu03">고객센터</a>
 								<ol class="submenu depth" id="submenu03" style="display:none;">
 									<li><a href="{{route('onetoones.create')}}">1:1 문의하기</a></li>
-									<li><a href="{{route('faq')}}">FAQ</a></li>
-									<li><a href="{{route('notice')}}">공지사항</a></li>
+									<li><a href="{{route('reviewer_faqs.index')}}">FAQ</a></li>
+									<li><a href="{{route('notices.index')}}">공지사항</a></li>
 									<li><a href="{{route('onetoones.index')}}">문의내역</a></li>
 								</ol>
 							</li>
@@ -148,8 +148,8 @@
 			<b class=""><a href="tel:051-256-2735">051-256-2735</a></b>
 			<small>월-금  오전 9시 - 오후 6시 /  주말, 공휴일 휴무</small>
 			<p class="f-btn">
-				<a href="/cscenter/faq.php">FAQ</a>
-				<a href="/cscenter/ask.php">1:1 문의</a>
+				<a href="{{route('reviewer_faqs.index')}}">FAQ</a>
+				<a href="{{route('onetoones.create')}}">1:1 문의</a>
 			</p>
 		</div>
 		<div class="footer">
@@ -162,10 +162,10 @@
 				</ul>	
 			</div>
 			<div class="footer-txt">
-				<p>{{ config('app.name') }}<small>|</small>대표 : 조용완</p>
+				<p>블록션<small>|</small>대표 : 조용완</p>
 				<p>
-					<span>48547 부산광역시 남구 신선로 365, 317호 (부산창업지원센터, 감만동)<small class="m-none">|</small></span>
-					<span>MAIL : bloxion@naver.com<small class="pc-none">|</small></span>
+					<span>44698 울산광역시 남구 삼산중로 144, 3층<small class="m-none">|</small></span>
+					<span>MAIL : help@review-power.com<small class="pc-none">|</small></span>
 					<span>사업자등록번호 : 381-69-00094<small class="m-none">|</small></span>
 					<span>통신판매업 신고번호 :  제 2017-부산사하-0040 호<small class="m-none">|</small></span>
 					<span>개인정보보호책임 : 김성근</span>

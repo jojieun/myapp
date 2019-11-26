@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\QCategory;
 use App\Onetoone;
+use App\ReviewerFaqCate;
+use App\AdvertiserFaqCate;
 
 class AdminController extends Controller
 {
@@ -16,10 +18,7 @@ class AdminController extends Controller
     //관리자첫페이지
      public function index()
     {   
-         $waitCampaigns = \App\Campaign::where('confirm',0)->with('brand')->get();
-        return view('admin.index',[
-            'waitCampaigns' => $waitCampaigns,
-        ]);
+        return view('admin.index');
     }
     //admin 로그인
      public function login(){
@@ -45,23 +44,43 @@ class AdminController extends Controller
         auth()->guard('admin')->logout();
         return redirect(route('admin.login'));
     }
-    //캠페인승인
-    public static function confirmCampaign(Request $request){
-      \App\Campaign::where('id', $request->nowId)->update(['confirm' => 1]);
-        return;
-   }
+    
     //리뷰어목록보기
     public static function reveiwerslist(){
-        $reviewers = \App\Reviewer::with('plan:id,reviewer_id')->get();
+        $reviewers = \App\Reviewer::with('plan:id,reviewer_id')->simplePaginate(30);
         return view('admin.reviewer',[
             'reviewers'=>$reviewers,
         ]);
    }
     //리뷰전략보기
     public static function plan($id){
-        $plan = \App\Plan::whereId($id)->get();
-        dd($plan);
+        $plan = \App\Plan::whereId($id)->first();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_plan', array('plan' => $plan))->render(),
+            ]);
    }
+    //광고주목록보기
+    public static function advertisers(){
+        $advertisers = \App\Advertiser::simplePaginate(30);
+        return view('admin.advertisers',[
+            'advertisers'=>$advertisers,
+        ]);
+   }
+    
+    //캠페인검수대기목록
+     public function waitConfirmCam()
+    {   
+         $waitCampaigns = \App\Campaign::where('confirm',0)->with('brand')->get();
+        return view('admin.waitcam',[
+            'waitCampaigns' => $waitCampaigns,
+        ]);
+    }
+    //캠페인승인
+    public static function confirmCampaign(Request $request){
+      \App\Campaign::where('id', $request->nowId)->update(['confirm' => 1]);
+        return;
+   }
+    
     //일대일문의 카테고리 보기
     public function showQCategory()
     {
@@ -113,7 +132,7 @@ class AdminController extends Controller
             'showhtml' => \View::make('admin.part_showanswer', array('onetoone' => $onetoone))->render(),
             ]);
     }
-    //답변 저장후 미답변 1:1문의 목록출력
+    //답변 저장, 미답변 1:1문의 목록출력
     public function saveAnswer(Request $request, Onetoone $onetoone)
     {
         $onetoone->update($request->all());
@@ -138,6 +157,75 @@ class AdminController extends Controller
             ->with('qcategory','reviewer','advertiser')->get();
          return \Response::json([
             'finhtml' => \View::make('admin.part_list_answer2', array('onetoones' => $onetoones))->render(),
+            ]);
+    }
+    
+    //****자주묻는질문
+    //리뷰어FAQ 카테고리 보기
+    public function rFAQCategory()
+    {
+        $rFAQCategories = ReviewerFaqCate::get();
+        return view('admin.rFAQCategory',[
+            'rFAQCategories' => $rFAQCategories,
+        ]);
+    }
+    //리뷰어FAQ 카테고리 만들기
+    public function saverFAQCategory(Request $request)
+    {
+        $this->validate($request,[
+            'name' => 'required|max:255',
+        ]);
+        $newrFAQCategory = ReviewerFaqCate::create($request->only('name'));
+
+        if(! $newrFAQCategory){
+            return back()->withInput();
+        }
+        $rFAQCategories = ReviewerFaqCate::get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_rFAQCategory', array('rFAQCategories' => $rFAQCategories))->render(),
+            ]);
+    }
+    //리뷰어FAQ 카테고리 삭제
+    public function delrFAQCategory($id)
+    {
+        ReviewerFaqCate::find($id)->delete($id);
+        $rFAQCategories = ReviewerFaqCate::get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_rFAQCategory', array('rFAQCategories' => $rFAQCategories))->render(),
+            ]);
+    }
+    //광고주FAQ 카테고리 보기
+    public function aFAQCategory()
+    {
+        $aFAQCategories = AdvertiserFaqCate::get();
+        return view('admin.aFAQCategory',[
+            'rFAQCategories' => $aFAQCategories,
+        ]);
+    }
+    //광고주FAQ 카테고리 만들기
+    public function saveaFAQCategory(Request $request)
+    {
+        $this->validate($request,[
+            'name' => 'required|max:255',
+        ]);
+        $newaFAQCategory = AdvertiserFaqCate::create($request->only('name'));
+
+        if(! $newaFAQCategory){
+            return back()->withInput();
+        }
+        
+        $aFAQCategories = AdvertiserFaqCate::get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_rFAQCategory', array('rFAQCategories' => $aFAQCategories))->render(),
+            ]);
+    }
+    //광고주FAQ 카테고리 삭제
+    public function delaFAQCategory($id)
+    {
+        AdvertiserFaqCate::find($id)->delete($id);
+        $aFAQCategories = AdvertiserFaqCate::get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_rFAQCategory', array('rFAQCategories' => $aFAQCategories))->render(),
             ]);
     }
 

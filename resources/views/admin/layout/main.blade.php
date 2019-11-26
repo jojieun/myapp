@@ -37,19 +37,16 @@
     <nav id="main_nav">
         <ul>
             <li class="main">
-                <a href="" class="main_a">회원관리</a>
+                <a href="{{route('admin.reviewers')}}" class="main_a">회원관리</a>
                 <ul class="sub">
                     <li><a href="{{route('admin.reviewers')}}">리뷰어회원</a></li>
-                    <li><a href="">광고주회원</a></li>
-                    <li><a href="">하위메뉴</a></li>
+                    <li><a href="{{route('admin.advertisers')}}">광고주회원</a></li>
                 </ul>
             </li>
             <li class="main">
                 <a href="" class="main_a">캠페인관리</a>
                 <ul class="sub">
-                    <li><a href="">하위메뉴</a></li>
-                    <li><a href="">하위메뉴</a></li>
-                    <li><a href="">하위메뉴</a></li>
+                    <li><a href="{{route('admin.waitConfirmCam')}}">검수대기중 캠페인</a></li>
                 </ul>
             </li>
             <li class="main">
@@ -59,6 +56,18 @@
                     <li><a href="{{route('admin.answer')}}">답변완료</a></li>
                     <li><a href="{{route('admin.showQCategory')}}">문의 카테고리 관리</a></li>
                 </ul>
+            </li>
+            <li class="main">
+                <a href="{{route('admin.rFAQCategory')}}" class="main_a">FAQ</a>
+                <ul class="sub">
+                    <li><a href="{{route('admin.rFAQCategory')}}">리뷰어FAQ 카테고리 관리</a></li>
+                    <li><a href="{{route('reviewer_faqs.create')}}">리뷰어FAQ 관리</a></li>
+                    <li><a href="{{route('admin.aFAQCategory')}}">광고주FAQ 카테고리 관리</a></li>
+                    <li><a href="{{route('advertiser_faqs.create')}}">광고주FAQ 관리</a></li>
+                </ul>
+            </li>
+            <li class="main">
+                <a href="{{route('notices.create')}}" class="main_a">공지사항</a>
             </li>
         </ul>
     </nav>

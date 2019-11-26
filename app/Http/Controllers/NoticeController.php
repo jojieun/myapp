@@ -14,7 +14,8 @@ class NoticeController extends Controller
      */
     public function index()
     {
-        //
+        $notices = Notice::latest()->paginate(15);
+        return view('cscenters.notices.index', compact('notices'));
     }
 
     /**
@@ -24,7 +25,8 @@ class NoticeController extends Controller
      */
     public function create()
     {
-        //
+        $notices = Notice::latest()->simplePaginate(15);
+        return view('admin.notice_create', compact('notices'));
     }
 
     /**
@@ -35,7 +37,21 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+        $notice = Notice::create($request->all());
+
+        if(! $notice){
+            return back()->withInput();
+        }
+        
+       //공지사항 목록
+        $notices = Notice::latest()->simplePaginate(15);
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_notice', array('notices' => $notices))->render(),
+            ]);
     }
 
     /**
@@ -46,7 +62,9 @@ class NoticeController extends Controller
      */
     public function show(Notice $notice)
     {
-        //
+        $notice->view_count += 1;
+        $notice->save();
+        return view('cscenters.notices.show', compact('notice'));
     }
 
     /**
@@ -57,7 +75,9 @@ class NoticeController extends Controller
      */
     public function edit(Notice $notice)
     {
-        //
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_editnotice', array('notice' => $notice))->render(),
+            ]);
     }
 
     /**
@@ -69,7 +89,11 @@ class NoticeController extends Controller
      */
     public function update(Request $request, Notice $notice)
     {
-        //
+        $notice->update($request->all());
+        $notices = Notice::latest()->simplePaginate(15);
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_notice', array('notices' => $notices))->render(),
+            ]);
     }
 
     /**
@@ -80,6 +104,10 @@ class NoticeController extends Controller
      */
     public function destroy(Notice $notice)
     {
-        //
+        $notice->delete();
+        $notices = Notice::latest()->simplePaginate(15);
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_notice', array('notices' => $notices))->render(),
+            ]);
     }
 }
