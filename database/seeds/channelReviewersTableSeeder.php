@@ -73,7 +73,8 @@ class channelReviewersTableSeeder extends Seeder
 120=>'juupapa',      
 121=>'ce001121',     
 125=>'yoonhee_93',   
-127=>'namgyu08'
+127=>'namgyu08',
+129=>'over_shoulder'
     ];
         foreach($naverbs as $key=>$value){
             DB::table('channel_reviewers')->insert([
@@ -171,7 +172,8 @@ class channelReviewersTableSeeder extends Seeder
 117=>'cutesiwoo',
 118=>'mirine_02',
 121=>'lovely_eun__c',
-127=>'gyuseon87'
+127=>'gyuseon87',
+            129=>'o_o.overshoulder'
         ];
         foreach($instas as $key=>$value){
             DB::table('channel_reviewers')->insert([
@@ -186,7 +188,8 @@ class channelReviewersTableSeeder extends Seeder
         $youtubes=[
 42=>'UCGU6Ij7IvD7Dr5CfGkXOSsg',
 45=>'UCW8rtF6agolWJWt6tSxj_sQ',
-107=>'onnuri0527'
+107=>'onnuri0527',
+            129=>'UCOjXmBghFRVM0Q8TZ-8aCLQ'
         ];
         foreach($youtubes as $key=>$value){
             DB::table('channel_reviewers')->insert([
