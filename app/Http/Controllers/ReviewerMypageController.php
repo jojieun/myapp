@@ -13,10 +13,12 @@ class ReviewerMypageController extends Controller
     }
     //    마이페이지
     public function home(Request $request){
+        
         $nowdate = Carbon::now();
         $nowUser = auth()->user()->id;
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->first();
+        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+//        dd($nowUser->channelreviewers->where('channel_id',1));
 //        신청캠페인
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) use($nowdate) {
@@ -51,11 +53,12 @@ class ReviewerMypageController extends Controller
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
-        //
-        
+        //채널
+        $chls = \App\Channel::select('id','url')->get();
         return view('reviewers.mypage',[
             'user'=>$nowUser,
             'applyCampaigns'=>$applyCampaigns,
+            'chls'=>$chls,
         ]);
     }
     //캠페인신청

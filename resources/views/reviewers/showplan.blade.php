@@ -8,7 +8,7 @@
 			<div class="right-content">
                 <div class="my-reviewer-top top2">
 					<dl class="full_width">
-						<dt><b>나의 리뷰전략 완성도</b><a href="reviewer_0302.php">리뷰전략 수정</a></dt>
+						<dt><b>나의 리뷰전략 완성도</b><a href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a></dt>
 						<dd>
 							<div class="my_graph">
 								<span class="g-bar" style="width:80%">
@@ -22,40 +22,47 @@
 				<!-- 나의 리뷰전략 -->
 				<div class="table_default influencer-view bt0">
 					<div class="table_th">
-						<span class="title">사진 전공자가 만드는 고퀄리티 리뷰</span>
+						<span class="title">{{$plan->title}}</span>
 					</div>
 
 					<div class="table_td">
 						<div class="table_td_line">
 							<div class="view-img">
-								<img src="/img/sub/ico_influencer.gif" alt="">
+								@if($plan->profile_image)
+                            <img src="/files/profile/{{$plan->profile_image}}" alt="">
+                            @else
+							<img src="/img/sub/ico_influencer.gif" alt="">
+                            @endif
 							</div> 
 
 							<div class="view-info">
 								<dl>
 									<dt>이름/닉네임</dt>
-									<dd>조지은 / 조조</dd>
+									<dd>{{$plan->reviewer->name}} / {{$plan->reviewer->nickname}}</dd>
 								</dl>
 								<dl>
 									<dt>연락처</dt>
-									<dd>010-0000-0000
-										<span class="tell-ok">통화가능시간 00:00~00:00</span>
+									<dd>{{$plan->reviewer->mobile_num}}
+										<span class="tell-ok">통화가능시간 | {{$plan->call_time}}</span>
 									</dd>
 								</dl>
 								<dl>								
 									<dt>이메일</dt>
-									<dd>0000@naver.com</dd>	
+									<dd>{{$plan->reviewer->email}}</dd>	
 								</dl>
 								<dl>							
 									<dt>SNS</dt>
 									<dd class="sns">
-										<span class="ico-blog"><a href="#">blog.naver.com/0000</a></span>
-										<span class="ico-insta"><a href="#">Instagram.com/0000</a></span>
+										@foreach($plan->reviewer->channelreviewers as $chal)
+                                    <span class="channel{{$chal->channel->id}}"><a href="{{$chal->channel->url}}{{$chal->name}}">{{$chal->channel->url}}{{$chal->name}}</a></span>
+                                    @endforeach
 									</dd>	
 								</dl>
 								<dl>							
 									<dt>주소</dt>
-									<dd>경남 양산시 어쩌고 저쩌고 12-34 경남 양산시 어쩌고 저쩌고 12-34 경남 양산시 어쩌고 저쩌고 12-34 경남 양산시 어쩌고 저쩌고 12-34</dd>
+									<dd>[{{$plan->reviewer->zipcode}}]
+                                {{$plan->reviewer->address}}
+                                {{$plan->reviewer->detail_address}}</dd>
 								</dl>
 							</div>
 						</div>				
@@ -68,17 +75,24 @@
 
 							<div class="view-info">
 								<dl>
-									<dt>지역</dt>
-									<dd>부산, 경남</dd>
-								</dl>
-								<dl>
-									<dt>카테고리</dt>
-									<dd>맛집, 문화, 기타</dd>
-								</dl>
-								<dl>								
-									<dt>리워드</dt>
-									<dd>50000P</dd>	
-								</dl>
+								<dt>지역</dt>
+								<dd>@foreach($plan->areas as $area)
+                                        {{$area->region->name}} 
+                                        {{$area->name}}
+                                        @if(!$loop->last), @endif
+                                        @endforeach</dd>
+							</dl>
+							<dl>
+								<dt>카테고리</dt>
+								<dd>@foreach($plan->categories as $category)
+                                        {{$category->name}}
+                                        @if(!$loop->last), @endif
+                                        @endforeach</dd>
+							</dl>
+							<dl>								
+								<dt>리워드</dt>
+								<dd>{{$plan->reward}}P</dd>	
+							</dl>
 							</div>
 						</div>				
 					</div>
@@ -89,7 +103,7 @@
 								<h3>리뷰전략</h3>
 							</div>
 							<div class="view-info">
-								<p>리뷰어 경력 30년에 하루 방문자수 오천만을 자랑하는 이러쿵 저러쿵<br/>리뷰어 경력 30년에 하루 방문자수 오천만을 자랑하는 이러쿵 저러쿵<br/>리뷰어 경력 30년에 하루 방문자수 오천만을 자랑하는 이러쿵 저러쿵</p>
+								{!!nl2br($plan->review_plan)!!}
 							</div>
 						</div>				
 					</div>

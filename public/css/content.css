@@ -365,15 +365,18 @@ select {
 .m-top-title{ display:none;}
 
 .leftmenu ul li p.sns { padding: 20px 0 0 20px; height: 25px;}
+.leftmenu ul li p.sns a{
+    padding:0;
+}
 .leftmenu ul li p.sns span{ display:inline-block; position:relative; width: 25px ; height: 25px; font-weight:500; color:#222; margin-right:2px; }
 .leftmenu ul li p.sns span:before{ content:''; position:absolute; top:0; left:0; width: 25px; height: 25px ; background:url(/img/common/ico_sns.png) no-repeat ; background-size:auto 25px; }
 .leftmenu ul li p.sns span.off:before{ background:url(/img/common/ico_sns_off.png) no-repeat ; background-size:auto 25px; }
-.leftmenu ul li p.sns span.ico-blog:before{ background-position:0 0;}
-.leftmenu ul li p.sns span.ico-post:before{ background-position:-25px 0;}  
-.leftmenu ul li p.sns span.ico-facebook:before{ background-position:-50px 0;}
-.leftmenu ul li p.sns span.ico-insta:before{ background-position:-75px 0;}
-.leftmenu ul li p.sns span.ico-kakao:before{ background-position:-100px 0;}
-.leftmenu ul li p.sns span.ico-youtube:before{ background-position:-125px 0;}
+.leftmenu ul li p.sns span.ico-1:before{ background-position:0 0;}
+.leftmenu ul li p.sns span.ico-5:before{ background-position:-25px 0;}  
+.leftmenu ul li p.sns span.ico-3:before{ background-position:-50px 0;}
+.leftmenu ul li p.sns span.ico-2:before{ background-position:-75px 0;}
+.leftmenu ul li p.sns span.ico-6:before{ background-position:-100px 0;}
+.leftmenu ul li p.sns span.ico-4:before{ background-position:-125px 0;}
 
 .right-content{ width: calc(100% - 280px); float:right; overflow:hidden; }
 .right-content h2{ margin-top:22px; }
@@ -581,8 +584,7 @@ select {
 .table_default .table_td p.list_info .title{ font-size:19px; font-weight:500; color:#222; }
 .table_default .table_td p.list_info .txt{  color:#222; }
 .table_default .table_td p.list_info .sns span{ display:inline-block; }
-.table_default .table_td p.list_info .sns .blog,
-.table_default .table_td p.list_info .sns .insta { height: 28px; line-height: 26px ; padding: 0 15px; border-radius:15px; font-size:13px; margin:5px 5px 0 0;}
+.table_default .table_td p.list_info .sns .ch { height: 28px; line-height: 26px ; padding: 0 15px; border-radius:15px; font-size:13px; margin:5px 5px 0 0;}
 
 .table_default.review-info{ font-size:16px;}
 .table_default.review-info p.list_company{ width: 50%; text-align:left; padding-left:20px;color:#222; vertical-align:middle; }
@@ -665,13 +667,22 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .table_default.influencer-view .table_td .view-info dl dt{ width: 130px; float:left; color:#222;}
 .table_default.influencer-view .table_td .view-info dl dd{ width: calc(100% - 130px); float:right;  color:#222; line-height:150%;}
 .table_default.influencer-view .table_td .view-info dl dd span.tell-ok{ display:inline-block; border:1px solid #ddd; height: 28px; height: 26px; font-size:14px; padding: 0 10px; margin-left:10px; }
-.table_default.influencer-view .table_td .view-info dl dd.sns span{ display:inline-block; position:relative; height: 30px; padding-left:35px ; font-weight:500; color:#222; margin:0 40px 10px 0; }
+.table_default.influencer-view .table_td .view-info dl dd.sns span{ display:inline-block; position:relative; height: 30px; padding-left:35px ; font-weight:500; color:#222; margin:0 40px 10px 0; border:none;}
 .table_default.influencer-view .table_td .view-info dl dd.sns span:before{ content:''; position:absolute; top:0; left:0; width: 25px; height: 25px ; background:url(/img/common/ico_sns.png) no-repeat ; background-size:auto 25px; }
+
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel1:before{ background-position:0 0;}
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel5:before{ background-position:-25px 0;}
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel3:before{ background-position:-50px 0;}
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel2:before{ background-position:-75px 0;}
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel6:before{ background-position:-100px 0;}
+.table_default.influencer-view .table_td .view-info dl dd.sns span.channel4:before{ background-position:-125px 0;}
+/*
 .table_default.influencer-view .table_td .view-info dl dd.sns span.ico-blog:before{ background-position:0 0;}
 .table_default.influencer-view .table_td .view-info dl dd.sns span.ico-post:before{ background-position:-25px 0;}
 .table_default.influencer-view .table_td .view-info dl dd.sns span.ico-insta:before{ background-position:-75px 0;}
 .table_default.influencer-view .table_td .view-info dl dd.sns span.ico-kakao:before{ background-position:-100px 0;}
 .table_default.influencer-view .table_td .view-info dl dd.sns span.ico-youtube:before{ background-position:-125px 0;}
+*/
 
 .table_default.review-info{ font-size:16px;}
 .table_default.review-info p.list_company{ width: calc(100% - 150px); padding-left:0;}

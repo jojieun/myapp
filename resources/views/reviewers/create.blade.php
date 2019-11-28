@@ -90,26 +90,24 @@
                     <li>마케팅 정보 메일 및 SNS 수신 동의</li>
                 </ul>
 				
-				<!-- 개인정보 제 3자 제공안내 -->
 				<div class="termsTerm">
 					<div class="terms">
-						<p>서비스 이용약관동의</p>
+						@include('reviewers.terms.service')
 					</div>
-<!--            서비스 이용약관동의-->
+<!--            //서비스 이용약관동의-->
                     <div class="terms">
-						<p>개인정보 수집 및 이용동의</p>
+						@include('reviewers.terms.collect')
 					</div>
-<!--            개인정보 수집 및 이용동의-->
+<!--            //개인정보 수집 및 이용동의-->
                     <div class="terms">
-						<p>개인정보 제 3자 제공동의</p>
+						@include('reviewers.terms.collect2')
 					</div>
-<!--            개인정보 제 3자 제공동의-->
+<!--            //개인정보 제 3자 제공동의-->
                     <div class="terms">
-						<p>마케팅 정보 메일 및 SNS 수신 동의</p>
+						@include('reviewers.terms.marketing')
 					</div>
-<!--            마케팅 정보 메일 및 SNS 수신 동의-->
+<!--            //마케팅 정보 메일 및 SNS 수신 동의-->
 				</div>
-				<!-- //개인정보 제 3자 제공안내 -->
 
 				<a class="btn black h46" href="#close" id="checkAll2">전체 약관 동의</a>
 			</div>

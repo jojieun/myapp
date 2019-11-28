@@ -73,6 +73,20 @@ class CommunitiesController extends Controller
         $community->save();
         return view('communities.show', compact('community'));
     }
+    //댓글달기
+    public function makecomment(Request $request)
+    {
+        if(auth()->guard('web')->check()){
+        $comment = auth()->user()->comments()->create($request->all());
+            }
+        if(auth()->guard('advertiser')->check()){
+            $comment = auth()->guard('advertiser')->user()->comments()->create($request->all());
+        }
+        $comments = \App\Comment::where('community_id', $request->community_id)->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('communities.comments', array('comments' => $comments))->render(),
+            ]);
+    }
 
     /**
      * Show the form for editing the specified resource.

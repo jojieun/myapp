@@ -16,9 +16,13 @@
 		  		<span>{{ $user->email }}</span>
 		  	</p>
 		  	<ul> 
-		  		<li class="on"><a href="reviewer_0101.php"><span>나의 캠페인</span></a></li>
+		  		<li><a href="#"><span>나의 캠페인</span></a></li>
 		  		<li><a href="#"><span>미제출 리뷰</span></a></li>
-		  		<li><a href="{{route('plans.showmy',$user->plan->id)}}"><span>나의 리뷰전략 관리</span></a></li>
+                @if($user->plan)
+		  		<li @if(Request::segment(1)=='plans')class="on"@endif><a href="{{route('plans.showmy',$user->plan->id)}}"><span>나의 리뷰전략 관리</span></a></li>
+                @else
+                <li @if(Request::segment(1)=='plans')class="on"@endif><a href="{{route('plans.create')}}"><span>리뷰전략 등록하기</span></a></li>
+                @endif
 		  		<li><a href="#"><span>리뷰전략 열람 정보</span></a></li>
 		  		<li><a href="#"><span>리뷰어 제안</span></a></li>
 		  		<li><a href="#"><span>관심 캠페인</span></a></li>
@@ -26,12 +30,15 @@
 		  		<li><a href="#"><span>회원정보수정</span></a></li>
 		  		<li class="fw-500"><a href="#"><span>mySNS</span></a>
 		  			<p class="sns">
-		  				<span class="ico-blog @if(!$user->naver_blog) off @endif"></span>
-		  				<span class="ico-post @if(!$user->naver_post) off @endif"></span>
-		  				<span class="ico-facebook @if(!$user->facebook) off @endif"></span>
-		  				<span class="ico-insta @if(!$user->instagram) off @endif"></span>
-		  				<span class="ico-kakao @if(!$user->kakao) off @endif"></span>
-		  				<span class="ico-youtube @if(!$user->youtube) off @endif"></span>
+                    @foreach($chls as $chl)
+                         @if($val=$user->channelreviewers->where('channel_id',$chl->id)->first())
+                        <a href="{{$chl->url}}{{$val->name}}" target="_blank">
+		  				<span class="ico-{{$chl->id}}"></span>
+                        </a>
+                        @else
+                        <span class="ico-{{$chl->id}} off"></span>
+                        @endif
+                    @endforeach
 		  			</p>
 		  		</li>
 		  	</ul>

@@ -53,6 +53,9 @@ class Advertiser extends Authenticatable
     public function communities(){
         return $this->hasMany(Community::class);
     }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
     public function onetoones(){
         return $this->hasMany(Onetoone::class);
     }

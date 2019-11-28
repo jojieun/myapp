@@ -8,6 +8,7 @@ use App\QCategory;
 use App\Onetoone;
 use App\ReviewerFaqCate;
 use App\AdvertiserFaqCate;
+use App\Campaign;
 
 class AdminController extends Controller
 {
@@ -47,7 +48,7 @@ class AdminController extends Controller
     
     //리뷰어목록보기
     public static function reveiwerslist(){
-        $reviewers = \App\Reviewer::with('plan:id,reviewer_id')->simplePaginate(30);
+        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->simplePaginate(30);
         return view('admin.reviewer',[
             'reviewers'=>$reviewers,
         ]);
@@ -59,6 +60,13 @@ class AdminController extends Controller
             'showhtml' => \View::make('admin.part_plan', array('plan' => $plan))->render(),
             ]);
    }
+    //리뷰어 sns 보기
+    public static function sns($reviewerid){
+        $snss = \App\ChannelReviewer::where('reviewer_id',$reviewerid)->with('channel')->get();
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_sns', array('snss' => $snss))->render(),
+            ]);
+   }
     //광고주목록보기
     public static function advertisers(){
         $advertisers = \App\Advertiser::simplePaginate(30);
@@ -67,18 +75,28 @@ class AdminController extends Controller
         ]);
    }
     
+    //**********캠페인
     //캠페인검수대기목록
      public function waitConfirmCam()
     {   
-         $waitCampaigns = \App\Campaign::where('confirm',0)->with('brand')->get();
+         $waitCampaigns = \App\Campaign::where('confirm',0)->select('id','brand_id','created_at','name')->with('brand')->get();
         return view('admin.waitcam',[
             'waitCampaigns' => $waitCampaigns,
         ]);
     }
+    //검수대기캠페인자세히보기
+    public static function showwait(Campaign $campaign){
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_showwait', array('campaign' => $campaign))->render(),
+            ]);
+   }
     //캠페인승인
     public static function confirmCampaign(Request $request){
       \App\Campaign::where('id', $request->nowId)->update(['confirm' => 1]);
-        return;
+        $waitCampaigns = \App\Campaign::where('confirm',0)->select('id','brand_id','created_at','name')->with('brand')->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),
+            ]);
    }
     
     //일대일문의 카테고리 보기

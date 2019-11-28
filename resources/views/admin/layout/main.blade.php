@@ -11,7 +11,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=5.0, user-scalable=yes,target-densitydpi=device-dpi">	
      <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('css/adminstyle.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/adminstyle.css?v=0.2') }}" rel="stylesheet">
 	<!-- script -->
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="{{ asset('js/admin.js') }}" defer></script>
@@ -44,7 +44,7 @@
                 </ul>
             </li>
             <li class="main">
-                <a href="" class="main_a">캠페인관리</a>
+                <a href="{{route('admin.waitConfirmCam')}}" class="main_a">캠페인관리</a>
                 <ul class="sub">
                     <li><a href="{{route('admin.waitConfirmCam')}}">검수대기중 캠페인</a></li>
                 </ul>

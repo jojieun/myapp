@@ -129,6 +129,7 @@ td{
     padding:5px;
 }
 
+
 /*로그인 화면 관련*/
 .login-group{
     padding-top:20px;
@@ -166,8 +167,8 @@ input, textarea {
 .popup {
     background-color: #fff;
     display: inline-block;
-	max-width: 500px;
-	max-height: 500px;
+	max-width: 600px;
+	max-height: 700px;
     left: 50%;
     opacity: 0;
     position: fixed;
@@ -186,6 +187,9 @@ input, textarea {
 }
 .popup td{
     text-align: left;
+}
+.popup td.last{
+    text-align: center;
 }
 .overlay:target+.popup {
     top: 48%;

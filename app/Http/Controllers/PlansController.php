@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Image;
 use App\Plan;
+use Carbon\Carbon;
 
 class PlansController extends Controller
 {
@@ -13,9 +14,61 @@ class PlansController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        //선택채널구하기
+        $chl = $request->chl?:null;
+        //선택카테고리구하기
+        $cate = $request->cate ?:null;
+        //지역구하기
+        if($request->myarea){
+            $myarea =[$request->myarea];
+            $nowmy = \App\Area::whereId($myarea)->first();
+            if($nowmy->name == '전체'){
+                $nowmys = \App\Area::where('region_id',$nowmy->region_id)->select('id')->get();
+                $myarea =array();
+                foreach($nowmys as $nowmy)
+                {
+                    $myarea[] = $nowmy->id;
+                }
+            }
+        }
+        else{
+            $myarea = null;
+        }
+         $plans = Plan::with(['categories','areas','channels','reviewer'])
+            ->orderBy('plans.updated_at','desc')->paginate(60);
+        
+//        $plans = Plan::when($myarea, function($query, $myarea){
+//                 return $query->whereHas('areas', function($q) use ($myarea){
+//                     $q->whereIn('id',$myarea);
+//                 });
+//                 }, function($query){
+//                $query->with('areas');
+//        })
+//            ->orderBy('plans.updated_at','desc')->paginate(60);
+        
+        
+        $nowdate = Carbon::now();//오늘날짜  
+        foreach ($plans as $key => $loop)
+		{
+            $er = new Carbon($loop->updated_at);//최종수정일
+            $loop->up = $er->diffForHumans($nowdate);//날짜차이
+		}
+        
+        if ($request->ajax()) {
+            return \Response::json([
+            'finhtml' => \View::make('influencers.part_list', array('plans' => $plans))->render(),
+            ]);
+        }
+        
+        return view('influencers.index', [
+            'plans'=>$plans,
+            'channels'=>\App\Channel::select('id','name')->get(),
+            'categories'=>\App\Category::get(),
+        ]);
+        
+        
     }
 
     /**
@@ -25,18 +78,24 @@ class PlansController extends Controller
      */
     public function create()
     {
+        //채널
+        $chls = \App\Channel::select('id','url')->get();
         return view('reviewers.createplan', [
             'user'=>auth()->user(),
             'categories' => \App\Category::get(),
             'regions' => \App\Region::get(),
+            'chls'=>$chls,
         ]);
     }
     public function tempcreate()
     {
+        //채널
+        $chls = \App\Channel::select('id','url')->get();
         return view('reviewers.temp_createplan', [
             'user'=>auth()->user(),
             'categories' => \App\Category::get(),
             'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
+            'chls'=>$chls,
         ]);
     }
 
@@ -69,6 +128,7 @@ class PlansController extends Controller
             $plan->profile_image = $filename;
         }
         $plan->save();
+        if($request->area){
         foreach($request->area as $narea){
             $newarea = new \App\AreaPlan([
                'area_id' => $narea,
@@ -76,6 +136,8 @@ class PlansController extends Controller
             ]);
             $newarea->save();
         }
+            }
+        if($request->category){
         foreach($request->category as $ncategory){
             $newcate = new \App\CategoryPlan([
                'category_id' => $ncategory,
@@ -83,7 +145,9 @@ class PlansController extends Controller
             ]);
             $newcate->save();
         }
-        return redirect(route('plans.showmy'), $plan->id);
+                        }
+
+        return redirect(route('plans.showmy', $plan->id));
     }
     
      public function tempstore(Request $request)
@@ -109,6 +173,7 @@ class PlansController extends Controller
             $plan->profile_image = $filename;
         }
         $plan->save();
+        if($request->area){
         foreach($request->area as $narea){
             $newarea = new \App\AreaPlan([
                'area_id' => $narea,
@@ -116,6 +181,8 @@ class PlansController extends Controller
             ]);
             $newarea->save();
         }
+            }
+        if($request->category){
         foreach($request->category as $ncategory){
             $newcate = new \App\CategoryPlan([
                'category_id' => $ncategory,
@@ -123,6 +190,7 @@ class PlansController extends Controller
             ]);
             $newcate->save();
         }
+                        }
         return view('reviewers.temp_planok',['name'=>auth()->user()->name]);
     }
 
@@ -132,21 +200,22 @@ class PlansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Plan $plan)
     {
-        //
+        return view('influencers.show', ['plan'=>$plan]);
     }
     
     //리뷰어 마이페이지 나의 리뷰전략 관리
-    public function showMy($id=null)
+    public function showMy($id)
     {
-        $plan =null;
-        if($id){
-            $plan = \App\Plan::whereId($id);
-        }
+
+            $plan = \App\Plan::whereId($id)->first();
+        //채널
+        $chls = \App\Channel::select('id','url')->get();
         return view('reviewers.showplan', [
             'user'=>auth()->user(),
             'plan' => $plan,
+            'chls'=>$chls,
         ]);
     }
 
@@ -156,9 +225,17 @@ class PlansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Plan $plan)
     {
-        //
+        //채널
+        $chls = \App\Channel::select('id','url')->get();
+        return view('reviewers.editplan', [
+            'user'=>auth()->user(),
+            'plan' => $plan,
+            'chls'=>$chls,
+            'categories' => \App\Category::get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -168,7 +245,7 @@ class PlansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Plan $plan)
     {
         //
     }

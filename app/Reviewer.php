@@ -42,11 +42,16 @@ protected $guarded = ['id','last_login'];
     public function communities(){
         return $this->hasMany(Community::class);
     }
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
     public function onetoones(){
         return $this->hasMany(Onetoone::class);
     }
     public function plan(){
         return $this->hasOne(Plan::class);
     }
-    
+    public function channelreviewers(){
+        return $this->hasMany(ChannelReviewer::class);
+    }
 }

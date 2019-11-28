@@ -40,15 +40,27 @@ class ReviewersController extends Controller
             'address'=>$request->input('address'),
             'detail_address'=>$request->input('detail_address'),
             'gender'=>$request->input('gender'),
-            'naver_blog'=>$request->input('naver_blog'),
-            'naver_post'=>$request->input('naver_post'),
-            'instagram'=>$request->input('instagram'),
-            'youtube'=>$request->input('youtube'),
-            'facebook'=>$request->input('facebook'),
-            'kakao'=>$request->input('kakao'),
             'receive_agreement'=>$request->input('receive_agreement'),
             'gender'=>$request->input('gender'),
         ]);
+        //sns 채널들
+        $chls = [
+            1=>'naver_blog',
+            2=>'instagram',
+            3=>'facebook',
+            4=>'youtube',
+            5=>'kakao',
+            6=>'naver_post',
+        ];
+        foreach($chls as $key=>$chl){
+            if($request->input($chl)){
+                \App\ChannelReviewer::create([
+                   'channel_id'=>$key,
+                    'reviewer_id'=>$reviewer->id,
+                    'name'=>$request->input($chl),
+                ]);
+            }
+        }
         auth()->login($reviewer);
         return view('reviewers.registerok',['name'=>auth()->user()->name]);
     }
@@ -76,15 +88,27 @@ class ReviewersController extends Controller
             'address'=>$request->input('address'),
             'detail_address'=>$request->input('detail_address'),
             'gender'=>$request->input('gender'),
-            'naver_blog'=>$request->input('naver_blog'),
-            'naver_post'=>$request->input('naver_post'),
-            'instagram'=>$request->input('instagram'),
-            'youtube'=>$request->input('youtube'),
-            'facebook'=>$request->input('facebook'),
-            'kakao'=>$request->input('kakao'),
             'receive_agreement'=>$request->input('receive_agreement'),
             'gender'=>$request->input('gender'),
         ]);
+        //sns 채널들
+        $chls = [
+            1=>'naver_blog',
+            2=>'instagram',
+            3=>'facebook',
+            4=>'youtube',
+            5=>'kakao',
+            6=>'naver_post',
+        ];
+        foreach($chls as $key=>$chl){
+            if($request->input($chl)){
+                \App\ChannelReviewer::create([
+                   'channel_id'=>$key,
+                    'reviewer_id'=>$reviewer->id,
+                    'name'=>$request->input($chl),
+                ]);
+            }
+        }
         auth()->login($reviewer);
         return view('reviewers.temp_registerok',['name'=>auth()->user()->name]);
     }

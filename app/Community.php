@@ -34,5 +34,7 @@ class Community extends Model
     public function advertiser() {
         return $this->belongsTo(Advertiser::class);
     }
-
+    public function comments(){
+        return $this->hasMany(Comment::class)->latest();
+    }
 }

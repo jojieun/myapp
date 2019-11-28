@@ -45,31 +45,12 @@
 			<div class="comment">
 				<h3>댓글</h3>
 				<p class="comment-input">
-					<textarea name="" id="" cols="30" rows="10" placeholder="댓글을 등록해 주세요" class="border"></textarea>
-					<a href="#">등록</a>
+					<textarea name="ccontent" id="ccontent" cols="30" rows="10" @if( Auth::guard('web')->check() || Auth::guard('advertiser')->check() ) placeholder="댓글을 등록해 주세요" @else placeholder="로그인하시면 댓글을 달 수 있습니다" disabled @endif class="border"></textarea>
+					<a href="" id="make_b">등록</a>
 				</p>
 				<ul class="comment-list">
-					<li>
-						<span class="comment-id">
-							<p>테크토니</p>
-							<span>2019-07-10 11:50</span>
-						</span>
-						<span class="comment-txt">감사합니다!! 도움이 되었어요! 감사합니다!! 도움이 되었어요! 감사합니다!! 도움이 되었어요! 감사합니다!! 도움이 되었어요! 감사합니다!! 도움이 되었어요! 감사합니다!! 도움이 되었어요!</span>
-					</li>
-					<li>
-						<span class="comment-id">
-							<p>테크토니</p>
-							<span>2019-07-10 11:50</span>
-						</span>
-						<span class="comment-txt">감사합니다!! 도움이 되었어요!</span>
-					</li>
-					<li>
-						<span class="comment-id">
-							<p>테크토니</p>
-							<span>2019-07-10 11:50</span>
-						</span>
-						<span class="comment-txt">감사합니다!! 도움이 되었어요!</span>
-					</li>
+                    <?$comments=$community->comments;?>
+                    @include('communities.comments')
 				</ul>
 			</div>
 			<!-- 댓글 -->
@@ -86,6 +67,28 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+    //댓글작성
+    $('#make_b').on('click', function(e){
+       e.preventDefault();
+        
+        var con = $('#ccontent').val();
+        $('#ccontent').val('');
+        if(con){
+        $.ajax({
+           type:"POST",
+           url:'{{route('makecomment')}}',
+            data:{
+                'content':con,
+            'community_id':{{$community->id}}
+            },
+            success: function(data){
+                $('.comment-list').html(data.finhtml);
+            }
+        });
+        }
+        
+    });
+    //글 삭제
     $('.button__delete').on('click', function(e){
        var communityId = $('#has_id').data('id');
 

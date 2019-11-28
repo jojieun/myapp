@@ -3,40 +3,45 @@
 <div class="sub-container bt-ddd">
 
 		<!-- 상단 카테고리 필터 -->
-		<section class="content-in-top2">
+		<section class="content-in-top">
 			<div class="list_title">
 				<h2>인플루언서</h2>
 				<div class="map">
-					<a href="#" class="btn-map">지역전체</a>
-					<div class="map-on">&nbsp;</div>
+					<a href="#" class="btn-map" id="now_area">지역전체</a>
+					<div class="map-on">
+                        <span type="button" id="all_area" class="input-button2">지역전체</span>
+                    @include('campaigns.map')
+                        <div id="show_area">
+                            <div id="region_name"></div>
+                            <div id="area_close" class="close"></div>
+                            <div id="area_area"></div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<div class="category">
 				<dl>
 					<dt>활동채널</dt>
 					<dd>
-						<span class="input-button2"><input name="" type="checkbox" id="channel01"><label for="channel01">전체</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel02"><label for="channel02">네이버블로그</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel03"><label for="channel03">인스타그램</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel04"><label for="channel04">유튜브</label></span>
-						<span class="input-button2"><input name="" type="checkbox" id="channel05"><label for="channel05">기타</label></span>
+						<span class="input-button2"><input name="channel" type="checkbox" id="channel00" value="0"><label for="channel00">전체</label></span>
+                        @foreach($channels as $chl)
+						<span class="input-button2"><input name="channel[]" type="checkbox" id="channel0{{$chl->id}}" value="{{$chl->id}}"><label for="channel0{{$chl->id}}">{{$chl->name}}</label></span>
+                        @endforeach
 					</dd>
 				</dl>
 				<dl>
 					<dt>카테고리</dt>
 					<dd>
-						<span class="input-button"><input name="" type="checkbox" id="category01"><label for="category01">전체</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category02"><label for="category02">맛집</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category03"><label for="category03">뷰티</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category04"><label for="category04">숙박</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category05"><label for="category05">문화</label></span>
-						<span class="input-button"><input name="" type="checkbox" id="category06"><label for="category06">기타</label></span>				
+						<span class="input-button"><input name="category" type="checkbox" id="category00"><label for="category00">전체</label></span>
+                        @foreach($categories as $cate)
+						<span class="input-button"><input name="category[]" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
+                        @endforeach
 					</dd>
 				</dl>
 			</div>
 		</section>	
 		<!-- //상단 카테고리 필터 -->
-		
+
 		<section class="content-in-sub mt30">
 
 			<!-- 검색 -->
@@ -49,45 +54,167 @@
 			<!-- 여기부터 게시판 목록 테이블폼입니다. -->
 			<form>
 				<div  class="table_default pd28">
-					<div class="table_th">
-						<p class="list_name">이름</p>
-						<p class="list_info">정보요약</p>
-						<p class="list_update">업데이트</p>
-					</div>
-                    @for($i=0; $i<10; $i++)
-					<div class="table_td">
-						<a href="{{route('influencers.show')}}">
-							<div class="table_td_line">
-								<p class="list_name"><span>조○○</span>조조</p>
-								<p class="list_info">
-									<span class="title">사진 전공자가 만드는 고퀄리티 리뷰</span>
-									<span class="txt">부산, 경남  |  맛집, 문화, 기타</span>
-									<span class="sns"><span class="blog">네이버블로그</span><span class="insta">인스타그램</span></span>
-								</p>
-								<p class="list_update"><span class="pc-none-770">업데이트 : &nbsp;</span>5분 전</p>
-							</div>
-						</a>
-					</div>
-                @endfor
-					
+					@include('influencers.part_list')
 				</div>	
 			</form>
 
 			<!-- 페이지 위치 -->
-			<div id="pagination_area">
-				<ul class="pagination">
-					<li class="prev"><a href="#">prev</a></li>
-					<li class="listpage_num"><b>1</b></li>
-					<li class="listpage_num"><a href= "#" class="page">2</a></li>					
-					<li class="listpage_num"><a href= "#" class="page">3</a></li>					
-					<li class="listpage_num"><a href= "#" class="page">4</a></li>					
-					<li class="listpage_num"><a href= "#" class="page">5</a></li>
-					<li class="next"><a href="#">next</a></li>
-				</ul>
-			</div>
+            @if($plans->count())
+                <div class="text-center paginator__article">
+                  {!! $plans->render() !!}
+                </div>
+                @endif
 			<!-- //페이지 위치 -->
 			<!-- 여기까지 게시판 테이블폼입니다. -->
+			</section>
+		</div>
 
-		</section>
-	</div>
+<script src="js/d3.min.js"></script>
+  
+<script>
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
+    });
+    var chl = []; //필터채널
+    //채널 전체를 선택하면 다른 체널을 해제한다
+   $('#channel00').change(function(){
+        if($('#channel00').is(':checked')){
+            $('input[name="channel[]"]').prop("checked", false);
+            chl = '';
+            getDatas();
+        }
+    });
+    //채널 선택시
+    $('input[name="channel[]"]').change(function(){
+        chl = [];
+        $('#channel00').prop("checked", false);
+        $('input[name="channel[]"]:checked').each(function(){
+            chl.push($(this).val());
+        });
+        getDatas();
+    });
+    var cate = []; //필터카테고리
+    //카테고리 전체를 선택하면 다른 카테고리를 해제한다
+   $('#category00').change(function(){
+        if($('#category00').is(':checked')){
+            $('input[name="category[]"]').prop("checked", false);
+            cate = [];
+            getDatas();
+        }
+    });
+    //카테고리 선택시
+    $('input[name="category[]"]').change(function(){
+        cate = [];
+        $('#category00').prop("checked", false);
+        $('input[name="category[]"]:checked').each(function(){
+            cate.push($(this).val());
+        });
+        getDatas();
+    });
+    
+    //지역선택관련
+    var now_area = '지역전체';
+    
+    $('#now_area').click(function(e){
+        e.preventDefault();
+        $('.map-on').toggle();
+    })
+    
+    //지역별값넣기
+    $('#sejong').attr('data-r',17);
+    $('#chungnam').attr('data-r',5);
+    $('#jeju').attr('data-r',13);
+    $('#gyeongnam').attr('data-r',9);
+    $('#gyeongbuk').attr('data-r',7);
+    $('#jeonbuk').attr('data-r',15);
+    $('#chungbuk').attr('data-r',14);
+    $('#gangwon').attr('data-r',12);
+    $('#gyeonggi').attr('data-r',2);
+    $('#jeonnam').attr('data-r',11);
+    $('#ulsan').attr('data-r',16);
+    $('#busan').attr('data-r',8);
+    $('#daegu').attr('data-r',6);
+    $('#daejeon').attr('data-r',4);
+    $('#incheon').attr('data-r',3);
+    $('#seoul').attr('data-r',1);
+    $('#gwangju').attr('data-r',10);
+
+    $('.regions').attr('style','');
+  function go_branch(city_do) {
+      var Arr = Array("sejong","chungnam","jeju","gyeongnam","gyeongbuk","jeonbuk","chungbuk","gangwon","gyeonggi","jeonnam","ulsan","busan","daegu","daejeon","incheon","seoul","gwangju");
+    var strArr = Array("세종특별자치시","충청남도","제주특별자치도","경상남도","경상북도","전라북도","충청북도","강원도","경기도","전라남도","울산광역시","부산광역시","대구광역시","대전광역시","인천광역시","서울특별시","광주광역시");
+      var idx = Arr.indexOf(city_do);
+      now_area = strArr[idx]+' ';
+      $('#region_name').html(now_area);
+  }
+    $('#show_area').hide();
+    //지역닫기
+    $('#area_close').click(function(){
+       $('#show_area').hide(); 
+    });
+    $('.regions').click(function(e){
+       e.preventDefault();
+        $('.regions').attr('style','');
+      $(this).attr('style','fill: rgb(190, 190, 190);');
+        var now = $(this).attr('data-r');
+        var $data = new FormData();
+        $data.append('region', now);
+        $.ajax({
+        type: 'POST',
+        url: "{{ route('campaigns.makearea') }}",
+        data: $data,
+        success: function(data) {
+            var obj = data.areas;
+            var your_html = "";
+            $.each(obj, function (key, val) {
+                your_html += "<span data-a='"+val.id+"' class='input-button2'>" +  val.name + "</span>"
+            });
+            $('#show_area').show(); 
+            $('#area_area').html(your_html); 
+        },
+        error: function(data) {
+        },
+        processData: false,
+        contentType: false
+        });
+    });
+    //지역선택
+    var myarea = '';
+    $('#area_area').on('click', 'span', function(){
+       myarea = $(this).attr('data-a');
+        $('#now_area, #area_close').trigger('click');
+        now_area += $(this).html();
+        getDatas();
+    });
+    $('#all_area').on('click', function(){
+        myarea = '';
+        now_area = '지역전체';
+        $('#now_area, #area_close').trigger('click');
+        getDatas();
+    });
+    
+    //필터 ajax
+    function getDatas() {
+    $.ajax({
+        url : "{{ route('influencers.index') }}",
+        type : "post",
+        dataType: 'json',
+        data:{
+            chl: chl,
+            cate: cate,
+            myarea: myarea
+        },
+        success:function(data){
+          $('.table_default').html(data.finhtml);
+            $('#now_area').html(now_area)
+        },
+        error: function(request,status,error) {
+            alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+        }
+        });
+    }
+    
+</script>
 @endsection

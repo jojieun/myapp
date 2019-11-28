@@ -47,7 +47,22 @@ Route::resource('notices', 'NoticeController');
 
 
 /********커뮤니티**********/
+Route::post('makecomment','CommunitiesController@makecomment')->name('makecomment');
 Route::resource('communities', 'CommunitiesController');
+
+
+/********리뷰전략 인플루언서**********/
+//나의 리뷰전략 보기
+Route::get('plans/showmy/{id}',[
+    'as'=>'plans.showmy',
+    'uses' => 'PlansController@showMy'
+]);
+//카테고리기능이 들어간 인플루언서 index
+Route::match(['get', 'post'],'influencer/index', 'PlansController@index')->name('influencers.index');
+Route::resource('plans', 'PlansController')->except([
+    'index'
+]);
+
 
 /******** 관리자admin **********/
 //관리자admin페이지메인
@@ -64,12 +79,16 @@ Route::get('admin/logout','AdminController@destory')->name('admin.logout');
 Route::get('admin/reviewers','AdminController@reveiwerslist')->name('admin.reviewers');
 //관리자-리뷰어회원->리뷰전략보기
 Route::get('admin/plan/{id}','AdminController@plan')->name('admin.plan');
+//관리자-리뷰어회원->sns보기
+Route::get('admin/sns/{reviewerid}','AdminController@sns')->name('admin.sns');
 
 //관리자-광고주회원목록
 Route::get('admin/advertisers','AdminController@advertisers')->name('admin.advertisers');
 
 //캠페인검수대기목록
 Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admin.waitConfirmCam');
+//캠페인검수대기목록 - show
+Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
 
@@ -133,12 +152,6 @@ Route::get('advertiser/managecampaign',[
     'as'=>'advertisers.managecampaign',
     'uses' => 'AdvertiserMypageController@manageCampaign'
 ]);
-
-
-
-//임시인플루언서
-Route::view('influencer/index','influencers.index')->name('influencers.index'); 
-Route::view('influencer/show','influencers.show')->name('influencers.show'); 
  
 
 
@@ -242,20 +255,11 @@ Route::post('reset', [
 ]);
 
 
-/* 커뮤니티 관련 */
-Route::resource('communities', 'CommunitiesController');
-
-/* 리뷰전략 관련 */
-Route::get('plans/showmy/{id}',[
-    'as'=>'plans.showmy',
-    'uses' => 'PlansController@showMy'
-]);
-Route::resource('plans', 'PlansController');
 
 
 
 
-Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
