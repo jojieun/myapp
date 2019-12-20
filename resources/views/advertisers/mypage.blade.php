@@ -7,7 +7,7 @@
                 
 				<p class="my-btn">
 					<span><a href="{{ route('campaigns.create') }}" class="btn w50">새 캠페인 등록하기</a></span>
-					<span><a href="#" class="btn w50 fl-r">캠페인 대행 의뢰하기</a></span>
+					<span><a href="{{ route('agency.create') }}" class="btn w50 fl-r">캠페인 대행 의뢰하기</a></span>
 				</p>
 
 				<div class="my-campaign">
@@ -100,8 +100,8 @@
 				</div>
 
 				<p class="my-btn-bottom">
-					<span><a href="#">인플루언서 검색</a></span>
-					<span><a href="client_0501.php">회원정보수정</a></span>
+					<span><a href="{{ route('influencers.index') }}">인플루언서 검색</a></span>
+					<span><a href="{{ route('advertisers.edit_info') }}">회원정보수정</a></span>
 				</p>
                              </div>
 			<!-- //오른쪽 컨텐츠 -->

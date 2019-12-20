@@ -38,7 +38,7 @@
                 <td>{{ $reviewer->updated_at }}</td>
                 <td>{{ $reviewer->point }}</td>
                 <td>
-                    @if($reviewer->channelreviewers)
+                    @if(isset($reviewer->channelreviewers))
                     <a class="sns" data-id="{{$reviewer->id}}" href="">sns보기</a>
                     @else
                     없음

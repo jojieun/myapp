@@ -124,7 +124,7 @@
 						</tr>
 						<tr>	
 							<th>비밀번호 확인</th>
-							<td class="{{ $errors->has('password') ? 'has-error' : '' }}">
+							<td class="{{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
                 <input type="password" name="password_confirmation" placeholder="비밀번호 확인" />
                             {!! $errors->first('password_confirmation','<span class="red">:message</span>')!!}</td>							
 						</tr>

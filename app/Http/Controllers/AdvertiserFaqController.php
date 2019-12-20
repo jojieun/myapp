@@ -60,7 +60,7 @@ class AdvertiserFaqController extends Controller
             'answer' => 'required',
             'advertiser_faq_cate_id' => 'required',
         ]);
-        $advertiserfaq = AdvertiserFaq::create($request->all());
+        $advertiserfaq = AdvertiserFaq::create($request->only('question', 'answer', 'advertiser_faq_cate_id'));
 
         if(! $advertiserfaq){
             return back()->withInput();
@@ -110,7 +110,7 @@ class AdvertiserFaqController extends Controller
      */
     public function update(Request $request, AdvertiserFaq $advertiserFaq)
     {
-        $advertiserFaq->update($request->all());
+        $advertiserFaq->update($request->only('question', 'answer', 'advertiser_faq_cate_id'));
         $advertiserfaqs = AdvertiserFaq::with('aFAQcategory')->latest()->get();
         return \Response::json([
             'finhtml' => \View::make('admin.part_advertiserfaq', array('advertiserfaqs' => $advertiserfaqs))->render(),

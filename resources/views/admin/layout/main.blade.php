@@ -50,6 +50,9 @@
                 </ul>
             </li>
             <li class="main">
+                <a href="{{route('admin.agency')}}" class="main_a">캠페인 대행 의뢰</a>
+            </li>
+            <li class="main">
                 <a href="{{route('admin.notanswer')}}" class="main_a">1:1문의</a>
                 <ul class="sub">
                     <li><a href="{{route('admin.notanswer')}}">미답변</a></li>

@@ -207,6 +207,7 @@
             myarea: myarea
         },
         success:function(data){
+//            alert(data.what);
           $('.table_default').html(data.finhtml);
             $('#now_area').html(now_area)
         },

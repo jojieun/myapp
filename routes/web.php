@@ -16,6 +16,8 @@ Route::get('/origin', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
 ]);
+//개인정보취급방침
+Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
 
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
@@ -92,6 +94,9 @@ Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
 
+//캠페인 대행의뢰 목록
+Route::get('admin/agency', 'AgencyController@admin_index')->name('admin.agency');
+
 //관리자-미답변 일대일문의 목록
 Route::get('admin/notanswer','AdminController@notAnswerO')->name('admin.notanswer');
 //관리자-미답변 일대일문의 답변창
@@ -127,7 +132,7 @@ Route::delete('admin/delaFAQCategory/{id}','AdminController@delaFAQCategory');
 
 
 
-//리뷰어마이페이지
+/******리뷰어마이페이지*********/
 Route::get('reviewer/mypage',[
     'as'=>'reviewers.mypage',
     'uses' => 'ReviewerMypageController@home'
@@ -143,16 +148,32 @@ Route::post('reviewer/bookmark',[
     'uses' => 'ReviewerMypageController@bookmark'
 ]);
 
-//광고주마이페이지
+/******광고주마이페이지*********/
+//마이페이지 메인
 Route::get('advertiser/mypage',[
     'as'=>'advertisers.mypage',
     'uses' => 'AdvertiserMypageController@home'
 ]);
+//캠페인 관리
 Route::get('advertiser/managecampaign',[
     'as'=>'advertisers.managecampaign',
     'uses' => 'AdvertiserMypageController@manageCampaign'
 ]);
- 
+
+//캠페인 대행 의뢰
+Route::resource('advertiser/agency', 'AgencyController');
+
+//회원정보수정 페이지
+Route::get('advertiser/edit_info',[
+    'as'=>'advertisers.edit_info',
+    'uses' => 'AdvertiserMypageController@edit_info'
+]);
+//회원정보수정 입력
+Route::put('advertiser/update/{advertiser}',[
+    'as'=>'advertisers.update',
+    'uses' => 'AdvertiserMypageController@update'
+]);
+
 
 
 

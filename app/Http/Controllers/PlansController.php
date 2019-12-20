@@ -36,19 +36,36 @@ class PlansController extends Controller
         else{
             $myarea = null;
         }
-         $plans = Plan::with(['categories','areas','channels','reviewer'])
+        
+
+        $plans = Plan::when($myarea, function($query, $myarea){
+            return $query->join('area_plan', function ($join) use ($myarea) {
+                    $join->on('plans.id','=','area_plan.plan_id')
+                    ->whereIn('area_plan.area_id',$myarea);
+                 });
+        })->when($cate, function($query, $cate){
+                 return $query->join('category_plan', function ($join) use ($cate) {
+                    $join->on('plans.id','=','category_plan.plan_id')
+                    ->whereIn('category_plan.category_id',$cate);
+                 });
+            })
+            ->when($chl, function($query, $chl){
+                 return $query->join('channel_reviewers', function ($join) use ($chl) {
+                    $join->on('plans.reviewer_id', '=', 'channel_reviewers.reviewer_id')
+                    ->whereIn('channel_reviewers.channel_id',$chl);
+                 });
+                })
+            ->select(
+            'plans.id',
+            'plans.updated_at',
+            'plans.reviewer_id',
+            'plans.title'
+        )
+            ->distinct('plans.id')
+            ->with(['categories','areas','channels','reviewer'])
             ->orderBy('plans.updated_at','desc')->paginate(60);
-        
-//        $plans = Plan::when($myarea, function($query, $myarea){
-//                 return $query->whereHas('areas', function($q) use ($myarea){
-//                     $q->whereIn('id',$myarea);
-//                 });
-//                 }, function($query){
-//                $query->with('areas');
-//        })
-//            ->orderBy('plans.updated_at','desc')->paginate(60);
-        
-        
+
+ 
         $nowdate = Carbon::now();//오늘날짜  
         foreach ($plans as $key => $loop)
 		{

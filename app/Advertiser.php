@@ -62,5 +62,8 @@ class Advertiser extends Authenticatable
     public function campaigns(){
         return $this->hasMany(Campaign::class);
     }
+    public function agencies(){
+        return $this->hasMany(Agency::class);
+    }
 
 }

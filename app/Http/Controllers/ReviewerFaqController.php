@@ -58,9 +58,9 @@ class ReviewerFaqController extends Controller
         $this->validate($request,[
             'question' => 'required|max:255',
             'answer' => 'required',
-            'reviewer_faq_cate_id' => 'required',
+            'reviewer_faq_cate_id' => 'required'
         ]);
-        $reviewerfaq = ReviewerFaq::create($request->all());
+        $reviewerfaq = ReviewerFaq::create($request->only('question', 'answer', 'reviewer_faq_cate_id'));
 
         if(! $reviewerfaq){
             return back()->withInput();

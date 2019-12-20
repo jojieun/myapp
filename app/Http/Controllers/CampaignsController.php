@@ -325,16 +325,19 @@ foreach ($campaigns as $key => $loop)
             $campaign->sub_image3 = $filename;
         }
         $campaign -> save();
-        
+        if($request->has('exposure_id')){
         $campaignexposure = \App\CampaignExposure::create([
             'campaign_id'=>$campaign->id,
             'exposure_id'=>$request->input('exposure_id'),
         ]);
+        }
+        if($request->has('promotion_id')){
         $campaignpromotion = \App\CampaignPromotion::create([
             'campaign_id'=>$campaign->id,
             'promotion_id'=>$request->input('promotion_id'),
         ]);
-        if(! $campaign || ! $campaignexposure || ! $campaignpromotion){
+        }
+        if(! $campaign){
             return back()->withInput();
         }
         return redirect(route('campaigns.storeend'));

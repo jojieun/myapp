@@ -421,7 +421,7 @@ select {
 .table_form2 dl dt.lh120{ line-height:120% ;}
 .table_form2 dl dd{ width:calc(100% - 160px); float:right; padding:5px 0; text-align:left; font-size:17px; }
 .table_form2 dl dd b{ font-weight:400; }
-.table_form2 dl dd input[type=text], .table_form2 dl dd input[type=date], .table_form2 dl dd input[type=number]{ width: 175px; height: 40px; line-height:40px ; border:1px solid #ddd; font-size:17px; color:#222; font-weight:300;}
+.table_form2 dl dd input[type=text], .table_form2 dl dd input[type=password], .table_form2 dl dd input[type=date], .table_form2 dl dd input[type=number]{ width: 175px; height: 40px; line-height:40px ; border:1px solid #ddd; font-size:17px; color:#222; font-weight:300;}
 
 .table_form2 dl dd input[name=reward]{
     width:200px !important;
@@ -1601,7 +1601,7 @@ ul.pagination li a[aria-label="Next »"]{
 	.campaign_tab li.on a{ border-bottom:4px solid #222; font-weight:600;}
 
 	.campaign_tab2{ display:block; width: 100%; position:fixed; left:0; bottom:0px; min-height: 60px; z-index:9; }
-	.campaign_tab2 li a{ display:block; width:20%;  float:left; box-sizing:border-box; height:60px; padding-top:15px; border-top:0.75px solid #ddd; border-right:0.75px solid #ddd; font-size:13px; color:#222; text-align:center; background: #f4f4f4;}
+	.campaign_tab2 li a{ display:block; width:25%;  float:left; box-sizing:border-box; height:60px; padding-top:15px; border-top:0.75px solid #ddd; border-right:0.75px solid #ddd; font-size:13px; color:#222; text-align:center; background: #f4f4f4;}
 	.campaign_tab2 li.fw-500 a{ width: 40%; padding-top:10px;}
 	.campaign_tab2 li a span{display:block; line-height:120%; }
 	.campaign_tab2 li.on a{ border-top:2px solid #222; font-weight:600; background: #fff;}

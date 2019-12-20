@@ -67,9 +67,9 @@
            url:'{{route('reviewer_faqs.store')}}',
             data:{
                 'question':$('#makefaq input[name=question]').val(),
-                'answer':$('#makefaq textarea[name=answer]').val(),
-                'reviewer_faq_cate_id':$('#makefaq select[name=cate]').val(),
-            },
+            'answer':$('#makefaq textarea[name=answer]').val(),
+            'reviewer_faq_cate_id':$('#makefaq select[name=cate]').val()
+        },
             success: function(data){
                 $('#list').html(data.finhtml);
                 $('#makefaq')[0].reset();

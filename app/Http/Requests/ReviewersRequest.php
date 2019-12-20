@@ -25,7 +25,6 @@ class ReviewersRequest extends FormRequest
     {
         return [
             'email'=>['required']
-            
         ];
     }
 }

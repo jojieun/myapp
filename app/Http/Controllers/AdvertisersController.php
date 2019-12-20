@@ -23,7 +23,7 @@ class AdvertisersController extends Controller
             'email' => 'required|email|max:255|unique:advertisers',
             'name' => 'required|max:30',
             'password' => 'required|confirmed|min:6',
-            'mobile_num' => 'required|digits:11',
+            'mobile_num' => 'required|digits:11|unique:advertisers',
             'category_id' => 'required',
             'brand_name' => 'required|max:210'
         ]);

@@ -157,7 +157,7 @@
 				<ul class="footer-link-lists">
 					<li><a href="#">서비스소개</a>｜</li>
 					<li><a href="#">이용약관</a>｜</li>
-					<li><a href="#">개인정보처리방침</a>｜</li>
+					<li><a href="{{route('privacy_policy')}}">개인정보처리방침</a>｜</li>
 					<li class="br0"><a href="#">운영정책</a></li>
 				</ul>	
 			</div>

@@ -56,10 +56,10 @@ class OnetooneController extends Controller
             'qcategory_id' => 'required',
         ]);
         if(auth()->guard('web')->check()){
-        $onetoone = auth()->user()->onetoones()->create($request->all());
+        $onetoone = auth()->user()->onetoones()->create($request->only('qcategory_id','title','content'));
             }
         if(auth()->guard('advertiser')->check()){
-            $onetoone = auth()->guard('advertiser')->user()->onetoones()->create($request->all());
+            $onetoone = auth()->guard('advertiser')->user()->onetoones()->create($request->only('qcategory_id','title','content'));
         }
         if(! $onetoone){
             return back()->withInput();

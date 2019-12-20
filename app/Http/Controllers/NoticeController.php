@@ -41,7 +41,7 @@ class NoticeController extends Controller
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
-        $notice = Notice::create($request->all());
+        $notice = Notice::create($request->only('title', 'content'));
 
         if(! $notice){
             return back()->withInput();
@@ -89,7 +89,7 @@ class NoticeController extends Controller
      */
     public function update(Request $request, Notice $notice)
     {
-        $notice->update($request->all());
+        $notice->update($request->only('title', 'content'));
         $notices = Notice::latest()->simplePaginate(15);
         return \Response::json([
             'finhtml' => \View::make('admin.part_notice', array('notices' => $notices))->render(),

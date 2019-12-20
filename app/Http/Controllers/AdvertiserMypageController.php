@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Hash;
+use App\Advertiser;
 
 class AdvertiserMypageController extends Controller
 {
@@ -50,7 +51,6 @@ class AdvertiserMypageController extends Controller
 //    캠페인관리
     public function manageCampaign(){
         $nowuser = auth()->guard('advertiser')->user();
-//        dd($nowuser);
         //        검수중
         $waitCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
             ->where('confirm',0)
@@ -156,4 +156,36 @@ class AdvertiserMypageController extends Controller
             'user'=>$nowuser,
         ]);
     }
+    
+    //    회원정보수정 화면 출력
+    public function edit_info(){
+        $nowuser = auth()->guard('advertiser')->user();
+        return view('advertisers.edit_info',[
+            'user'=>$nowuser
+        ]);
+    }
+    public function update(Request $request, Advertiser $advertiser)
+    {
+        $this->validate($request,[
+            'origin_pw' => ['required',
+                            function ($attribute, $value, $fail) use ($advertiser) {
+                                    if (!Hash::check($value, $advertiser->password)) {
+                                        $fail('기존 비밀번호가 다릅니다');
+                                    }
+                                },
+                            ],
+            'name' => 'required|max:30',
+            'password' => 'required|confirmed|min:8',
+            'mobile_num' => 'required|digits:11',
+        ]);
+        $advertiser->update([
+            'name'=>$request->input('name'),
+            'password'=>bcrypt($request->input('password')),
+            'mobile_num'=>$request->input('mobile_num'),
+        ]);
+        return view('advertisers.update_success',[
+            'user'=>$advertiser
+        ]);
+    }
+    
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\QCategory;
 use App\Onetoone;
 use App\ReviewerFaqCate;
 use App\AdvertiserFaqCate;
 use App\Campaign;
+use App\Qcategory;
 
 class AdminController extends Controller
 {
@@ -48,10 +48,8 @@ class AdminController extends Controller
     
     //리뷰어목록보기
     public static function reveiwerslist(){
-        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->simplePaginate(30);
-        return view('admin.reviewer',[
-            'reviewers'=>$reviewers,
-        ]);
+        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->simplePaginate(200);
+        return view('admin.reviewer')->with('reviewers',$reviewers);
    }
     //리뷰전략보기
     public static function plan($id){
@@ -114,7 +112,7 @@ class AdminController extends Controller
         $this->validate($request,[
             'name' => 'required|max:255',
         ]);
-        $newqcategory = QCategory::create($request->only('name'));
+        $newqcategory = Qcategory::create($request->only('name'));
 
         if(! $newqcategory){
             return back()->withInput();
@@ -153,7 +151,7 @@ class AdminController extends Controller
     //답변 저장, 미답변 1:1문의 목록출력
     public function saveAnswer(Request $request, Onetoone $onetoone)
     {
-        $onetoone->update($request->all());
+        $onetoone->update($request->only('answer_title','answer'));
         $onetoones = Onetoone::where('answer',null)->select('id','title','qcategory_id','reviewer_id','advertiser_id','created_at')
             ->with('qcategory','reviewer','advertiser')->get();
          return \Response::json([
@@ -170,7 +168,7 @@ class AdminController extends Controller
     //답변 새로 저장 후 답변완료 1:1목록 출력
     public function saveAnswer2 (Request $request, Onetoone $onetoone)
     {
-        $onetoone->update($request->all());
+        $onetoone->update($request->only('answer_title','answer'));
         $onetoones = Onetoone::where('answer','!=',null)->select('id','title','qcategory_id','reviewer_id','advertiser_id','created_at')
             ->with('qcategory','reviewer','advertiser')->get();
          return \Response::json([
