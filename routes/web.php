@@ -131,11 +131,34 @@ Route::post('admin/saveaFAQCategory','AdminController@saveaFAQCategory')->name('
 Route::delete('admin/delaFAQCategory/{id}','AdminController@delaFAQCategory');
 
 
-
 /******리뷰어마이페이지*********/
+//마이페이지 메인
 Route::get('reviewer/mypage',[
     'as'=>'reviewers.mypage',
     'uses' => 'ReviewerMypageController@home'
+]);
+//리뷰제출(ajax리뷰만들기)
+Route::post('reviewer/create_review',[
+    'as'=>'reviewers.create_review',
+    'uses' => 'ReviewerMypageController@create_review'
+]);
+//리뷰수정
+Route::get('reviewer/edit_review/{review}',[
+    'uses' => 'ReviewerMypageController@edit_review'
+]);
+//리뷰수정입력
+Route::put('reviewer/update_review/{review}',[
+    'uses' => 'ReviewerMypageController@update_review'
+]);
+//나의캠페인
+Route::get('reviewer/my_campaign',[
+    'as'=>'reviewers.my_campaign',
+    'uses' => 'ReviewerMypageController@my_campaign'
+]);
+//미제출리뷰
+Route::get('reviewer/not_submit',[
+    'as'=>'reviewers.not_submit',
+    'uses' => 'ReviewerMypageController@not_submit'
 ]);
 //리뷰어캠페인신청
 Route::post('reviewer/apply',[
@@ -147,6 +170,25 @@ Route::post('reviewer/bookmark',[
     'as'=>'reviewers.bookmark',
     'uses' => 'ReviewerMypageController@bookmark'
 ]);
+//리뷰전략열람정보
+Route::get('reviewer/plan_reading',[
+    'as'=>'reviewers.plan_reading',
+    'uses' => 'ReviewerMypageController@plan_reading'
+]);
+//리뷰전략열람정보 연관 모집중캠페인 보기 Ajax
+Route::get('reviewer/show_campaign/{adId}',[
+    'uses' => 'ReviewerMypageController@show_campaign'
+]);
+//리뷰어 제안
+Route::get('reviewer/suggestion',[
+    'as'=>'reviewers.suggestion',
+    'uses' => 'ReviewerMypageController@suggestion'
+]);
+//리뷰어제안 거절
+Route::post('reviewer/no_accept/{suggestId}',[
+    'uses' => 'ReviewerMypageController@no_accept'
+]);
+
 
 /******광고주마이페이지*********/
 //마이페이지 메인
@@ -159,10 +201,32 @@ Route::get('advertiser/managecampaign',[
     'as'=>'advertisers.managecampaign',
     'uses' => 'AdvertiserMypageController@manageCampaign'
 ]);
-
+//모집현황(리뷰어선정)
+Route::get('advertiser/managecampaign/recruit_campaign/{campaign}',[
+    'as'=>'advertisers.recruit_campaign',
+    'uses' => 'AdvertiserMypageController@recruit_campaign'
+]);
+//리뷰어선정
+Route::post('advertiser/managecampaign/select_reviewer/{campaign}',[
+    'as'=>'advertisers.select_reviewer',
+    'uses' => 'AdvertiserMypageController@select_reviewer'
+]);
+//리뷰어 선정취소
+Route::post('advertiser/managecampaign/deselect_reviewer/{campaign}',[
+    'as'=>'advertisers.deselect_reviewer',
+    'uses' => 'AdvertiserMypageController@deselect_reviewer'
+]);
+//모집현황에서 리뷰전략 보기
+Route::get('show_plan/{reviewer_id}',[
+    'uses' => 'AdvertiserMypageController@show_plan'
+]);
+//진행결과보기
+Route::get('advertiser/managecampaign/submit_campaign/{campaign}',[
+    'as'=>'advertisers.submit_campaign',
+    'uses' => 'AdvertiserMypageController@submit_campaign'
+]);
 //캠페인 대행 의뢰
 Route::resource('advertiser/agency', 'AgencyController');
-
 //회원정보수정 페이지
 Route::get('advertiser/edit_info',[
     'as'=>'advertisers.edit_info',

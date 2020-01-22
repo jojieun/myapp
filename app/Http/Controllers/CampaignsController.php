@@ -47,7 +47,7 @@ class CampaignsController extends Controller
         $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','v')
             ->where('confirm',1)
-            ->whereDate('end_recruit','>',$nowdate)
+            ->whereDate('end_recruit','>=',$nowdate)
             ->when($myarea, function($query, $myarea){
                  return $query->join('areas', function ($join) use ($myarea) {
                     $join->on('campaigns.area_id','=','areas.id')
@@ -129,7 +129,7 @@ foreach ($campaigns as $key => $loop)
         $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','h')
             ->where('confirm',1)
-            ->whereDate('end_recruit','>',$nowdate)
+            ->whereDate('end_recruit','>=',$nowdate)
             ->when($chl, function($query, $chl){
                  return $query->join('channels', function ($join) use ($chl) {
                     $join->on('channels.id', '=', 'campaigns.channel_id')
@@ -198,7 +198,6 @@ foreach ($campaigns as $key => $loop)
      */
     public function create()
     {
-        
         return view('campaigns.create',[
             'user'=>auth()->guard('advertiser')->user(),
             'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
@@ -210,13 +209,13 @@ foreach ($campaigns as $key => $loop)
             'promotions' => \App\Promotion::with('campaignpromotions')->get(),
         ]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    //브랜드 저장
     public function brandStore(Request $request)
     {
         $this->validate($request,[
@@ -228,7 +227,16 @@ foreach ($campaigns as $key => $loop)
             'category_id'=>$request->category_id,
             'advertiser_id'=>auth()->guard('advertiser')->user()->id,
         ]);
-        return route('campaigns.create', ['opbrand_id' => $brand->id]);
+//        return route('campaigns.create', ['opbrand_id' => $brand->id]);
+//        return response()->json(['opbrand_id' => $brand->id]);
+        
+        return \Response::json([
+            'finhtml' => \View::make('campaigns.brand', [
+                'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+                'opbrand_id' => $brand->id
+            ])->render()
+        ]);
+        
     }
     public function firstStore(Request $request)
     {
@@ -443,9 +451,19 @@ foreach ($campaigns as $key => $loop)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Campaign $campaign)
     {
-        //
+        return view('campaigns.edit',[
+            'campaign'=>$campaign,
+            'user'=>auth()->guard('advertiser')->user(),
+            'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
+            'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+            'categories' => \App\Category::get(),
+            'channels' => \App\Channel::get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
+            'exposures' => \App\Exposure::with('campaignexposures')->get(),
+            'promotions' => \App\Promotion::with('campaignpromotions')->get(),
+        ]);
     }
 
     /**
@@ -455,9 +473,64 @@ foreach ($campaigns as $key => $loop)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Campaign $campaign)
     {
-        //
+        $this->validate($request, [
+            'contact' => 'required|max:255',
+            'mission' => 'max:255',
+            'keyword' => 'max:255',
+            'area_id' => $request->form == 'v' ?'required|numeric': '',
+            'address' => $request->form == 'v' ?'required': '',
+            'visit_time' => $request->form == 'v' ?'required|max:255': 'max:255',
+        ], [
+            'area_id.numeric'=>'캠페인지역은 필수 입력사항입니다.'
+        ]);
+        
+        if($request->hasfile('main_image')){
+            \File::delete('files/'.$campaign->main_image);
+            $file = $request->file('main_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            $img = Image::make($file);
+            $img->fit(530,530);
+            $img->save($location);
+            $campaign->main_image = $filename;
+        }
+        if($request->hasfile('sub_image1')){
+            \File::delete('files/'.$campaign->sub_image1);
+            $file = $request->file('sub_image1');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image1 = $filename;
+        }
+        if($request->hasfile('sub_image2')){
+            \File::delete('files/'.$campaign->sub_image2);
+            $file = $request->file('sub_image2');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image2 = $filename;
+        }
+        if($request->hasfile('sub_image3')){
+            \File::delete('files/'.$campaign->sub_image3);
+            $file = $request->file('sub_image3');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image3 = $filename;
+        }
+        
+        
+        $campaign->update($request->except([
+            'main_image',
+            'sub_image1',
+            'sub_image2',
+            'sub_image3',
+        ]));
+        return view('campaigns.editend',[
+            'user'=>auth()->guard('advertiser')->user(),
+        ]);
     }
 
     /**

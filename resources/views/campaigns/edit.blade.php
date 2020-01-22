@@ -4,21 +4,22 @@
 
 @if(null !== Request::get('opbrand_id'))
 <?php $opbrand_id = Request::get('opbrand_id'); ?>
-@elseif(isset($campaign->brand_id))
+@elseif($campaign->brand_id)
 <?php $opbrand_id = $campaign->brand_id; ?>
 @else
 <?php $opbrand_id = 1; ?>
 @endif
 
-<form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
+<form action="{{ route('campaigns.update', $campaign->id) }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
+    {!! method_field('PUT') !!}
 			<!-- 오른쪽 컨텐츠 1 -->
 			<div class="right-content">
 				<!-- 탭 -->
 				<ul class="member-tab w3">
 					<li class="on"><b>01</b> 기본정보 입력</li>
 					<li><b>02</b> 상세정보 입력</li>
-					<li><b>03</b> 결제</li>
+					<li><b>03</b> 수정완료</li>
 				</ul>
 				<!-- //탭 -->
 				<!-- 기본정보 입력 -->
@@ -53,7 +54,7 @@
 						<dl>
 							<dt>캠페인 명</dt>
 							<dd class="{{ $errors->has('name') ? 'has-error' : '' }}">
-                                <input name="name" type="text" id="" value="{{ old('name') }}" placeholder="캠페인 이름을 입력해주세요" class="full_width" />
+                                <input name="name" type="text" id="" value="{{ old('name', $campaign->name) }}" placeholder="캠페인 이름을 입력해주세요" class="full_width" />
                                 {!! $errors->first('name','<span class="red">:message</span>')!!}
                                 <span class="red" id="name"></span>
                             </dd>
@@ -61,9 +62,9 @@
 						<dl>
 							<dt>진행형태</dt>
 							<dd class="{{ $errors->has('form') ? 'has-error' : '' }}">
-								<span class="input-button3"><input name="form" type="radio" id="visit" value="v" @if( 'v' == old('form') ) checked @endif>
+								<span class="input-button3"><input name="form" type="radio" id="visit" value="v" @if( 'v' == old('form', $campaign->form) ) checked @endif>
                                     <label for="visit">방문</label></span>
-								<span class="input-button3"><input name="form" type="radio" id="home" value="h" @if( 'h' == old('form') ) checked @endif><label for="home">재택</label></span>
+								<span class="input-button3"><input name="form" type="radio" id="home" value="h" @if( 'h' == old('form', $campaign->form)) ) checked @endif><label for="home">재택</label></span>
                                 {!! $errors->first('form','<span class="red">:message</span>')!!}
                                 <span class="red" id="form"></span>
 							</dd>
@@ -73,7 +74,7 @@
 							<dd class="{{ $errors->has('recruit_number') ? 'has-error' : '' }}">
 								<div class="number">
 									<button type="button" class="down" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"><img src="/img/common/btn_minus.gif" alt="-"></button>
-									<input type="number" min="1" value="{{ old('recruit_number') ?: 1 }}" name="recruit_number">
+									<input type="number" min="1" value="{{ old('recruit_number', $campaign->recruit_number) ?: 1 }}" name="recruit_number">
 									<button type="button" class="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"><img src="/img/common/btn_plus.gif" alt="+"></button>
                                     <span class="point-add">명</span>
 								</div>
@@ -89,12 +90,12 @@
 							</dt>
 							<dd>
                                 <div class="{{ $errors->has('offer_point') ? 'has-error' : '' }}">
-								<input name="offer_point" type="text" id="" value="{{ old('offer_point') }}" placeholder=" " class="mb10" /><span class="point-add">point  x  1인</span>
+								<input name="offer_point" type="text" id="" value="{{ old('offer_point', $campaign->offer_point) }}" placeholder=" " class="mb10" /><span class="point-add">point  x  1인</span>
                                 {!! $errors->first('offer_point','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_point"></span>
                                     </div>
                                 <div class="{{ $errors->has('offer_goods') ? 'has-error' : '' }}">
-								<input name="offer_goods" type="text" id="" value="{{ old('offer_goods') }}" placeholder="제공 물품/서비스를 입력해주세요" class="full_width mb10" />
+								<input name="offer_goods" type="text" id="" value="{{ old('offer_goods', $campaign->offer_goods) }}" placeholder="제공 물품/서비스를 입력해주세요" class="full_width mb10" />
                                 {!! $errors->first('offer_goods','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_goods"></span>
                                 </div>
@@ -104,7 +105,7 @@
 							<dt>모집채널</dt>
 							<dd class="{{ $errors->has('channel_id') ? 'has-error' : '' }} mtb10">
                                 @forelse($channels as $channel)		
-                                <span class="input-button2"><input name="channel_id" type="radio" id="channel0{{$channel->id}}" value="{{$channel->id}}" @if( $channel->id == old('channel_id') ) checked @endif><label for="channel0{{$channel->id}}">{{$channel->name}}</label></span>
+                                <span class="input-button2"><input name="channel_id" type="radio" id="channel0{{$channel->id}}" value="{{$channel->id}}" @if( $channel->id == old('channel_id', $campaign->channel_id) ) checked @endif><label for="channel0{{$channel->id}}">{{$channel->name}}</label></span>
                                 @empty
                                 모집채널이 없습니다.
                                 @endforelse
@@ -122,8 +123,8 @@
 								<p class="{{ $errors->has('start_recruit') ? 'has-error' : '' }} {{ $errors->has('end_recruit') ? 'has-error' : '' }}">
 									<span class="title">리뷰어 모집기간</span>
 									<span class="txt">
-										<input value="{{ old('start_recruit')?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" min="{{ date('Y-m-d', strtotime('tomorrow')) }}" size="20" title="시작일" class="m_mb10 input-date" /> <em>~</em>
-										<input value="{{ old('end_recruit')?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" min="{{ date('Y-m-d', strtotime('+7 day')) }}" class="m_mb10 input-date" />
+										<input value="{{ old('start_recruit', $campaign->start_recruit)?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" min="{{ date('Y-m-d', strtotime('tomorrow')) }}" size="20" title="시작일" class="m_mb10 input-date" /> <em>~</em>
+										<input value="{{ old('end_recruit', $campaign->end_recruit)?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" min="{{ date('Y-m-d', strtotime('+7 day')) }}" class="m_mb10 input-date" />
 									</span>
                                     {!! $errors->first('start_recruit','<span class="red">:message</span>')!!}
                                     {!! $errors->first('end_recruit','<span class="red">:message</span>')!!}
@@ -136,7 +137,7 @@
                                     <span class="title">리뷰 제출기간</span>
 									<span class="txt">
 										<span class="gray-box" id="submit_start">{{ date('Y-m-d', strtotime('+9 day')) }}</span> <em>~</em>
-										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit') ?: date('Y-m-d', strtotime('+22 day')) }}" min="{{ date('Y-m-d', strtotime('+22 day')) }}"/>
+										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit', $campaign->end_submit) ?: date('Y-m-d', strtotime('+22 day')) }}" min="{{ date('Y-m-d', strtotime('+22 day')) }}"/>
 									</span>
                                     {!! $errors->first('end_submit','<span class="red">:message</span>')!!}
 								</p>
@@ -162,7 +163,7 @@
 				<ul class="member-tab w3">
 					<li><b>01</b> 기본정보 입력</li>
 					<li class="on"><b>02</b> 상세정보 입력</li>
-					<li><b>03</b> 결제</li>
+					<li><b>03</b> 수정완료</li>
 				</ul>
 				<!-- //탭 -->
 				<!-- 기본정보 입력 -->
@@ -172,8 +173,8 @@
 						<dd class="{{ $errors->has('main_image') ? 'has-error' : '' }}">
 							<div class="file-area">
 								<span class="upload">
-									<label for="file" @if(old('main_image')) style="background-image:url(/files/{{old('main_image')}});" @endif>									
-										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>	
+									<label for="file" @isset($campaign->main_image) style="background-image:url(/files/{{old('main_image', $campaign->main_image)}});" @endisset>									
+										<input name="main_image" type="file" id="file" value="{{ old('main_image', $campaign->main_image) }}" placeholder="대표이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>	
 									</label>
 								</span>
 								<span class="add-txt">※ 대표이미지는 530*530 이상 정육면체 사이즈로 작업하여 업로드해주세요.</span>
@@ -187,18 +188,31 @@
 						<dd class="">
 							<div class="file-area">
 								<span class="upload2 {{ $errors->has('sub_image1') ? 'has-error' : '' }}">
-									<label for="file1"><input name="sub_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                    
+									<label for="file1">
+                                        @if(old('sub_image1', $campaign->sub_image1))
+                                    <img src="/files/{{old('sub_image1', $campaign->sub_image1)}}" width="100">
+                                    @endif
+                                        <input name="sub_image1" type="file" id="file1" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image1','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image1"></span>
 								<span class="upload2 {{ $errors->has('sub_image2') ? 'has-error' : '' }}">
-									<label for="file2"><input name="sub_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+									<label for="file2">
+                                        @if(old('sub_image2', $campaign->sub_image2))
+                                    <img src="/files/{{old('sub_image2', $campaign->sub_image2)}}" width="100">
+                                    @endif
+                                        <input name="sub_image2" type="file" id="file2" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image2','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image2"></span>
 								<span class="upload2 {{ $errors->has('sub_image3') ? 'has-error' : '' }}">
-									<label for="file3"><input name="sub_image3" type="file" id="file3" value="{{ old('sub_image3') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
-                                    {!! $errors->first('detail_image3','<span class="red">:message</span>')!!}
+									<label for="file3">
+                                        @if(old('sub_image3', $campaign->sub_image3))
+                                    <img src="/files/{{old('sub_image1', $campaign->sub_image1)}}" width="100">
+                                    @endif
+                                        <input name="sub_image3" type="file" id="file3" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                    {!! $errors->first('sub_image3','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image3"></span>
 							</div>
@@ -211,7 +225,7 @@
                                 <select id="regions" class="select_po">
                                     <option value="선택">선택</option>
                                      @forelse($regions as $region)
-										<option value="{{ $region->id }}" @if( $region->id == old('region_id') ) selected @endif>{{ $region->name }}</option>		
+										<option value="{{ $region->id }}" @if( $region->id == old('region_id', $campaign->region_id) ) selected @endif>{{ $region->name }}</option>		
                                         @empty
 										<option value="">지역이 없습니다</option>
                                         @endforelse
@@ -226,7 +240,7 @@
 					<dl>
 						<dt>방문가능 시간</dt>
 						<dd class="{{ $errors->has('visit_time') ? 'has-error' : '' }}">
-                            <input name="visit_time" type="text" id="" value="{{ old('visit_time') }}" placeholder="예) 평일 10:00~17:00" class="full_width" />
+                            <input name="visit_time" type="text" id="" value="{{ old('visit_time', $campaign->visit_time) }}" placeholder="예) 평일 10:00~17:00" class="full_width" />
                         {!! $errors->first('visit_time','<span class="red">:message</span>')!!}
                             <span class="red" id="visit_time"></span>
                         </dd>
@@ -234,9 +248,9 @@
 					<dl>
 						<dt>주소</dt>
 						<dd class="{{ $errors->has('detail_address') ? 'has-error' : '' }} {{ $errors->has('address') ? 'has-error' : '' }}">
-                            <input type="hidden" name="zipcode" placeholder="우편번호" value="{{old('zipcode')}}" id="sample6_postcode"/>
-							<input name="address" type="text" placeholder="주소" class="w150 mb10" value="{{ old('address') }}" id="sample6_address"/><button type="button" name="button" class="btn btn-check" onclick="sample6_execDaumPostcode()">주소검색</button>
-							<input name="detail_address" type="text" placeholder="상세주소" class="full_width" value="{{ old('detail_address') }}" id="sample6_detailAddress"/>
+                            <input type="hidden" name="zipcode" placeholder="우편번호" value="{{old('zipcode', $campaign->zipcode)}}" id="sample6_postcode"/>
+							<input name="address" type="text" placeholder="주소" class="w150 mb10" value="{{ old('address', $campaign->address) }}" id="sample6_address"/><button type="button" name="button" class="btn btn-check" onclick="sample6_execDaumPostcode()">주소검색</button>
+							<input name="detail_address" type="text" placeholder="상세주소" class="full_width" value="{{ old('detail_address', $campaign->detail_address) }}" id="sample6_detailAddress"/>
                             {!! $errors->first('address','<span class="red">:message</span>')!!}
                             {!! $errors->first('detail_address','<span class="red">:message</span>')!!}
                             <span class="red" id="address"></span>
@@ -246,7 +260,7 @@
                         </div>
 					<dl class="bar">
 						<dt>담당자 연락처</dt>
-						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact') }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" />
+						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact', $campaign->contact) }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" />
                         {!! $errors->first('contact','<span class="red">:message</span>')!!}
                         <span class="red" id="contact"></span>
                         </dd>
@@ -254,14 +268,14 @@
 					<dl>
 						<dt>리뷰미션</dt>
 						<dd class="{{ $errors->has('mission') ? 'has-error' : '' }}">
-							<textarea name="mission" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 캠페인 상세 미션과 요청사항을 입력해주세요" class="border2">{{ old('mission') }}</textarea>
+							<textarea name="mission" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 캠페인 상세 미션과 요청사항을 입력해주세요" class="border2">{{ old('mission', $campaign->mission) }}</textarea>
                             {!! $errors->first('mission','<span class="red">:message</span>')!!}
                             <span class="red" id="mission"></span>
 						</dd>
 					</dl>
 					<dl>
 						<dt>리뷰키워드</dt>
-						<dd class="{{ $errors->has('keyword') ? 'has-error' : '' }}"><input name="keyword" type="text" id="" value="{{ old('keyword') }}" placeholder="리뷰어가 리뷰 작성시 사용할 키워드 또는 해시태그를 입력해주세요" class="full_width" />
+						<dd class="{{ $errors->has('keyword') ? 'has-error' : '' }}"><input name="keyword" type="text" id="" value="{{ old('keyword', $campaign->keyword) }}" placeholder="리뷰어가 리뷰 작성시 사용할 키워드 또는 해시태그를 입력해주세요" class="full_width" />
                         {!! $errors->first('keyword','<span class="red">:message</span>')!!}
                             <span class="red" id="keyword"></span>
                         </dd>
@@ -269,7 +283,7 @@
                     <dl>
 						<dt>기타사항</dt>
 						<dd class="{{ $errors->has('etc') ? 'has-error' : '' }}">
-							<textarea name="etc" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 기타 사항을 입력해주세요" class="border2">{{ old('etc') }}</textarea>
+							<textarea name="etc" id="" cols="1" rows="5" placeholder="리뷰어에게 전달할 기타 사항을 입력해주세요" class="border2">{{ old('etc', $campaign->etc) }}</textarea>
                             {!! $errors->first('etc','<span class="red">:message</span>')!!}
                             <span class="red" id="etc"></span>
 						</dd>
@@ -279,7 +293,7 @@
 
 				<div class="join_btn_wrap">
 					<a class="btn" onclick="contentShow(0)">이전단계</a>
-					<a class="btn black" id="second_btn">다음단계</a>
+					<button type="submit" class="btn black" id="second_btn">수정</button>
 				</div>
 			</div>
 <!-- 오른쪽 컨텐츠 3-->
@@ -288,96 +302,18 @@
 				<ul class="member-tab w3">
 					<li><b>01</b> 기본정보 입력</li>
 					<li><b>02</b> 상세정보 입력</li>
-					<li class="on"><b>03</b> 결제</li>
+					<li class="on"><b>03</b> 수정완료</li>
 				</ul>
 				<!-- //탭 -->
 				<!-- 기본정보 입력 -->
 				<div style="overflow:hidden;">
-					<div class="table_form2 mb20 pay">
-						<dl>
-							<dt class="lh120">노출옵션 선택</dt>
-							<dd>
-								
-                                    @forelse($exposures as $exposure)
-                                    <span class="pay-option">
-									<input name="exposure_id" type="radio" value="{{$exposure->id}}" id="option{{$exposure->id}}"/>	
-									<label for="option{{$exposure->id}}" class="expo @if($exposure->limit < count($exposure->campaignexposures)) notwork @endif">
-										<h3>{{$exposure->name}}</h3>
-										<p class="txt">{!!$exposure->instruction!!}</p>
-                                        <p class="price"><b>+</b><b class="mm">{{number_format($exposure->price)}}</b>원</p>
-									</label>
-								</span>
-                                    @empty
-                                    노출옵션이 없습니다.
-                                    @endforelse
-							</dd>
-						</dl>
-						<dl class="bar">
-							<dt class="lh120">홍보옵션 선택</dt>
-							<dd>
-                                @forelse($promotions as $promotion)
-								<span class="pay-option">
-									<input name="promotion_id" type="radio" id="poption{{$promotion->id}}" value="{{$promotion->id}}"/>	
-									<label for="poption{{$promotion->id}}" class="promo @if($promotion->limit!= null && $promotion->limit < count($promotion->campaignpromotions)) notwork @endif">
-										<h3>{{$promotion->name}}</h3>
-										<p class="txt">{!!$promotion->instruction!!}</p>
-										<p class="price"><b>+</b><b class="mm">{{number_format($promotion->price)}}</b>원</p>
-									</label>
-								</span>
-								@empty
-                                홍보옵션이 없습니다.
-                                @endforelse
-							</dd>
-						</dl>
-						<dl>
-							<dt>결제내역</dt>
-							<dd>
-								<div class="price-list">
-                                    <p>
-										<span>기본 이용요금</span>
-										<span class="price"><b id="basic_price">10,000</b>원</span>
-									</p>
-									<p>
-										<span>리뷰어 제공 포인트</span>
-										<span class="price"><b id="point_price">25,000</b>원</span>
-									</p>										
-									<p id="exposure_price_wrap" class="hide">
-										<span>노출 옵션</span>
-										<span class="price"><b id="exposure_price">0</b>원</span>
-									</p>
-                                    <p id="promotion_price_wrap" class="hide">
-										<span>홍보 옵션</span>
-										<span class="price"><b id="promotion_price">0</b>원</span>
-									</p>
-									<p class="total-price">
-										<span>합계</span>
-										<span class="price"><b class="orange" id="total_price">25,000</b><span class="orange">원</span></span>
-									</p>
-								</div>
-								<div class="price-pay">
-									<p>+부가세(10%) <span id="vat">000</span>원</p>
-									<p class="txt">총 결제금액</p>
-									<p class="price"><b id="final_price">50,000</b>원</p>
-                                    <input type="hidden" name="payment">
-								</div>
-							</dd>
-						</dl>
-						<dl>
-							<dt>결제내역</dt>
-							<dd class="mt10">						
-								<span class="input-button"><input name="" type="radio" id="pay1"><label for="pay1">신용카드</label></span>
-								<span class="input-button"><input name="" type="radio" id="pay2"><label for="pay2">실시간계좌이체</label></span>
-								<span class="input-button"><input name="" type="radio" id="pay3"><label for="pay3">결제내역통장카드</label></span>
-							</dd>
-						</dl>
-					</div>
-					<p class="{{ $errors->has('provide_agreement') ? 'has-error' : '' }} fl-r"><span class="input-button mr0"><input type="hidden" value="0" name="provide_agreement" /><input type="checkbox" value="1" id="checkAgree1" name="provide_agreement" @if(old('provide_agreement')!==null) checked @endif><label for="checkAgree1">개인정보 제3자 제공에 동의합니다.</label></span></p>
+					
 				</div>
 				<!-- //기본정보 입력 -->
 
 				<div class="join_btn_wrap mt30">
 					<a class="btn" onclick="contentShow(1)">이전단계</a>
-					<button type="submit" class="btn black">결제진행</button>
+					<a href="" class="btn black">캠페인 관리</a>
 				</div>
 		</div>
 </form>
@@ -417,16 +353,6 @@
         contentShow(0);
     });
     
-//    폼 전송 전 체크
-    $('button[type=submit]').click(function(){
-       if($('#checkAgree1').is(':checked')) {
-           return true;
-       } else {
-           window.location.hash = "#popup_requir";
-           return false;
-       }
-    });
-    
     function contentShow(now){
         $('.right-content').css({
             height:0
@@ -437,51 +363,6 @@
             totalprice();
         }
     };
-//    -----content보기 설정 끝
-//    노출옵션선택
-    $('.expo:not(.notwork)').click(function(e){
-        e.preventDefault();
-        if($(this).prev().is(':checked')){
-            $(this).prev().prop('checked', false);
-            $('#exposure_price').html(0);
-            $('#exposure_price_wrap').addClass('hide');
-        }else {
-            $(this).prev().prop('checked', true);
-            var ep = $(this).find('.price').children('.mm').html();
-            $('#exposure_price_wrap').removeClass('hide');
-            $('#exposure_price').html(ep);
-        }
-        totalprice();
-    });
-//    ----------노출옵션선택
-    //    홍보옵션선택
-    $('.promo').click(function(e){
-        e.preventDefault();
-        if($(this).prev().is(':checked')){
-            $(this).prev().prop('checked', false);
-            $('#promotion_price').html(0);
-            $('#promotion_price_wrap').addClass('hide');
-        }else {
-            $(this).prev().prop('checked', true);
-            var ep = $(this).find('.price').children('.mm').html();
-            $('#promotion_price_wrap').removeClass('hide');
-            $('#promotion_price').html(ep);
-        }
-        totalprice();
-    });
-//    ----------홍보옵션선택
-//    결제총합
-    function totalprice(){
-       var total = notmoney($('#basic_price').html())+notmoney($('#point_price').html())+notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
-        var vat = total*0.1;
-        var final = total+vat;
-        $('#total_price').html(money(total));
-        $('#vat').html(money(vat));
-        $('#final_price').html(money(final));
-        $('input[name=payment]').val(final);
-    }
-//    --------결제총합
-    
 //    방문재택선택
     $('input[name=form]').change(function(){
        if($('input[name=form]:checked').val()=='v'){
@@ -519,9 +400,6 @@
         $('#fin').html(dateAdd($('input[name=end_submit]').val(), +1));
     });
 //    -----일정지정끝
-    
-
-    
     $.ajaxSetup({
        headers: {
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -557,6 +435,7 @@
            },
            success:function(data){
                $('span').filter('.red').html('');
+               $('input[name=form]').trigger('change');
                 contentShow(data.now);
           },
             error: function(data) {
@@ -579,6 +458,7 @@
                    backgroundImage:"url('"+ URL.createObjectURL(event.target.files[0])+"')"
                });
          });
+    
         //-----이미지업로드바로보기
     
     // 캠페인 지역 선택
@@ -614,46 +494,6 @@
     });
     // ------캠페인 지역 선택
        
-        
-        //    두번째페이지오류검사
-    $('#second_btn').on('click', function(e){
-       e.preventDefault();
-var $data = new FormData();
-        $data.append('main_image', $("input[name=main_image]").val());
-        $data.append('visit_time', $("input[name=visit_time]").val());
-        $data.append('contact', $("input[name=contact]").val());
-        $data.append('mission', $("textarea[name=mission]").val());
-        $data.append('keyword', $("input[name=keyword]").val());
-        $data.append('address', $("input[name=address]").val());
-        $data.append('area_id', $("select[name=area_id]").val());
-        $data.append('form', $("input[name=form]:checked").val());
-    $.ajax({
-        type: 'POST',
-        url: "{{ route('campaigns.secondstore') }}",
-        data: $data,
-        success: function(data) {
-            $('span').filter('.red').html('');
-                contentShow(data.now);
-//               $('label[for=file]').css({
-//                   backgroundImage:"url('../files/"+data.img+"')"
-//               })
-        },
-        error: function(data) {
-            if(data.status==422){
-                    $('span').filter('.red').html('');
-                    $.each(data.responseJSON.errors, function (i, error) {
-                        var el = $('.red').filter('#'+i);
-                            el.html(error[0]);
-                    });
-                  }
-        },
-        processData: false,
-        contentType: false
-    });
-        
-        
-    });
-//    -------두번째페이지오류검사 끝
     
 //    브랜드추가관련
     $('#brand_submit').on('click', function(e){
@@ -665,7 +505,7 @@ var $data = new FormData();
            url:"{{ route('campaigns.brandstore') }}",
            data:{brand_name:brand_name, category_id:category_id},
            success:function(data){
-         $('#brand_select').html(data.finhtml);
+               $('#brand_select').html(data.finhtml);
                 window.location.hash = '';
           },
             error: function(data) {

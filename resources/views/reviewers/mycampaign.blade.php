@@ -6,36 +6,7 @@
 						
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content">
-				<div class="my-reviewer-top">
-					<dl>
-						<dt><b>나의포인트</b><a href="#">자세히보기</a></dt>
-						<dd><b>{{ $user->point }}</b>P</dd>
-					</dl>
-					<ul>
-						<li>
-                            <a href="#">
-                            <span class="title">미제출리뷰</span><span class="txt"><b>{{$notreview}}</b><em>건</em></span>
-                            </a>
-                        </li>
-						<li>
-                            <a href="#">
-                            <span class="title">리뷰제안</span><span class="txt"><b>0</b><em>건</em></span></a></li>
-						<li>
-                            <a href="#">
-                            <span class="title">리뷰전략열람</span><span class="txt"><b>0</b><em>건</em></span></a></li>
-						<li>
-                            <a href="#">
-                            <span class="title">관심캠페인</span><span class="txt"><b>0</b><em>건</em></span></a></li>
-					</ul>
-				</div>
-                @if(!$user->plan_count)
-				<p class="login-info2">
-					<span class="txt">리뷰전략 등록으로 캠페인 리뷰어로 신청해보세요!</span>
-					<a href="{{route('plans.create')}}" class="btn h46 fl-r">리뷰전략등록</a>
-				</p>
-				@endif
-				<!-- 캠페인 리스트 -->
-				<div>
+				<h2 class="m-text-left">나의 캠페인</h2>
 					<!-- 탭 -->
 					<ul class="mypage-tab">
 						<li><a href="#apply" class="on">신청캠페인</a></li>
@@ -98,8 +69,7 @@
         </div>
 <!--리뷰수정-->
 <a href="#close" class="overlay" id="edit_review"></a>
-<div class="popup term" id="edit_r">
-    
+<div class="popup term" id="edit_r">  
 </div>
 <script>
     $.ajaxSetup({
@@ -179,7 +149,6 @@ $('.edit_review').on('click', function(e){
             $('.mypage-tab li a').eq(2).addClass('on');
         }
     }
-//    리뷰제출
 </script>
 
 @endsection

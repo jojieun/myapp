@@ -167,6 +167,12 @@
 .campaign-list.w6 .info .txt-box .num,
 .campaign-list.w6 .info .txt-box .subtxt{ font-size:14px; }
 
+/**/
+.popup .campaign-list.w5 ul li{
+    width: calc(33.3% - 15px);
+    margin-right:15px;
+}
+
 /* 서브 캠페인 */
 .campaign-list.sub6 ul li{ width: calc(16.666% - 16.666px); margin-bottom:40px; }
 .campaign-list.sub6 ul li:nth-child(6n){margin-right: 0;}
@@ -377,6 +383,9 @@ footer{ position:relative; width: 1660px; margin:0 auto; padding:40px 0; border-
 	.campaign-list.w5 .info .txt-box .sns{ float:right; }
 	.campaign-list.w5 .info .txt-box .sns.blog{ font-size:11px; }
 	.campaign-list.w5 .info .txt-box .subject{ margin: 8px 0 2px; font-size:14px; }
+    
+    /* */
+	.popup .campaign-list.w5 ul li{ width: 100%; margin-bottom:5px; margin-right:0; }
 
 	/* 그랜드 캠페인 */
 	.campaign-list.w6 ul li{ width: 100%; margin-bottom:5px; }
@@ -391,6 +400,8 @@ footer{ position:relative; width: 1660px; margin:0 auto; padding:40px 0; border-
 	.campaign-list.w6 .info .txt-box .subject{ margin: 8px 0 2px; font-size:14px;}
 	.campaign-list.w6 .info .txt-box .num{ position:relative; left:0; top:0; margin:2px 0 0 5px; font-size:11px; }
 	.campaign-list.w6 .info .txt-box .subtxt{ font-size:11px; }
+    
+    
 
 	/* 서브 캠페인 */
 	.campaign-list.sub6 ul li{ width: calc(50% - 5px);  margin:0 10px 10px 0; background: #fff; border:0.8px solid #d4d4d4; box-sizing:border-box; }

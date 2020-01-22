@@ -8,7 +8,8 @@
 			<div class="right-content">
                 <div class="my-reviewer-top top2">
 					<dl class="full_width">
-						<dt><b>나의 리뷰전략 완성도</b><a href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a></dt>
+						<dt><b>나의 리뷰전략</b><a href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a></dt>
+<!--
 						<dd>
 							<div class="my_graph">
 								<span class="g-bar" style="width:80%">
@@ -16,6 +17,7 @@
 								</span>
 							</div>
 						</dd>
+-->
 					</dl>
 				</div>
 
@@ -110,6 +112,9 @@
 
 				</div>
 				<!-- //나의 리뷰전략 -->
+                <div class="join_btn_wrap">
+					<a class="btn black" href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a>
+				</div>
 			</div>
 			<!-- //오른쪽 컨텐츠 -->
 		</div>

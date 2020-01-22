@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Image;
 use App\Plan;
 use Carbon\Carbon;
+use App\AdvertiserPlan;
 
 class PlansController extends Controller
 {
@@ -219,13 +220,26 @@ class PlansController extends Controller
      */
     public function show(Plan $plan)
     {
+        //리뷰전략 열람정보 기록
+        if(auth()->guard('advertiser')->check()){
+            $adId = auth()->guard('advertiser')->user()->id;
+            $planId = $plan->id;
+            $pre = AdvertiserPlan::where('advertiser_id',$adId)->where('plan_id',$planId)->first();
+            if($pre!=null){
+                $pre->touch();
+            } else {
+                $advertiser_plan = new AdvertiserPlan;
+                $advertiser_plan->advertiser_id = $adId;
+                $advertiser_plan->plan_id = $planId;
+                $advertiser_plan->save();
+            }
+        }
         return view('influencers.show', ['plan'=>$plan]);
     }
     
     //리뷰어 마이페이지 나의 리뷰전략 관리
     public function showMy($id)
     {
-
             $plan = \App\Plan::whereId($id)->first();
         //채널
         $chls = \App\Channel::select('id','url')->get();
@@ -264,7 +278,53 @@ class PlansController extends Controller
      */
     public function update(Request $request, Plan $plan)
     {
-        //
+        $this->validate($request,[
+            'title' => 'required',
+            'profile_image' => 'image',
+        ]);
+        
+        if($request->hasfile('profile_image')){
+            
+            \File::delete('files/profile/'.$plan->profile_image);
+            $file = $request->file('profile_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/profile/'.$filename;
+            $img = Image::make($file);
+            $img->fit(220,220);
+            $img->save($location);
+            $plan->profile_image = $filename;
+        }
+        
+        $plan->update($request->except([
+            'profile_image',
+            'region',
+            'area',
+            'category',
+            'area_s'
+        ]));
+
+        if($request->area){
+            \App\AreaPlan::where('plan_id',$plan->id)->delete();
+            foreach($request->area as $narea){
+            $newarea = new \App\AreaPlan([
+               'area_id' => $narea,
+                'plan_id' => $plan->id,
+            ]);
+            $newarea->save();
+            }
+        }
+        if($request->category){
+            \App\CategoryPlan::where('plan_id',$plan->id)->delete();
+            foreach($request->category as $ncategory){
+            $newcate = new \App\CategoryPlan([
+               'category_id' => $ncategory,
+                'plan_id' => $plan->id,
+            ]);
+            $newcate->save();
+            }
+        }
+
+        return redirect(route('plans.showmy', $plan->id));
     }
 
     /**
@@ -277,4 +337,5 @@ class PlansController extends Controller
     {
         //
     }
+
 }

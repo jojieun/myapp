@@ -12,19 +12,19 @@
 			<!-- 왼쪽메뉴 -->		
 		  <div class="leftmenu">
 		  	<p class="leftmenu-title">
-		  		<b class="name">{{ $user->nickname }}님</b>
+                <a href="{{route('reviewers.mypage')}}"><b class="name">{{ $user->nickname }}님</b></a>
 		  		<span>{{ $user->email }}</span>
 		  	</p>
 		  	<ul> 
-		  		<li><a href="#"><span>나의 캠페인</span></a></li>
-		  		<li><a href="#"><span>미제출 리뷰</span></a></li>
+		  		<li @if(Request::segment(2)=='my_campaign')class="on"@endif><a href="{{route('reviewers.my_campaign')}}"><span>나의 캠페인</span></a></li>
+		  		<li @if(Request::segment(2)=='not_submit')class="on"@endif><a href="{{route('reviewers.not_submit')}}"><span>미제출 리뷰</span></a></li>
                 @if($user->plan)
 		  		<li @if(Request::segment(1)=='plans')class="on"@endif><a href="{{route('plans.showmy',$user->plan->id)}}"><span>나의 리뷰전략 관리</span></a></li>
                 @else
                 <li @if(Request::segment(1)=='plans')class="on"@endif><a href="{{route('plans.create')}}"><span>리뷰전략 등록하기</span></a></li>
                 @endif
-		  		<li><a href="#"><span>리뷰전략 열람 정보</span></a></li>
-		  		<li><a href="#"><span>리뷰어 제안</span></a></li>
+		  		<li @if(Request::segment(2)=='plan_reading')class="on"@endif><a href="{{route('reviewers.plan_reading')}}"><span>리뷰전략 열람 정보</span></a></li>
+		  		<li @if(Request::segment(2)=='suggestion')class="on"@endif><a href="{{route('reviewers.suggestion')}}"><span>리뷰어 제안</span></a></li>
 		  		<li><a href="#"><span>관심 캠페인</span></a></li>
 		  		<li><a href="#"><span>나의 포인트</span></a></li>
 		  		<li><a href="#"><span>회원정보수정</span></a></li>

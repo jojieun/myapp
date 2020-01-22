@@ -54,4 +54,7 @@ protected $guarded = ['id','last_login'];
     public function channelreviewers(){
         return $this->hasMany(ChannelReviewer::class);
     }
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
 }

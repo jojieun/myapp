@@ -151,7 +151,7 @@
         캠페인 신청을 위해
     @endslot
     @slot('what')
-        로그인
+        리뷰어 로그인
     @endslot
     @slot('where')
         {{ route('sessions.create') }}
@@ -193,7 +193,14 @@
     @slot('goId')
         bookmark_ok
     @endslot
-    즐겨찾기에 등록되었습니다.
+    관심캠페인에 등록되었습니다.
+@endcomponent
+<!--중복신청알림-->
+@component('help.popup_ok')
+    @slot('goId')
+        pre_apply
+    @endslot
+    이미 신청한 캠페인입니다.
 @endcomponent
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2014fb587b83de3123a5fcf612f0b7c9&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
@@ -260,8 +267,12 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            type:"POST",
            url:"{{ route('reviewers.apply') }}",
            data:{camid:camid},
-           success:function(){
+           success:function(data){
+               if(data.pre_apply){
+                   window.location.hash = '#pre_apply';
+               } else {
                 window.location.hash = '#popup_ok';
+                   }
             },
             error: function(data) {
                 if(data.status==401){
@@ -282,7 +293,7 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            type:"POST",
            url:"{{ route('reviewers.bookmark') }}",
            data:{camid:camid},
-           success:function(){
+            success:function(){
                 window.location.hash = '#bookmark_ok';
             },
             error: function(data) {

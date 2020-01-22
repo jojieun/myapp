@@ -20,6 +20,7 @@ class Campaign extends Model
     public function area(){
         return $this->belongsTo(Area::class);
     }
+    
     public function campaignexposure(){
         return $this->belongsTo(CampaignExposure::class);
     }
@@ -34,6 +35,11 @@ class Campaign extends Model
     public function campaignReviewers() //신청인원 구하기
     {
         return $this->hasMany(CampaignReviewer::class);
+    }
+    
+    public function reviews() //리뷰제출 인원 구하기
+    {
+        return $this->hasMany(Review::class);
     }
 }
 

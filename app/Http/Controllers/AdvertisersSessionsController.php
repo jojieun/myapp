@@ -13,13 +13,19 @@ class AdvertisersSessionsController extends Controller
 {
     protected $guard = 'advertiser';
     public function __construct(){
-        $this->middleware('guest',['except'=>'destory']);
+//        $this->middleware('guest')->except(['create','destory']);
     }
     public function create(){
         return view('sessions.advertiser_create');
     }
     public function store(Request $request)
     {
+        if(auth()->guard('advertiser')->check()){
+            auth()->guard('advertiser')->logout();
+        }
+        if(auth()->guard('web')->check()){
+            auth()->guard('web')->logout();
+        }
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:8',

@@ -23,7 +23,7 @@ class AgencyController extends Controller
         $agencies = Agency::where('advertiser_id',auth()->guard('advertiser')->user()->id)->latest()->get();
         return view('advertisers.agency_index', [
             'agencies'=> $agencies,
-            'user'=>$nowuser,
+            'user'=>$nowuser
         ]);
     }
 

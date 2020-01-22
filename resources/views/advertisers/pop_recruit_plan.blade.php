@@ -1,27 +1,6 @@
-@extends('layouts.main')
-@section('content')
-<div class="sub-container bt-ddd">
-		
-		<section class="content-in-top2 mb80">
-			<h2 class="m-ml3">인플루언서</h2>
-
-			<div class="table_default influencer-view">
 				<div class="table_th">
 					<span class="title">{{$plan->title}}</span>
 				</div>
-
-				<!-- 광고주 로그인 -->
-                @if(!Auth::guard('advertiser')->check())
-				<p class="login-info">
-					<span class="txt">광고주 회원으로 로그인하시면 <b>모든 정보를 확인</b> 하실 수 있습니다.</span>
-					<span class="fl-r">
-						<a href="{{route('advertiser_sessions.create')}}" class="btn black h46">로그인</a>
-						<a href="{{route('advertisers.create')}}" class="btn h46">회원가입</a>
-					</span>
-				</p>
-                @endif
-				<!-- //광고주 로그인 -->
-
 				<div class="table_td">
 					<div class="table_td_line">
 						<div class="view-img">
@@ -37,7 +16,6 @@
 								<dt>이름/닉네임</dt>
 								<dd>{{$plan->reviewer->name}} / {{$plan->reviewer->nickname}}</dd>
 							</dl>
-<!--
 							<dl>
 								<dt>연락처</dt>
 								<dd>
@@ -59,7 +37,6 @@
                                     @endif
                                     </dd>	
 							</dl>
--->
 							<dl>							
 								<dt>SNS</dt>
 								<dd class="sns">
@@ -72,7 +49,6 @@
                                     @endif
 								</dd>	
 							</dl>
-<!--
 							<dl>							
 								<dt>주소</dt>
 								<dd>
@@ -85,7 +61,6 @@
                                     @endif
                                 </dd>
 							</dl>
--->
 						</div>
 					</div>				
 				</div>
@@ -129,14 +104,4 @@
 						</div>
 					</div>				
 				</div>
-
-			</div>
-			<!-- //table_default-->
-			
-			<div class="text-center">
-				<a href="#" class="btn big2 black mtb50">리뷰제안</a>
-			</div>
-
-		</section>	
-	</div>
-@endsection
+<a class="close" href="#close"></a>

@@ -22,11 +22,11 @@ class Plan extends Model
     public function reviewer(){
         return $this->belongsTo(Reviewer::class);
     }
-    public function areaplans(){
-        return $this->hasMany(AreaPlan::class);
-    }
-    public function categoryplans(){
-        return $this->hasMany('App\CategoryPlan');
-    }
+//    public function areaplans(){
+//        return $this->hasMany(AreaPlan::class);
+//    }
+//    public function categoryplans(){
+//        return $this->hasMany('App\CategoryPlan');
+//    }
     
 }

@@ -13,7 +13,7 @@
 				<div class="my-campaign">
 					<div class="title">	
 						<h2>진행중인 캠페인</h2>
-						<a href="{{ route('advertisers.mypage') }}" class="btn black">캠페인관리</a>
+						<a href="{{ route('advertisers.managecampaign').'#waitCampaigns' }}" class="btn black">캠페인관리</a>
 					</div>
 					<!-- 검수중 -->
 					<div class="my-campaign-in">
@@ -35,15 +35,15 @@
 						</div>
 					</div>
 					<!-- //검수중 -->
-					<!-- 리뷰어 선정대기중 -->
+					<!-- 리뷰어 모집중 -->
 					<div class="my-campaign-in">
-						<b>리뷰어 선정대기중  <span>{{$recruitCampaigns->count()}}</span></b>
+						<b>리뷰어 모집중  <span>{{$recruitCampaigns->count()}}</span></b>
 						<div class="campaign-banner" align="center">
                             @forelse ($recruitCampaigns as $recruitCampaign)
 							<div>
 								<a href="{{ route('advertisers.managecampaign').'#recruitCampaigns' }}">
 									<b class="txt02">{{ $recruitCampaign->name }}</b>
-									<p class="txt03">모집현황 <span>10</span> / {{ $recruitCampaign->recruit_number }}</p>
+									<p class="txt03">모집현황 <span>{{$recruitCampaign->campaignReviewers->count()}}</span> / {{ $recruitCampaign->recruit_number }}</p>
 								</a>
 							</div>
                             @empty
@@ -64,7 +64,7 @@
 							<div>
 								<a href="{{ route('advertisers.managecampaign').'#submitCampaigns' }}">
 									<b class="txt02">{{ $submitCampaign->name }}</b>
-									<p class="txt03">모집현황 <span>10</span> / {{ $submitCampaign->recruit_number }}</p>
+									<p class="txt03">제출현황 <span>10</span> / {{ $submitCampaign->recruit_number }}</p>
 								</a>
 							</div>
                             @empty

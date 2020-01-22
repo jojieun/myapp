@@ -22,17 +22,17 @@
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700&amp;subset=korean" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
-<!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=0.4') }}" rel="stylesheet">
+<!--    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">-->
+    <link href="{{ secure_asset('css/style.css?ver=0.4') }}" rel="stylesheet">
     
-    <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
 	<!-- script -->
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="{{ asset('plugin/slick-1.8.1/slick.js') }}"></script>
-<!--    <script src="{{ asset('js/app.js') }}" defer></script>-->
-    <script src="{{ asset('js/main.js') }}" defer></script>
+    <script src="{{ secure_asset('plugin/slick-1.8.1/slick.js') }}"></script>
+<!--    <script src="{{ secure_asset('js/app.js') }}" defer></script>-->
+    <script src="{{ secure_asset('js/main.js') }}" defer></script>
     <title>{{ config('app.name') }}</title>
     <meta name="title" content="{{ config('app.name') }}"/>
     <meta property="og:title" content="{{ config('app.name') }}">  	

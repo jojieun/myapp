@@ -9,6 +9,7 @@
 				<div class="my-reviewer-top top2">
 					<dl class="full_width">
 						<dt><b>나의 리뷰전략 수정</b></dt>
+<!--
 						<dd>
 							<div class="my_graph">
 								<span class="g-bar" style="width:0%">
@@ -16,16 +17,18 @@
 								</span>
 							</div>
 						</dd>
+-->
 					</dl>
 				</div>
 
 				<!-- 리뷰전략 등록-->
-				<form method="post" action="{{ route('plans.store') }}" enctype="multipart/form-data">
+				<form method="post" action="{{ route('plans.update', $plan->id) }}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
+                    {!! method_field('PUT') !!}
 					<div class="table_form2 bt0">
 						<dl>
 							<dt>리뷰전략 제목</dt>
-							<dd><input name="title" type="text" id="" value="{{ old('title') }}" placeholder="리뷰전략 제목을 입력해주세요." class="full_width mb10" /></dd>
+							<dd><input name="title" type="text" id="" value="{{ old('title', $plan->title) }}" placeholder="리뷰전략 제목을 입력해주세요." class="full_width mb10" /></dd>
                             {!! $errors->first('title','<span class="red">:message</span>')!!}
 						</dl>
 						<dl>
@@ -33,8 +36,8 @@
 							<dd>
 								<div class="file-area">
 									<span class="upload">
-										<label for="file">									
-											<input name="profile_image" type="file" id="file" value="" placeholder="상세이미지" class="full_width mb10" />
+										<label for="file" @isset($plan->profile_image) style="background-image:url(/files/profile/{{old('profile_image', $plan->profile_image)}});" @endisset>									
+											<input name="profile_image" type="file" id="file" value="" placeholder="상세이미지" class="full_width mb10" value="{{ old('profile_image', $plan->profile_image) }}"/>
 										</label>
 									</span>
 								</div>
@@ -43,7 +46,7 @@
 						</dl>
 						<dl class="bar">
 							<dt>통화가능 시간</dt>
-							<dd><input name="call_time" type="text" id="" value="" placeholder="예) 평일 10:00~17:00" class="full_width mb10" /></dd>
+							<dd><input name="call_time" type="text" id="" value="{{ old('call_time', $plan->call_time) }}" placeholder="예) 평일 10:00~17:00" class="full_width mb10" /></dd>
                             {!! $errors->first('call_time','<span class="red">:message</span>')!!}
 						</dl>
 
@@ -68,6 +71,9 @@
 									</div>
 								</div>
 								<div class="view-area" id="last_area">
+                                    @foreach($plan->areas as $prearea)
+                                    <p>{{$prearea->region->name}} > {{$prearea->name}}<button type="button" class="p_close"><img src="/img/common/ico_close2.png" alt="닫기"></button><input type="hidden" name="area[]" value="{{$prearea->id}}"></p>
+                                    @endforeach
 								</div>
 							</dd>
                             {!! $errors->first('area','<span class="red">:message</span>')!!}
@@ -76,7 +82,14 @@
 							<dt>카테고리</dt>
 							<dd>
                                 @foreach($categories as $category)
-                                <span class="input-button"><input name="category[]" value="{{$category->id}}" type="checkbox" id="category{{$category->id}}"><label for="category{{$category->id}}">{{$category->name}}</label></span>
+                                <span class="input-button"><input name="category[]" value="{{$category->id}}" type="checkbox" id="category{{$category->id}}"
+                                    @foreach($plan->categories as $precategory)
+                                    @if($precategory->id == $category->id)
+                                    checked                              
+                                    @endif
+                                    @endforeach
+                                    >
+                                    <label for="category{{$category->id}}">{{$category->name}}</label></span>
                                 @endforeach
 							</dd>
                             {!! $errors->first('category','<span class="red">:message</span>')!!}
@@ -87,19 +100,19 @@
 								<div class="question">
 									<p>리뷰작성시 받고싶은 금액(포인트)를 입력해주세요</p>
 								</div>	</dt>
-							<dd><input name="reward" type="number" id="reward" value="" placeholder="숫자만 입력해주세요" class="full_width mb10" mim="0" step="1000"/> &nbsp;point
+							<dd><input name="reward" type="number" id="reward" value="{{ old('reward', $plan->reward) }}" placeholder="숫자만 입력해주세요" class="full_width mb10" mim="0" step="1000"/> &nbsp;point
                             </dd>
                             {!! $errors->first('reward','<span class="red">:message</span>')!!}
 						</dl>
 						<dl>
 							<dt>리뷰전략</dt>
-							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요!" class="border2"></textarea></dd>
+							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요!" class="border2">{{ old('review_plan', $plan->review_plan) }}</textarea></dd>
                             {!! $errors->first('review_plan','<span class="red">:message</span>')!!}
 						</dl>
 					</div>
 
 					<div class="join_btn_wrap">
-						<button type="submit" class="btn black" disabled>리뷰전략 수정</button>
+						<button type="submit" class="btn black">리뷰전략 수정</button>
 					</div>
 				</form>
 			</div>
@@ -113,6 +126,7 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+    
     //    이미지업로드바로보기
     $('input[name=profile_image]').change(function(e){
        e.preventDefault();

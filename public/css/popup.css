@@ -80,6 +80,14 @@
 	font-weight:100;
 }
 
+#pop_plan_view{
+    width:90%;
+    max-width:1600px;
+    height:90%;
+    max-height: 800px;
+    overflow-y: auto;
+    padding:20px;
+}
 .popup.h285{ height: 285px;}
 .popup.h350{ height: 350px;}
 .popup .text{ margin-top:80px;}
@@ -159,6 +167,8 @@
 .terms div th{
     text-align: center;
 }
+
+.campaign23{height:auto; width:650px; max-height:400px; padding: 20px; overflow-y: auto;}
 
 #popup_tab{
     margin-bottom:20px;

@@ -18,7 +18,11 @@
                                 </span>
     				<span class="sns"><span class="channel{{$campaign->channel_id}}">{{$campaign->channel_name}}</span></span>
                     @if($select)
-    				<span style="margin-left:10px;" class="dday @if($campaign->rightNow=='Day') on @endif">D-{{$campaign->rightNow}}</span>
+    				<span style="margin-left:10px;" class="dday @if($campaign->rightNow==0) on @endif">D-@if($campaign->rightNow==0)
+                                                Day
+                                                @else
+                                                {{$campaign->rightNow}}
+                                                @endif</span>
                     @endif
     			</p>									
     			<p class="subject">{{$campaign->name}}</p>
@@ -26,21 +30,23 @@
     		</div>
     		<div class="campaign-list-info-right">
                 @if($modi)
-    			<a href="client_0202.php" class="btn btn-check w125">캠페인 수정</a>
+    			<a href="{{route('campaigns.edit',$campaign->id)}}" class="btn btn-check w125">캠페인 수정</a>
                 @endif
                 @if($select)
                 <p class="num">
                     <span class="title">모집현황</span>
-                    <span class="txt"><b>5</b> / {{$campaign->recruit_number}}</span>
+                    <span class="txt"><b>{{$campaign->campaignReviewers->count()}}</b> / {{$campaign->recruit_number}}</span>
                 </p>
-                <a href="client_0204.php" class="btn btn-check w125">리뷰어 선정</a>
+                @if($campaign->campaignReviewers->count()>0)
+                <a href="{{route('advertisers.recruit_campaign',$campaign->id)}}" class="btn btn-check w125">리뷰어 선정</a>
+                @endif
                 @endif
                 @if($result)
                 <p class="num">
                     <span class="title">리뷰제출</span>
-                    <span class="txt"><b>5</b> / {{$campaign->recruit_number}}</span>
+                    <span class="txt"><b>{{$campaign->reviews_count}}</b> / {{$campaign->recruit_number}}</span>
                 </p>
-                <a href="client_0205.php" class="btn btn-check w125">진행결과 보기</a>
+                <a href="{{route('advertisers.submit_campaign',$campaign->id)}}" class="btn btn-check w125">진행결과 보기</a>
                 @endif
     		</div>
     	</div>

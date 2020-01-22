@@ -45,6 +45,8 @@
 
   cd {{ $release_dir }}/{{ $distname }} && composer install --prefer-dist --no-scripts --no-dev;
 
+  chmod 777 {{ $project_root }};
+
   ln -nfs {{ $release_dir }}/{{ $distname }} {{ $project_root }};
 
   chmod -R 777 {{ $shared_dir }}/storage;

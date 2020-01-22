@@ -8,7 +8,7 @@
 				<!-- 탭 -->
 				<ul class="campaign-tab">
 					<li class="on"><a href="#waitCampaigns"><span class="num">1</span><span class="title">검수중</span></a></li>
-					<li><a href="#recruitCampaigns"><span class="num">2</span><span class="title">리뷰어선정<br/>대기중</span></a></li>
+					<li><a href="#recruitCampaigns"><span class="num">2</span><span class="title">리뷰어 모집중</span></a></li>
 					<li><a href="#submitCampaigns"><span class="num">3</span><span class="title">진행중</span></a></li>
 					<li><a href="#endCampaigns"><span class="num">4</span><span class="title">완료</span></a></li>
 				</ul>
@@ -25,14 +25,14 @@
 				    @include('advertisers.particle_managecampaign')
                 </div>
 <!--                --------검수중 캠페인 끝-->
-<!--                리뷰어 선정 대기중 캠페인-->
+<!--                리뷰어 모집중 캠페인-->
                 <div class="campaign-list-view" id="recruitCampaigns">
                     <?
                     $campaigns = $recruitCampaigns;
                     $modi = 0;
                     $select = 1;
                     $result = 0;
-                    $which = '리뷰어선정 대기중인';
+                    $which = '리뷰어 모집인';
                     ?>
 				    @include('advertisers.particle_managecampaign')
                 </div>
