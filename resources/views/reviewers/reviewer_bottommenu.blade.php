@@ -9,7 +9,7 @@
         @endif
 		<li @if(Request::segment(2)=='plan_reading')class="on"@endif><a class="out" href="{{route('reviewers.plan_reading')}}"><span>리뷰전략<br/>열람 정보</span></a></li>
 		<li @if(Request::segment(2)=='suggestion')class="on"@endif><a class="out" href="{{route('reviewers.suggestion')}}"><span>리뷰어<br/>제안</span></a></li>
-		<li><a class="out" href="#"><span>관심<br/>캠페인</span></a></li>
+		<li @if(Request::segment(2)=='bookmark_list')class="on"@endif><a class="out" href="{{route('reviewers.bookmark_list')}}"><span>관심<br/>캠페인</span></a></li>
 		<li><a class="out" href="#"><span>나의<br/>포인트</span></a></li>
 		<li><a class="out" href="#"><span>회원정보<br/>수정</span></a></li>
 		<li class="fw-500 on">

@@ -334,7 +334,7 @@
 							<dd>
 								<div class="price-list">
                                     <p>
-										<span>기본 이용요금</span>
+										<span>중계수수료(모집인원X5,000원)</span>
 										<span class="price"><b id="basic_price">10,000</b>원</span>
 									</p>
 									<p>
@@ -363,11 +363,11 @@
 							</dd>
 						</dl>
 						<dl>
-							<dt>결제내역</dt>
+							<dt>결제방법</dt>
 							<dd class="mt10">						
 								<span class="input-button"><input name="" type="radio" id="pay1"><label for="pay1">신용카드</label></span>
 								<span class="input-button"><input name="" type="radio" id="pay2"><label for="pay2">실시간계좌이체</label></span>
-								<span class="input-button"><input name="" type="radio" id="pay3"><label for="pay3">결제내역통장카드</label></span>
+								<span class="input-button"><input name="" type="radio" id="pay3"><label for="pay3">가상계좌</label></span>
 							</dd>
 						</dl>
 					</div>
@@ -410,8 +410,36 @@
 @component('help.pop_requir')
     개인정보 제3자 제공
 @endcomponent
-
+ <!-- iamport.payment.js -->
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
+    //결제연동
+    var IMP = window.IMP; // 생략해도 괜찮습니다.
+  IMP.init("imp81498957");
+    // IMP.request_pay(param, callback) 호출
+  IMP.request_pay({ // param
+    pg: "inicis",
+    pay_method: "card",
+    merchant_uid: "ORD20180131-0000011",
+    name: "노르웨이 회전 의자",
+    amount: 64900,
+    buyer_email: "gildong@gmail.com",
+    buyer_name: "홍길동",
+    buyer_tel: "010-4242-4242",
+    buyer_addr: "서울특별시 강남구 신사동",
+    buyer_postcode: "01181"
+  }, function (rsp) { // callback
+    if (rsp.success) {
+        ...,
+        // 결제 성공 시 로직,
+        ...
+    } else {
+        ...,
+        // 결제 실패 시 로직,
+        ...
+    }
+  });
+    
     //    content보기 설정
     $(function(){
         contentShow(0);
@@ -433,7 +461,9 @@
         }).eq(now).removeAttr('style');
         if(now==2){
             var pp = $('input[name=offer_point]').val()*$('input[name=recruit_number]').val();
+            var bp = $('input[name=recruit_number]').val() * 5000;
             $('#point_price').html(money(pp));
+            $('#basic_price').html(money(bp));
             totalprice();
         }
     };

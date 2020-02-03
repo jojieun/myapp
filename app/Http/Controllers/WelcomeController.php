@@ -118,10 +118,42 @@ class WelcomeController extends Controller
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
+        //        일반캠페인(파워탬페인)
+        $nCampaigns = \App\Campaign::where('confirm',1)
+            ->whereDate('end_recruit','>=',$nowdate)
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select('campaigns.id',
+            'campaigns.name',
+                     'campaigns.form',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name'
+                 )->get();
+        //        디데이 구하기  
+        foreach ($nCampaigns as $key => $loop)
+		{
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->rightNow = $dif?:'Day';
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+		}
+        
         return view('welcome', [
             'plCampaigns'=>$plCampaigns,
             'prCampaigns'=>$prCampaigns,
             'gCampaigns'=>$gCampaigns,
+            'nCampaigns'=>$nCampaigns,
         ]);
     }
 }

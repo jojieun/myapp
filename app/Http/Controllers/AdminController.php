@@ -90,7 +90,9 @@ class AdminController extends Controller
    }
     //캠페인승인
     public static function confirmCampaign(Request $request){
-      \App\Campaign::where('id', $request->nowId)->update(['confirm' => 1]);
+        $nowCamId = $request->nowId;
+      \App\Campaign::where('id', $nowCamId)->update(['confirm' => 1]);
+        \App\CampaignExposure::where('campaign_id',$nowCamId)->update
         $waitCampaigns = \App\Campaign::where('confirm',0)->select('id','brand_id','created_at','name')->with('brand')->get();
         return \Response::json([
             'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),

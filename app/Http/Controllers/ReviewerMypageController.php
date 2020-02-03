@@ -344,11 +344,10 @@ class ReviewerMypageController extends Controller
                  'campaign_id'=>$request->camid,
                  'reviewer_id'=>auth()->guard('web')->user()->id,
              ]);
-             //리뷰어제안에서 넘어왔을 경우
-             if(isset($request->suggestId)){
-                 $nowUser = auth()->user()->id;
+             $nowUser = auth()->user()->id;
+             if(isset($request->suggestId)){//리뷰어제안에서 넘어왔을 경우
                  \App\ReviewerSuggestion::whereId($request->suggestId)->update(['accept'=>'yes']);
-                 
+                 //리뷰어제안 목록 만들기
                  $suggestions = \App\ReviewerSuggestion::where('reviewer_id',$nowUser)->where('accept','null')->join('campaigns', function($join) {
                 $join->on('reviewer_suggestions.campaign_id','=','campaigns.id')
                     ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
@@ -375,6 +374,37 @@ class ReviewerMypageController extends Controller
                  'categories.name as category_name')->get(); 
                  return \Response::json(array(
                      'showhtml' => \View::make('reviewers.part_suggestion', array('suggestions' => $suggestions))->render(),
+                    'pre_apply' => false,
+                ));
+             } else if(isset($request->bookmarkId)){//관심캠페인에서 넘어왔을경우
+                 \App\Bookmark::whereId($request->bookmarkId)->delete();
+                 //북마크목록만들기
+                 $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser)->join('campaigns', function($join) {
+                $join->on('bookmarks.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+            })
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select(
+            'bookmarks.id as bookmark_id',
+            'campaigns.id',
+            'campaigns.name',
+             'campaigns.form',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->get(); 
+                     return \Response::json(array(
+                     'showhtml' => \View::make('reviewers.part_bookmark_list', array('bookmarks' => $bookmarks))->render(),
                     'pre_apply' => false,
                 ));
              } else{
@@ -533,5 +563,83 @@ class ReviewerMypageController extends Controller
             'showhtml' => \View::make('reviewers.part_suggestion', array('suggestions' => $suggestions))->render(),
         ));
     }
-    
+    //관심캠페인 목록 보기
+    public function bookmark_list(){
+        $nowUser = auth()->user()->id;
+        $plan = \App\Plan::where('reviewer_id',$nowUser)->first();
+        //리뷰전략 작성 여부
+        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        //관심캠페인
+        $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser->id)->join('campaigns', function($join) {
+                $join->on('bookmarks.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+            })
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select(
+            'bookmarks.id as bookmark_id',
+            'campaigns.id',
+            'campaigns.name',
+             'campaigns.form',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->get(); 
+        
+        return view('reviewers.bookmark_list',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            'bookmarks'=>$bookmarks,
+            ]);
+    }
+    //북마크 삭제
+    public function delete_bookmark($bookmarkId){
+        \App\Bookmark::whereId($bookmarkId)->delete();
+        $nowUser = auth()->user()->id;
+        //관심캠페인
+        $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser)->join('campaigns', function($join) {
+                $join->on('bookmarks.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+            })
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select(
+            'bookmarks.id as bookmark_id',
+            'campaigns.id',
+            'campaigns.name',
+             'campaigns.form',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->get();
+        return \Response::json(array(
+                     'showhtml' => \View::make('reviewers.part_bookmark_list', array('bookmarks' => $bookmarks))->render(),
+                ));
+    }
 }
+
+
+
+
+
+

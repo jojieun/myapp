@@ -93,6 +93,10 @@ Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admi
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
+//캠페인노출관리
+
+//캠페인홍보관리
+
 
 //캠페인 대행의뢰 목록
 Route::get('admin/agency', 'AgencyController@admin_index')->name('admin.agency');
@@ -165,7 +169,7 @@ Route::post('reviewer/apply',[
     'as'=>'reviewers.apply',
     'uses' => 'ReviewerMypageController@apply'
 ]);
-//리뷰어북마크
+//리뷰어북마크(하기 ajax)
 Route::post('reviewer/bookmark',[
     'as'=>'reviewers.bookmark',
     'uses' => 'ReviewerMypageController@bookmark'
@@ -187,6 +191,15 @@ Route::get('reviewer/suggestion',[
 //리뷰어제안 거절
 Route::post('reviewer/no_accept/{suggestId}',[
     'uses' => 'ReviewerMypageController@no_accept'
+]);
+//관심캠페인 목록 보기
+Route::get('reviewer/bookmark_list',[
+    'as'=>'reviewers.bookmark_list',
+    'uses' => 'ReviewerMypageController@bookmark_list'
+]);
+//관심캠페인 삭제
+Route::post('reviewer/delete_bookmark/{bookmarkId}',[
+    'uses' => 'ReviewerMypageController@delete_bookmark'
 ]);
 
 

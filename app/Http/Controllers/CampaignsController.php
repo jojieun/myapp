@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Auth;
 use App\Campaign;
 use Image;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+
 
 class CampaignsController extends Controller
 {
@@ -18,7 +20,7 @@ class CampaignsController extends Controller
      */
     
     protected $dontFlash = ['main_image'];
-    
+    //방문캠페인 출력
     public function indexV(Request $request)
     {   
         //선택채널구하기
@@ -116,7 +118,7 @@ foreach ($campaigns as $key => $loop)
             'categories'=>\App\Category::get(),
         ]);
     }
-    
+    //방문캠페인 재택캠페인
     public function indexH(Request $request)
     {
         //선택채널구하기
@@ -205,8 +207,12 @@ foreach ($campaigns as $key => $loop)
             'categories' => \App\Category::get(),
             'channels' => \App\Channel::get(),
             'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
-            'exposures' => \App\Exposure::with('campaignexposures')->get(),
-            'promotions' => \App\Promotion::with('campaignpromotions')->get(),
+            'exposures' => \App\Exposure::with(['campaignexposures' => function ($query) {
+    $query->whereDate('end', '>', Carbon::now()->addDays(3)->toDateString());
+}])->get(),
+            'promotions' => \App\Promotion::with(['campaignpromotions' => function ($query) {
+    $query->whereDate('end', '>', Carbon::now()->addDays(3)->toDateString());
+}])->get(),
         ]);
     }
     /**

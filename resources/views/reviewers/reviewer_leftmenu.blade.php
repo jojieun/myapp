@@ -25,7 +25,7 @@
                 @endif
 		  		<li @if(Request::segment(2)=='plan_reading')class="on"@endif><a href="{{route('reviewers.plan_reading')}}"><span>리뷰전략 열람 정보</span></a></li>
 		  		<li @if(Request::segment(2)=='suggestion')class="on"@endif><a href="{{route('reviewers.suggestion')}}"><span>리뷰어 제안</span></a></li>
-		  		<li><a href="#"><span>관심 캠페인</span></a></li>
+		  		<li @if(Request::segment(2)=='bookmark_list')class="on"@endif><a  href="{{route('reviewers.bookmark_list')}}"><span>관심 캠페인</span></a></li>
 		  		<li><a href="#"><span>나의 포인트</span></a></li>
 		  		<li><a href="#"><span>회원정보수정</span></a></li>
 		  		<li class="fw-500"><a href="#"><span>mySNS</span></a>
