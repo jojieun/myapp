@@ -23,7 +23,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=0.7') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=0.8') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
@@ -155,7 +155,7 @@
 		<div class="footer">
 			<div class="footer-link">
 				<ul class="footer-link-lists">
-					<li><a href="#">서비스소개</a>｜</li>
+					<li><a href="{{route('temp_home')}}">서비스소개</a>｜</li>
 					<li><a href="#">이용약관</a>｜</li>
 					<li><a href="{{route('privacy_policy')}}">개인정보처리방침</a>｜</li>
 					<li class="br0"><a href="#">운영정책</a></li>

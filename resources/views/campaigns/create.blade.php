@@ -10,7 +10,9 @@
 <?php $opbrand_id = 1; ?>
 @endif
 
-<form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
+<!--<form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">-->
+    
+    <form method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
 			<!-- 오른쪽 컨텐츠 1 -->
 			<div class="right-content">
@@ -365,9 +367,9 @@
 						<dl>
 							<dt>결제방법</dt>
 							<dd class="mt10">						
-								<span class="input-button"><input name="" type="radio" id="pay1"><label for="pay1">신용카드</label></span>
-								<span class="input-button"><input name="" type="radio" id="pay2"><label for="pay2">실시간계좌이체</label></span>
-								<span class="input-button"><input name="" type="radio" id="pay3"><label for="pay3">가상계좌</label></span>
+								<span class="input-button"><input name="pay_method" type="radio" id="pay1" value="card" checked><label for="pay1">신용카드</label></span>
+								<span class="input-button"><input name="pay_method" type="radio" id="pay2" value="trans"><label for="pay2">실시간계좌이체</label></span>
+								<span class="input-button"><input name="pay_method" type="radio" id="pay3" value="vbank"><label for="pay3">가상계좌</label></span>
 							</dd>
 						</dl>
 					</div>
@@ -377,7 +379,9 @@
 
 				<div class="join_btn_wrap mt30">
 					<a class="btn" onclick="contentShow(1)">이전단계</a>
-					<button type="submit" class="btn black">결제진행</button>
+                    
+<!--					<button type="submit" class="btn black">결제진행</button>-->
+                    <button type="button" id="store_c" class="btn black">결제진행</button>
 				</div>
 		</div>
 </form>
@@ -413,32 +417,7 @@
  <!-- iamport.payment.js -->
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-    //결제연동
-    var IMP = window.IMP; // 생략해도 괜찮습니다.
-  IMP.init("imp81498957");
-    // IMP.request_pay(param, callback) 호출
-  IMP.request_pay({ // param
-    pg: "inicis",
-    pay_method: "card",
-    merchant_uid: "ORD20180131-0000011",
-    name: "노르웨이 회전 의자",
-    amount: 64900,
-    buyer_email: "gildong@gmail.com",
-    buyer_name: "홍길동",
-    buyer_tel: "010-4242-4242",
-    buyer_addr: "서울특별시 강남구 신사동",
-    buyer_postcode: "01181"
-  }, function (rsp) { // callback
-    if (rsp.success) {
-        ...,
-        // 결제 성공 시 로직,
-        ...
-    } else {
-        ...,
-        // 결제 실패 시 로직,
-        ...
-    }
-  });
+    
     
     //    content보기 설정
     $(function(){
@@ -680,10 +659,82 @@ var $data = new FormData();
         processData: false,
         contentType: false
     });
-        
-        
     });
 //    -------두번째페이지오류검사 끝
+        
+    //결제연동
+    var IMP = window.IMP; // 생략해도 괜찮습니다.
+  IMP.init("imp81498957");
+    
+    // IMP.request_pay(param, callback) 호출
+    function request_pay(m_uid){
+        IMP.request_pay({ // param
+            pg: "danal_tpay",
+            pay_method: $('input[name=pay_method]:checked').val(),
+            merchant_uid: m_uid,
+            name: $('input[name=name]').val(),
+            amount: $('input[name=payment]').val(),
+            buyer_email: "{{ $user->email }}",
+            buyer_name: "{{ $user->name }}",
+            buyer_tel: "{{ $user->mobile_num }}",
+        }, function (rsp) { // callback
+            if (rsp.success) {
+                // 결제 성공 시 로직,
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('campaigns.complate') }}",
+                    headers: { "Content-Type": "application/json" },
+                    data: {
+                        imp_uid: rsp.imp_uid,
+                        m_uid: m_uid
+                    },
+                }).done(function(data) {
+                    if(data.now){
+                    window.location.href = "{{ route('campaigns.storeend') }}";
+                    } else {
+                        alert('결제에 오류가 있습니다. 고객센터로 연락주세요.')
+                    }
+                });
+            } else {
+                // 결제 실패 시 로직,
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+                alert(msg);
+            }
+        });
+      }     
+      //****ajax 최종 저장
+        $('#store_c').on('click', function(e){
+       e.preventDefault();
+            if($('#checkAgree1').is(':checked')) {
+           var s_data = new FormData($("#test_form")[0]);
+    $.ajax({
+        type: 'POST',
+        url: "{{ route('campaigns.store_c') }}",
+        data: s_data,
+        success: function(data) {
+            $('span').filter('.red').html('');
+            request_pay(data.m_uid);
+        },
+        error: function(data) {
+            if(data.status==422){
+                    $('span').filter('.red').html('');
+                    $.each(data.responseJSON.errors, function (i, error) {
+                        var el = $('.red').filter('#'+i);
+                            el.html(error[0]);
+                    });
+                  }
+        },
+        processData: false,
+        contentType: false
+    });
+       } else {
+           window.location.hash = "#popup_requir";
+           return false;
+       }
+            
+    });
+        
     
 //    브랜드추가관련
     $('#brand_submit').on('click', function(e){

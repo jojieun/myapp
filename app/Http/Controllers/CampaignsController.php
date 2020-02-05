@@ -265,7 +265,7 @@ foreach ($campaigns as $key => $loop)
         $this->validate($request, [
             'main_image' => 'required',
             'contact' => 'required|max:255',
-            'mission' => 'max:255',
+            'mission' => '',
             'keyword' => 'max:255',
             'area_id' => $request->form == 'v' ?'required|numeric': '',
             'address' => $request->form == 'v' ?'required': '',
@@ -282,6 +282,7 @@ foreach ($campaigns as $key => $loop)
         return response()->json(array('areas' => $myareas));
     }
     
+    //기존 submit 저장
     public function store(Request $request)
     {
         $campaign = new Campaign;
@@ -356,6 +357,135 @@ foreach ($campaigns as $key => $loop)
         }
         return redirect(route('campaigns.storeend'));
     }
+    
+    //새 ajax 저장
+    public function store_c(Request $request)
+    {
+        $campaign = new Campaign;
+        $campaign->advertiser_id=auth()->guard('advertiser')->user()->id;
+        $campaign->channel_id=$request->channel_id;
+        $campaign->brand_id=$request->brand_id;
+        $campaign->name=$request->name;
+        $campaign->form=$request->form;
+        $campaign->recruit_number=$request->recruit_number;
+        $campaign->offer_point=$request->offer_point;
+        $campaign->offer_goods=$request->offer_goods;
+        $campaign->start_recruit=$request->start_recruit;
+        $campaign->end_recruit=$request->end_recruit;
+        $campaign->end_submit=$request->end_submit;
+        $campaign->contact=$request->contact;
+        $campaign->mission=$request->mission;
+        $campaign->keyword=$request->keyword;
+        $campaign->etc=$request->etc;
+        $campaign->payment=$request->payment;
+        $campaign->provide_agreement=$request->provide_agreement;
+        $campaign->area_id=$request->area_id;
+        $campaign->visit_time=$request->visit_time;
+        $campaign->zipcode=$request->zipcode;
+        $campaign->address=$request->address;
+        $campaign->detail_address=$request->detail_address;
+        $campaign->merchant_uid='mc_'.time();
+        
+        if($request->hasfile('main_image')){
+            $file = $request->file('main_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            $img = Image::make($file);
+            $img->fit(530,530);
+            $img->save($location);
+            $campaign->main_image = $filename;
+        }
+        if($request->hasfile('sub_image1')){
+            $file = $request->file('sub_image1');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image1 = $filename;
+        }
+        if($request->hasfile('sub_image2')){
+            $file = $request->file('sub_image2');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image2 = $filename;
+        }
+        if($request->hasfile('sub_image3')){
+            $file = $request->file('sub_image3');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image3 = $filename;
+        }
+        $campaign -> save();
+        if($request->has('exposure_id')){
+        $campaignexposure = \App\CampaignExposure::create([
+            'campaign_id'=>$campaign->id,
+            'exposure_id'=>$request->input('exposure_id'),
+        ]);
+        }
+        if($request->has('promotion_id')){
+        $campaignpromotion = \App\CampaignPromotion::create([
+            'campaign_id'=>$campaign->id,
+            'promotion_id'=>$request->input('promotion_id'),
+        ]);
+        }
+        if(! $campaign){
+            return back()->withInput();
+        }
+        return response()->json(['m_uid'=>$campaign->merchant_uid]);
+    }
+    
+    public function complate(Request $request)
+    {
+        \App\Campaign::where('merchant_uid',$request->m_uid)->update(['check_payment'=>true]);
+        return response()->json(['now'=>true]);
+        
+//        include(app_path() . '\Http\Controllers\particle\iamport.php');
+//        $iamport = new Iamport('7637754882413623', 'jcpbcXwUyUEht95jovvJbI44Vw0IuvvNIVYUSuPqptITDOc1kILvqPzmmA5Q6AEOwDJo8zPx3xqGlDIF');
+
+#1. imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호)
+//$result = $iamport->findByImpUID($request->imp_uid); //IamportResult 를 반환(success, data, error)
+
+        //if ( $result->success ) {
+	/**
+	*	IamportPayment 를 가리킵니다. __get을 통해 API의 Payment Model의 값들을 모두 property처럼 접근할 수 있습니다.
+	*	참고 : https://api.iamport.kr/#!/payments/getPaymentByImpUid 의 Response Model
+	*/
+	//$payment_data = $result->data;
+
+//	echo '## 결제정보 출력 ##';
+//	echo '가맹점 주문번호 : ' 	. $payment_data->merchant_uid;
+//	echo '결제상태 : ' 		. $payment_data->status;
+//	echo '결제금액 : ' 		. $payment_data->amount;
+//	echo '결제수단 : ' 		. $payment_data->pay_method;
+//	echo '결제된 카드사명 : ' 	. $payment_data->card_name;
+//	echo '결제 매출전표 링크 : '	. $payment_data->receipt_url;
+
+	/**
+	*	IMP.request_pay({
+	*		custom_data : {my_key : value}
+	*	});
+	*	와 같이 custom_data를 결제 건에 대해서 지정하였을 때 정보를 추출할 수 있습니다.(서버에는 json encoded형태로 저장합니다)
+	*/
+//	echo 'Custom Data :'	. $payment_data->getCustomData('my_key');
+            //해당캠페인찾기
+//            $campaign_pay = \App\Campaign::where('merchant_uid',$request->m_uid)->select('payment')->first();
+	# 내부적으로 결제완료 처리하시기 위해서는 (1) 결제완료 여부 (2) 금액이 일치하는지 확인을 해주셔야 합니다.
+            //해당캠페인 금액 찾기
+//            $campaign_pay = \App\Campaign::where('merchant_uid',$request->m_uid)->select('payment')->first();
+//	if ( $payment_data->status === 'paid' && $payment_data->amount === $campaign_pay ) {
+		//TODO : 결제성공 처리
+        //캠페인 결제여부 업데이트
+//        \App\Campaign::where('merchant_uid',$request->m_uid)->update(['check_payment'=>true]);
+//        return response()->json(['now'=>true]);
+//    }
+//        } else {
+//            error_log($result->error['code']);
+//            error_log($result->error['message']);
+//            return response()->json(['now'=>false]);
+//        }
+}
+    
     
     public function storeEnd()
     {

@@ -12,7 +12,7 @@
 */
 
 //메인페이지
-Route::get('/origin', [
+Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
 ]);
@@ -24,6 +24,9 @@ Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('camp
 Route::post('campaigns/firststore','CampaignsController@firstStore')->name('campaigns.firststore');
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
+//ajax 저장
+Route::post('campaigns/store_c','CampaignsController@store_c')->name('campaigns.store_c');
+Route::post('campaigns/complate','CampaignsController@complate')->name('campaigns.complate');
 Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns.storeend');
 
 Route::match(['get', 'post'], 'visit','CampaignsController@indexV')->name('visit');
@@ -259,7 +262,7 @@ Route::view('register_select','register_select')->name('register.select');
 
 ///////////////////////////////////
 //reviewer **임시** 가입 관련
-Route::get('/', [
+Route::get('/introduce_service', [
     'as'=>'temp_home',
     'uses'=>'WelcomeController@tempindex'
 ]);
