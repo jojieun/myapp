@@ -20,7 +20,7 @@
                             </span>
                             @endif
     				<span class="sns"><span class="channel{{$campaign->channel_id}}">{{$campaign->channel->name}}</span></span>
-    				<span style="margin-left:10px;" class="dday @if($campaign->rightNow==0) on @endif">
+    				<span style="margin-left:10px;" class="dday @if($campaign->rightNow==0) on @endif"><small>리뷰제출마감</small> 
                         @if($campaign->rightNow>0)
                            D-{{$campaign->rightNow}}       
                         @elseif($campaign->rightNow==0)
@@ -121,7 +121,7 @@
     });
     $('.show_plan').click(function(e){
        e.preventDefault();
-    var reviewer_id = $(this).data('r');
+        var reviewer_id = $(this).data('r');
         $.ajax({
            type:"GET",
            url:'/show_plan/' + reviewer_id,
@@ -130,7 +130,21 @@
                 window.location.hash = '#pop_plan'; 
             }
         });
-        
+    });
+    $('input.mystar').on('change', function(){
+        $.ajax({
+           type:"POST",
+           url:"{{route('advertisers.satisfaction')}}",
+            data:{
+            'reviewId':$(this).data('r'),
+            'val':$(this).val(),
+        },
+            success: function(data){
+            
+            },
+               error:function(data){
+            },
+        });
     });
 </script>
 @endsection

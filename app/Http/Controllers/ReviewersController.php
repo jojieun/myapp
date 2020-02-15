@@ -39,7 +39,6 @@ class ReviewersController extends Controller
             'zipcode'=>$request->input('zipcode'),
             'address'=>$request->input('address'),
             'detail_address'=>$request->input('detail_address'),
-            'gender'=>$request->input('gender'),
             'receive_agreement'=>$request->input('receive_agreement'),
             'gender'=>$request->input('gender'),
         ]);
@@ -111,8 +110,6 @@ class ReviewersController extends Controller
         }
         auth()->login($reviewer);
         return view('reviewers.temp_registerok',['name'=>auth()->user()->name]);
-    }
-
-    
+    }  
     
 }

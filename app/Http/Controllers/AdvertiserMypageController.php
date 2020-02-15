@@ -24,18 +24,24 @@ class AdvertiserMypageController extends Controller
             ->where('confirm',0)
             ->select('name')
             ->get();
-//        리뷰어 선정 대기중
+//        리뷰어모집(선정대기)중
         $recruitCampaigns = \App\Campaign::where('advertiser_id',$nowuser->id)
             ->where('confirm',1)
-            ->whereDate('end_recruit', '>=', Carbon::now()->subDays(1)->toDateString())
-            ->select('id','name','recruit_number')->with('campaignReviewers')
+            ->whereDate('end_recruit', '>=', Carbon::now()->subDay()->toDateString())
+            ->select('id','name','recruit_number')
+            ->with('campaignReviewers')
             ->get();
+   
 //        진행중
         $submitCampaigns = \App\Campaign::where('advertiser_id',$nowuser->id)
             ->where('confirm',1)
-            ->whereDate('end_recruit', '<', Carbon::now()->subDays(1)->toDateString())
+            ->whereDate('end_recruit', '<', Carbon::now()->subDay()->toDateString())
             ->whereDate('end_submit', '>=', Carbon::now()->toDateString())
-            ->select('name','recruit_number')
+            ->select('id','name','recruit_number')
+            ->withCount('reviews')
+            ->with(['campaignReviewers'=>function($q){
+                $q->where('selected',1);
+            }])
             ->get();
 //        완료
         $endCampaigns = \App\Campaign::where('advertiser_id',$nowuser->id)
@@ -77,9 +83,10 @@ class AdvertiserMypageController extends Controller
         )->get();
         
     //        리뷰어 모집중
+        $beforeDay = Carbon::now()->subDay()->toDateString();
         $recruitCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
             ->where('confirm',1)
-            ->whereDate('end_recruit', '>=', Carbon::now()->subDays(1)->toDateString())
+            ->whereDate('end_recruit', '>=', $beforeDay)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','regions.id','=','areas.region_id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
@@ -100,17 +107,21 @@ class AdvertiserMypageController extends Controller
             'categories.name as category_name'
         )->with('campaignReviewers')->get();
 //        디데이 구하기
-           
         foreach ($recruitCampaigns as $key => $loop)
 		{
+            if($loop->end_recruit==$beforeDay){
+                $loop->rightNow = '리뷰어선정일';
+            }else{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif;
+                }
 		}
         //        진행중
         $submitCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
             ->where('confirm',1)
-            ->whereDate('end_recruit', '<', Carbon::now()->subDays(1)->toDateString())
+            ->whereDate('end_recruit', '<', $beforeDay)
             ->whereDate('end_submit', '>=', Carbon::now()->toDateString())
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','regions.id','=','areas.region_id')
@@ -130,7 +141,13 @@ class AdvertiserMypageController extends Controller
             'channels.id as channel_id',
             'categories.name as category_name'
         )
-            ->withCount('reviews')->get();
+            ->withCount('reviews')
+            ->with(['campaignReviewers'=>function($q){
+                $q->where('selected',1);
+            }])
+            ->with('refund')
+            ->get();
+//        dd($submitCampaigns);
 //        완료
         $endCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
             ->where('confirm',1)
@@ -154,7 +171,9 @@ class AdvertiserMypageController extends Controller
             'categories.name as category_name'
         )
             ->withCount('reviews')
+            ->with('refund')
             ->get();
+        
         return view('advertisers.managecampaign',[
             'waitCampaigns'=>$waitCampaigns,
             'recruitCampaigns'=>$recruitCampaigns,
@@ -202,6 +221,7 @@ class AdvertiserMypageController extends Controller
         //디데이 구하기
         $nowdate = Carbon::now();
         $er = new Carbon($campaign->end_recruit);//모집마감일
+        $er = $er->addDay();
         $dif = $er->diff($nowdate)->days;//날짜차이
         $campaign->rightNow = $dif;
         
@@ -249,8 +269,10 @@ class AdvertiserMypageController extends Controller
             //리뷰어만족도
             
             $sati = \App\Review::where('reviewer_id',$loop->reviewer->id)->avg('satisfaction');
+            $sati = (int) $sati;
+//            dd($sati);
             if($sati){
-                $loop->sati = $sati+'%';
+                $loop->sati = $sati.'%';
             } else {
                 $loop->sati = '평가없음';
             }
@@ -310,9 +332,11 @@ class AdvertiserMypageController extends Controller
         $campaignreviewers = \App\CampaignReviewer::where('campaign_id',$campaign->id)->where('selected',1)->with('reviewer')->get();
         //리뷰구하기
         $reviews = \App\Review::where('campaign_id',$campaign->id)->with('reviewer')->get();
+        
         //리뷰제출완료 디데이 구하기
         $nowdate = Carbon::now();
-        $er = new Carbon($campaign->end_submit);//모집마감일
+        $er = new Carbon($campaign->end_submit);//리뷰제출마감일
+        $er = $er->addDay();
         $dif = $er->diff($nowdate)->days;//날짜차이
         $campaign->rightNow = $dif;
         
@@ -370,8 +394,11 @@ class AdvertiserMypageController extends Controller
                 $loop->area='제주';
             }
         }
-        
+        if($campaignreviewers->count()!=0){
         $gender_f=$gender_f/$campaignreviewers->count()*100;
+            } else {
+            $gender_f = null;
+        }
         //총개수
         $r_count = $campaignreviewers->count();
         //선정된
@@ -386,5 +413,33 @@ class AdvertiserMypageController extends Controller
             'regions'=>$regions
         ]);
     }
-    
+    //만족도평가
+    public function satisfaction (Request $request){
+        \App\Review::whereId($request->reviewId)->update(['satisfaction'=>$request->val]);
+        return;
+    }
+    //미제출(신청) 포인트환불
+    public function refund ($campaignId){
+        $campaign = Campaign::whereId($campaignId)
+            ->select('recruit_number', 'offer_point')->first();
+        $recruit_number = $campaign->recruit_number;
+        $review_count = \App\Review::where('campaign_id',$campaignId)->count();
+        $offer_point = $campaign->offer_point;
+        //환불할포인트 = (모집인원-리뷰수)*(수수료5000+제공포인트)
+        $point = ($recruit_number-$review_count)*(5000+$offer_point);
+        $nowuser = auth()->guard('advertiser')->user();
+        //환불실행
+        Advertiser::whereId($nowuser->id)->increment('point', $point);
+        \App\Refund::create([
+            'advertiser_id'=>$nowuser->id,
+            'campaign_id'=>$campaignId,
+            'point'=>$point
+        ]);
+        return view('advertisers.refund_complete',[
+            'user'=>$nowuser,
+            'personnel'=>$recruit_number-$review_count,
+            'amount'=>5000+$offer_point,
+            'refund_point'=>$point
+        ]);
+    }
 }

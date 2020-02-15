@@ -9,6 +9,7 @@
     <h2 class="mb70 m-text-left">관심캠페인</h2>
 	<!-- 리뷰어 제안 목록 -->
 	<div class="my-reviewer bt2" id="bookmark_list">
+        <? $option = 'apply' ?>
 		@include('reviewers.part_bookmark_list')
     </div>
     <!-- //나의 캠페인 -->
@@ -62,7 +63,7 @@
     //삭제 클릭시
 $('.delete').on('click', function(e){
     e.preventDefault();
-    var bookmarkId = $(this).data('b');
+    bookmarkId = $(this).data('b');
         $.ajax({
            type:"post",
            url:'delete_bookmark/' + bookmarkId,
@@ -73,11 +74,11 @@ $('.delete').on('click', function(e){
         });
     });
     
-var camId, bookmarkId;
+var camid, bookmarkId;
 //신청하기 클릭시
 $('.apply').on('click', function(e){
-    camId = $(this).data('c');
-    suggestId = $(this).data('b');
+    camid = $(this).data('c');
+    bookmarkId = $(this).data('b');
 });
     
 //캠페인신청

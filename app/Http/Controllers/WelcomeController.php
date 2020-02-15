@@ -9,7 +9,6 @@ use Carbon\Carbon;
 class WelcomeController extends Controller
 {
     public function tempindex(){
-        auth()->logout();
         return view('temp_welcome');
     }
     public function index(){
@@ -19,7 +18,7 @@ class WelcomeController extends Controller
             ->join('campaigns', function($join) use ($nowdate){
                 $join->on('campaign_exposure.campaign_id','=','campaigns.id')
                     ->where('campaigns.confirm',1)
-                    ->whereDate('end_recruit','>',$nowdate);
+                    ->whereDate('end_recruit','>=',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -43,6 +42,7 @@ class WelcomeController extends Controller
         foreach ($plCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
@@ -53,7 +53,7 @@ class WelcomeController extends Controller
             ->join('campaigns', function($join) use ($nowdate){
                 $join->on('campaign_exposure.campaign_id','=','campaigns.id')
                     ->where('campaigns.confirm',1)
-                    ->whereDate('end_recruit','>',$nowdate);
+                    ->whereDate('end_recruit','>=',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -78,6 +78,7 @@ class WelcomeController extends Controller
         foreach ($prCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
@@ -88,7 +89,7 @@ class WelcomeController extends Controller
             ->join('campaigns', function($join) use ($nowdate){
                 $join->on('campaign_exposure.campaign_id','=','campaigns.id')
                     ->where('campaigns.confirm',1)
-                    ->whereDate('end_recruit','>',$nowdate);
+                    ->whereDate('end_recruit','>=',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -113,12 +114,13 @@ class WelcomeController extends Controller
         foreach ($gCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
-        //        일반캠페인(파워탬페인)
+        //        일반캠페인(파워캠페인)
         $nCampaigns = \App\Campaign::where('confirm',1)
             ->whereDate('end_recruit','>=',$nowdate)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
@@ -144,6 +146,7 @@ class WelcomeController extends Controller
         foreach ($nCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();

@@ -188,12 +188,18 @@
     @endslot
     링크가 복사되었습니다.
 @endcomponent
-<!--공유url복사 안내-->
+<!--관심캠페인등록 안내-->
 @component('help.popup_ok')
     @slot('goId')
         bookmark_ok
     @endslot
     관심캠페인에 등록되었습니다.
+@endcomponent
+@component('help.popup_ok')
+    @slot('goId')
+        bookmark_pre
+    @endslot
+    이미 관심캠페인에 등록된 캠페인입니다.
 @endcomponent
 <!--중복신청알림-->
 @component('help.popup_ok')
@@ -293,8 +299,15 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            type:"POST",
            url:"{{ route('reviewers.bookmark') }}",
            data:{camid:camid},
-            success:function(){
-                window.location.hash = '#bookmark_ok';
+            success:function(data){
+                if(data.pre=='pre_apply'){
+                   window.location.hash = '#pre_apply';
+                }else if(data.pre==true){
+                   window.location.hash = '#bookmark_pre';
+                } else {
+                    window.location.hash = '#bookmark_ok';
+                }
+                
             },
             error: function(data) {
 

@@ -23,7 +23,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=0.8') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=0.9') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
@@ -162,7 +162,7 @@
 				</ul>	
 			</div>
 			<div class="footer-txt">
-				<p>블록션<small>|</small>대표 : 조용완</p>
+				<p>스트롱애드<small>|</small>대표 : 조용완</p>
 				<p>
 					<span>44698 울산광역시 남구 삼산중로 144, 3층<small class="m-none">|</small></span>
 					<span>MAIL : help@review-power.com<small class="pc-none">|</small></span>

@@ -142,6 +142,11 @@ return [
         'v' => '방문',
         'main_image' => '대표이미지',
         'gender' => '성별',
-        'origin_pw' => '기존 비밀번호'
+        'origin_pw' => '기존 비밀번호',
+        'bank_id' => '입금은행',
+        'account_holder' => '예금주',
+        'account_number' => '계좌번호',
+        'id_card_image' => '신분증사본',
+        'amount' => '출금포인트',
     ],
 ];

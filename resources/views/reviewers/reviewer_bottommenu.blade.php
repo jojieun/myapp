@@ -10,11 +10,11 @@
 		<li @if(Request::segment(2)=='plan_reading')class="on"@endif><a class="out" href="{{route('reviewers.plan_reading')}}"><span>리뷰전략<br/>열람 정보</span></a></li>
 		<li @if(Request::segment(2)=='suggestion')class="on"@endif><a class="out" href="{{route('reviewers.suggestion')}}"><span>리뷰어<br/>제안</span></a></li>
 		<li @if(Request::segment(2)=='bookmark_list')class="on"@endif><a class="out" href="{{route('reviewers.bookmark_list')}}"><span>관심<br/>캠페인</span></a></li>
-		<li><a class="out" href="#"><span>나의<br/>포인트</span></a></li>
-		<li><a class="out" href="#"><span>회원정보<br/>수정</span></a></li>
-		<li class="fw-500 on">
+		<li @if(Request::segment(2)=='point')class="on"@endif><a class="out" href="{{route('reviewers.point')}}"><span>나의<br/>포인트</span></a></li>
+		<li @if(Request::segment(2)=='edit_info')class="on"@endif><a class="out" href="{{route('reviewers.edit_info')}}"><span>회원정보<br/>수정</span></a></li>
+		<li @if(Request::segment(2)=='mysns')class="on fw-500"@endif class="fw-500">
 			<div class="out">
-				<span id="sns_title">mySNS</span>
+                <a href="{{route('reviewers.mysns')}}"><span id="sns_title">mySNS</span></a>
 				<p class="sns">
 					@foreach($chls as $chl)
                          @if($val=$user->channelreviewers->where('channel_id',$chl->id)->first())

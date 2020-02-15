@@ -61,6 +61,13 @@
                 </ul>
             </li>
             <li class="main">
+                <a href="{{route('admin.apply_deposits')}}" class="main_a">리뷰어 포인트 출금신청</a>
+                <ul class="sub">
+                    <li><a href="{{route('admin.apply_deposits')}}">출금신청내역</a></li>
+                    <li><a href="{{route('admin.complete_deposits')}}">출금완료내역</a></li>
+                </ul>
+            </li>
+            <li class="main">
                 <a href="{{route('admin.rFAQCategory')}}" class="main_a">FAQ</a>
                 <ul class="sub">
                     <li><a href="{{route('admin.rFAQCategory')}}">리뷰어FAQ 카테고리 관리</a></li>

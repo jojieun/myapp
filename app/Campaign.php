@@ -41,5 +41,9 @@ class Campaign extends Model
     {
         return $this->hasMany(Review::class);
     }
+    public function refund() //포인트환불내역구하기
+    {
+        return $this->hasOne(refund::class);
+    }
 }
 

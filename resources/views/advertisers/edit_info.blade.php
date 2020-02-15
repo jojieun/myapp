@@ -44,7 +44,7 @@
 
 				<div class="join_btn_wrap">
 <!--					<a href="#" class="btn">취소</a>-->
-					<button type="submit" class="btn black">수정하기</a>
+					<button type="submit" class="btn black">수정하기</button>
 				</div>
 				</form>
 			</div>

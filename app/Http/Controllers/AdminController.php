@@ -178,6 +178,45 @@ class AdminController extends Controller
             ]);
     }
     
+    //****리뷰어포인트출금
+    //관리자-포인트 출금신청내역
+    public function apply_deposits()
+    {
+        $apply_deposits = \App\Deposit::where('complete',false)->with('reviewer:id,name,mobile_num')->with('bank')->get();
+        return view('admin.apply_deposits',[
+            'apply_deposits' => $apply_deposits,
+        ]);
+    }
+    //관리자-포인트 출금신청처리
+    public function process_deposits(Request $request)
+    {
+        //입금완료처리
+        \App\Deposit::whereId($request->depositId)
+            ->update(['complete'=>true]);
+        //리뷰어포인트감소
+        \App\Reviewer::whereId($request->reviewerId)
+            ->decrement('point', $request->amount);
+        //포인트출금내역기록
+        \App\Point::create([
+            'reviewer_id'=>$request->reviewerId,
+            'kinds'=>'w',
+            'amount'=>$request->amount,
+        ]);
+        $apply_deposits = \App\Deposit::where('complete',false)->with('reviewer:id,name,mobile_num')->with('bank')->get();
+
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_apply_deposit', array('apply_deposits' => $apply_deposits))->render(),
+            ]);
+    }
+    //관리자-포인트 출금완료내역
+    public function complete_deposits()
+    {
+        $complete_deposits = \App\Deposit::where('complete',true)->with('reviewer:id,name,mobile_num')->with('bank')->get();
+        return view('admin.complete_deposits',[
+            'complete_deposits' => $complete_deposits,
+        ]);
+    }
+    
     //****자주묻는질문
     //리뷰어FAQ 카테고리 보기
     public function rFAQCategory()

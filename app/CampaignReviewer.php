@@ -17,6 +17,6 @@ class CampaignReviewer extends Model
     }
     public function review()
     {
-        return $this->hasOne('App\Review', 'reviewer_id', 'reviewer_id');
+        return $this->hasOne('App\Review', 'campaign_id', 'campaign_id');
     }
 }

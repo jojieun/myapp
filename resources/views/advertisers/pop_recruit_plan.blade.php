@@ -16,6 +16,7 @@
 								<dt>이름/닉네임</dt>
 								<dd>{{$plan->reviewer->name}} / {{$plan->reviewer->nickname}}</dd>
 							</dl>
+<!--
 							<dl>
 								<dt>연락처</dt>
 								<dd>
@@ -37,6 +38,7 @@
                                     @endif
                                     </dd>	
 							</dl>
+-->
 							<dl>							
 								<dt>SNS</dt>
 								<dd class="sns">

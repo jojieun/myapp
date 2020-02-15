@@ -49,6 +49,7 @@
             @if($option=='apply')
             <a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w125">캠페인보기</a>
             @elseif($option=='select')
+            <a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w125">캠페인보기</a>
                 @if($campaign->review==null)
                                             <a href="#popup_reviewer" class="btn btn-check w125 black submission" data-c="{{$campaign->id}}">리뷰제출</a>
                 @else

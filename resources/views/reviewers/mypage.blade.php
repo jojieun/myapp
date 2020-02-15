@@ -8,24 +8,24 @@
 			<div class="right-content">
 				<div class="my-reviewer-top">
 					<dl>
-						<dt><b>나의포인트</b><a href="#">자세히보기</a></dt>
-						<dd><b>{{ $user->point }}</b>P</dd>
+						<dt><b>나의포인트</b><a href="{{route('reviewers.point')}}">자세히보기</a></dt>
+						<dd><b>{{ number_format($user->point) }}</b>P</dd>
 					</dl>
 					<ul>
 						<li>
-                            <a href="#">
+                            <a href="{{route('reviewers.not_submit')}}">
                             <span class="title">미제출리뷰</span><span class="txt"><b>{{$notreview}}</b><em>건</em></span>
                             </a>
                         </li>
 						<li>
-                            <a href="#">
-                            <span class="title">리뷰제안</span><span class="txt"><b>0</b><em>건</em></span></a></li>
+                            <a href="{{route('reviewers.suggestion')}}">
+                            <span class="title">리뷰제안</span><span class="txt"><b>{{$suggestions}}</b><em>건</em></span></a></li>
 						<li>
-                            <a href="#">
-                            <span class="title">리뷰전략열람</span><span class="txt"><b>0</b><em>건</em></span></a></li>
+                            <a href="{{route('reviewers.plan_reading')}}">
+                            <span class="title">리뷰전략열람</span><span class="txt"><b>{{$advertiserPlans}}</b><em>건</em></span></a></li>
 						<li>
-                            <a href="#">
-                            <span class="title">관심캠페인</span><span class="txt"><b>0</b><em>건</em></span></a></li>
+                            <a href="{{route('reviewers.bookmark_list')}}">
+                            <span class="title">관심캠페인</span><span class="txt"><b>{{$bookmarks}}</b><em>건</em></span></a></li>
 					</ul>
 				</div>
                 @if(!$user->plan_count)

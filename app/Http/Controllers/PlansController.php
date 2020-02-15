@@ -7,6 +7,7 @@ use Image;
 use App\Plan;
 use Carbon\Carbon;
 use App\AdvertiserPlan;
+use App\ReviewerSuggestion;
 
 class PlansController extends Controller
 {
@@ -325,6 +326,59 @@ class PlansController extends Controller
         }
 
         return redirect(route('plans.showmy', $plan->id));
+    }
+    //리뷰(어)제안할 캠페인 출력
+     public function suggestion_campaign()
+    {
+        $camsExists = \App\Campaign::where('advertiser_id',auth()->guard('advertiser')->user()->id)
+            ->where('confirm',1)
+            ->whereDate('end_recruit','>=',Carbon::now())
+            ->exists();
+         if($camsExists){
+         $cams = \App\Campaign::where('advertiser_id',auth()->guard('advertiser')->user()->id)
+            ->where('confirm',1)
+            ->whereDate('end_recruit','>=',Carbon::now())
+            ->select('id','name')->get();
+            return \Response::json(array(
+                     'cams' => $cams,
+                ));
+             } else {
+             return \Response::json(array(
+                     'cams' => false,
+                ));
+         }
+    }
+    
+    //리뷰(어)제안하기
+    public function reviewer_suggestion(Request $request)
+    {
+        //캠페인 신청여부 확인
+        $camsExists = \App\CampaignReviewer::where('campaign_id',$request->camId)
+            ->where('reviewer_id',$request->reviewerId)
+            ->exists();
+        if($camsExists){
+            return \Response::json(array(
+                     'pre' => 'cam',
+                ));
+        } else {
+            //이미 리뷰어 제안했는지 확인
+            $suggesExists = ReviewerSuggestion::where('campaign_id',$request->camId)
+            ->where('reviewer_id',$request->reviewerId)
+            ->exists();
+            if($suggesExists){
+                return \Response::json(array(
+                     'pre' => 'sugges',
+                ));
+            } else{
+                $reviewer_suggestion = new ReviewerSuggestion;
+                $reviewer_suggestion->campaign_id = $request->camId;
+                $reviewer_suggestion->reviewer_id = $request->reviewerId;
+                $reviewer_suggestion->save();
+                return \Response::json(array(
+                    'pre' => false,
+                ));
+            }
+        }
     }
 
     /**

@@ -95,14 +95,14 @@ class CampaignsController extends Controller
         )
             ->orderBy($myorder, 'desc')
             ->paginate(60);
-        
 //        디데이 구하기
 foreach ($campaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
-             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+    $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         
         
@@ -174,6 +174,7 @@ foreach ($campaigns as $key => $loop)
         foreach ($campaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
              $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
@@ -511,7 +512,7 @@ foreach ($campaigns as $key => $loop)
             $recommends = \App\Campaign::where('area_id',$campaign->area_id)
                 ->where('confirm',1)
                 ->where('campaigns.id','!='.$campaign->id)
-                ->whereDate('end_recruit','>',$nowdate)
+                ->whereDate('end_recruit','>=',$nowdate)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
@@ -537,7 +538,7 @@ foreach ($campaigns as $key => $loop)
                 $join->on('campaigns.brand_id','=','brands.id')
                     ->where('campaigns.confirm',1)
                     ->where('campaigns.id','!='.$campaign->id)
-                    ->whereDate('end_recruit','>',$nowdate);
+                    ->whereDate('end_recruit','>=',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -563,6 +564,7 @@ foreach ($campaigns as $key => $loop)
         foreach ($recommends as $key => $loop)
         {
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();

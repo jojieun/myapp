@@ -4,7 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Image;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
+use App\Reviewer;
 use App\Review;
+use App\Deposit;
 
 class ReviewerMypageController extends Controller
 {
@@ -17,13 +23,13 @@ class ReviewerMypageController extends Controller
         
         $nowUser = auth()->user()->id;
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $nowdate = Carbon::now();
 //        신청**캠페인
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
-            ->join('campaigns', function($join) {
+            ->join('campaigns', function($join) use ($nowdate) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+                    ->whereDate('end_recruit','>=',$nowdate);
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -44,10 +50,10 @@ class ReviewerMypageController extends Controller
             'channels.id as channel_id',
              'categories.name as category_name')->get();
         // 신청캠페인 디데이-신청인원 구하기  
-        
         foreach ($applyCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif; 
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
@@ -57,9 +63,8 @@ class ReviewerMypageController extends Controller
             ->where('selected',1)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->subDays(1)->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
-                
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -68,6 +73,7 @@ class ReviewerMypageController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
             'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
             'campaigns.id',
             'campaigns.name',
              'campaigns.form',
@@ -81,13 +87,15 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->with('review')->get();
+             'categories.name as category_name')
+            ->with('review')
+            ->get();
         //        디데이-신청인원 구하기  
         foreach ($selectCampaigns as $key => $loop)
 		{
+             $loop->rightNow = '모집마감';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
-//        dd($selectCampaigns);
         //        종료**캠페인
         $endCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)
@@ -116,26 +124,40 @@ class ReviewerMypageController extends Controller
         //        디데이-신청인원 구하기  
         foreach ($endCampaigns as $key => $loop)
 		{
+            
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
         //채널
         $chls = \App\Channel::select('id','url')->get();
         //미제출리뷰 개수반환
         $notreview = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
-            ->where('selected',1)
+            ->where('selected',1)->doesntHave('review')->count();
+        //리뷰(어)제안 개수반환
+        $suggestions = \App\ReviewerSuggestion::where('reviewer_id',$nowUser->id)->where('accept','null')->join('campaigns', function($join) {
+                $join->on('reviewer_suggestions.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
+            })->count();
+        //리뷰전략열람 개수반환
+        $plan = \App\Plan::where('reviewer_id',$nowUser->id)->first();
+        $advertiserPlans = \App\AdvertiserPlan::where('plan_id',$plan->id)->count();
+        //관심캠페인 개수반환
+        $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser->id)
+//            ->doesnthave('campaignReviewer')
             ->join('campaigns', function($join) {
-                $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->subDays(1)->toDateString())
-                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
-                
-            })->doesntHave('review')->count();
+                $join->on('bookmarks.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
+            })
+            ->count();
         return view('reviewers.mypage',[
             'user'=>$nowUser,
             'applyCampaigns'=>$applyCampaigns,
             'selectCampaigns'=>$selectCampaigns,
             'endCampaigns'=>$endCampaigns,
             'chls'=>$chls,
-            'notreview'=>$notreview
+            'notreview'=>$notreview,
+            'advertiserPlans'=>$advertiserPlans,
+            'suggestions'=>$suggestions,
+            'bookmarks'=>$bookmarks
         ]);
     }
     //리뷰 제출
@@ -151,6 +173,19 @@ class ReviewerMypageController extends Controller
             'url'=>$request->url,
             'after'=>$request->after,
         ]);
+        //지급할 포인트 금액
+        $amount = \App\Campaign::whereId($request->campaign_id)->select('offer_point')->first();
+        $amount = $amount->offer_point;
+        //포인트지급
+        \App\Point::create([
+            'campaign_id'=>$request->campaign_id,
+            'reviewer_id'=>$nowUser,
+            'kinds'=>'d',
+            'amount'=>$amount,
+        ]);
+        //리뷰어개인정보에 지급된 포인트 더하기
+        Reviewer::whereId($nowUser)
+            ->increment('point', $amount);
         return;
     }
     //리뷰수정창 띄우기
@@ -169,13 +204,13 @@ class ReviewerMypageController extends Controller
     public function my_campaign(){
         $nowUser = auth()->user()->id;
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $nowdate = Carbon::now();
 //        신청**캠페인
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -201,6 +236,7 @@ class ReviewerMypageController extends Controller
 		{
             // 신청캠페인 디데이 구하기  
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif; 
             //        신청인원 구하기 
@@ -209,9 +245,10 @@ class ReviewerMypageController extends Controller
         //        선정**캠페인
         $selectCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)
+            ->with('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->subDays(1)->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
                 
             })
@@ -222,6 +259,7 @@ class ReviewerMypageController extends Controller
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
             'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
             'campaigns.id',
             'campaigns.name',
              'campaigns.form',
@@ -235,10 +273,11 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->with('review')->get();
+             'categories.name as category_name')->get();
         //        디데이-신청인원 구하기  
         foreach ($selectCampaigns as $key => $loop)
 		{
+            $loop->rightNow = '모집마감'; 
             //        신청인원 구하기 
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
@@ -287,13 +326,14 @@ class ReviewerMypageController extends Controller
     public function not_submit(){
         $nowUser = auth()->user()->id;
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         //        미제출**캠페인
         $notSubmitCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)
+            ->doesntHave('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->subDays(1)->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
                 
             })
@@ -317,10 +357,11 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->doesntHave('review')->get();
+             'categories.name as category_name')->get();
         //        디데이-신청인원 구하기  
         foreach ($notSubmitCampaigns as $key => $loop)
 		{
+            $loop->rightNow = '모집마감'; 
             //        신청인원 구하기 
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
 		}
@@ -334,12 +375,8 @@ class ReviewerMypageController extends Controller
     }
     //캠페인신청
      public function apply(Request $request){
-        $pre = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->get();
-         if($pre!=null){
-             return \Response::json(array(
-                    'pre_apply' => true,
-                )); 
-         } else {
+        $pre = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->first();
+         if($pre==null){
              $CampaignReviewer = \App\CampaignReviewer::create([
                  'campaign_id'=>$request->camid,
                  'reviewer_id'=>auth()->guard('web')->user()->id,
@@ -379,7 +416,9 @@ class ReviewerMypageController extends Controller
              } else if(isset($request->bookmarkId)){//관심캠페인에서 넘어왔을경우
                  \App\Bookmark::whereId($request->bookmarkId)->delete();
                  //북마크목록만들기
-                 $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser)->join('campaigns', function($join) {
+                 $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser)
+                     ->doesnthave('campaignReviewer')
+                     ->join('campaigns', function($join) {
                 $join->on('bookmarks.campaign_id','=','campaigns.id')
                     ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
             })
@@ -402,7 +441,15 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->get(); 
+             'categories.name as category_name')->get();
+                 foreach ($bookmarks as $key => $loop)
+                 {
+                     $er = new Carbon($loop->end_recruit);//모집마감일
+                     $er = $er->addDay();
+                     $dif = $er->diff($nowdate)->days;//날짜차이
+                     $loop->rightNow = $dif?:'Day';
+                     $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+                 }
                      return \Response::json(array(
                      'showhtml' => \View::make('reviewers.part_bookmark_list', array('bookmarks' => $bookmarks))->render(),
                     'pre_apply' => false,
@@ -412,28 +459,42 @@ class ReviewerMypageController extends Controller
                     'pre_apply' => false,
                 )); 
              }
-             
+         } else {
+             return \Response::json(array(
+                    'pre_apply' => true,
+                ));
          }
     }
     //북마크등록
     public function bookmark(Request $request){
-        $pre = \App\Bookmark::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->get();
-         if($pre!=null){
-             return;
-         } else {
-        $Bookmark = \App\Bookmark::create([
-            'campaign_id'=>$request->camid,
-            'reviewer_id'=>auth()->guard('web')->user()->id,
-        ]);
-         return;
+        $pre = \App\Bookmark::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->first();
+         if($pre==null){
+             $pre2 = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->first();
+             if($pre2==null){
+                 $Bookmark = \App\Bookmark::create([
+                     'campaign_id'=>$request->camid,
+                     'reviewer_id'=>auth()->guard('web')->user()->id,
+                 ]);
+                 return \Response::json(array(
+                 'pre' => false,
+                 ));
+             } else {
+                 return \Response::json(array(
+                     'pre' => 'pre_apply',
+                 ));
              }
+         } else {
+             return \Response::json(array(
+                 'pre' => true,
+             ));
+         }
     }
     //리뷰전략열람정보
     public function plan_reading(){
         $nowUser = auth()->user()->id;
         $plan = \App\Plan::where('reviewer_id',$nowUser)->first();
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $chls = \App\Channel::select('id','url')->get();
         
         if($plan!=null){
@@ -482,6 +543,7 @@ class ReviewerMypageController extends Controller
         foreach ($recruitCampaigns as $key => $loop)
 		{
             $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif?:'Day';
             $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
@@ -493,14 +555,13 @@ class ReviewerMypageController extends Controller
     //리뷰어제안
     public function suggestion(){
         $nowUser = auth()->user()->id;
-        $plan = \App\Plan::where('reviewer_id',$nowUser)->first();
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $chls = \App\Channel::select('id','url')->get();
         
         $suggestions = \App\ReviewerSuggestion::where('reviewer_id',$nowUser->id)->where('accept','null')->join('campaigns', function($join) {
                 $join->on('reviewer_suggestions.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -522,6 +583,16 @@ class ReviewerMypageController extends Controller
             'channels.name as channel_name',
             'channels.id as channel_id',
              'categories.name as category_name')->get(); 
+        //        디데이 구하기
+         $nowdate = Carbon::now();  
+        foreach ($suggestions as $key => $loop)
+		{
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->rightNow = $dif?:'Day';
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+		}
         return view('reviewers.suggestion',[
             'user'=>$nowUser,
             'chls'=>$chls,
@@ -566,15 +637,16 @@ class ReviewerMypageController extends Controller
     //관심캠페인 목록 보기
     public function bookmark_list(){
         $nowUser = auth()->user()->id;
-        $plan = \App\Plan::where('reviewer_id',$nowUser)->first();
         //리뷰전략 작성 여부
-        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $chls = \App\Channel::select('id','url')->get();
         
         //관심캠페인
-        $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser->id)->join('campaigns', function($join) {
+        $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser->id)
+//            ->doesnthave('campaignReviewer')
+            ->join('campaigns', function($join) {
                 $join->on('bookmarks.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -596,7 +668,15 @@ class ReviewerMypageController extends Controller
             'channels.name as channel_name',
             'channels.id as channel_id',
              'categories.name as category_name')->get(); 
-        
+        $nowdate = Carbon::now();  
+        foreach ($bookmarks as $key => $loop)
+		{
+            $er = new Carbon($loop->end_recruit);//모집마감일
+            $er = $er->addDay();
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->rightNow = $dif?:'Day';
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+        }
         return view('reviewers.bookmark_list',[
             'user'=>$nowUser,
             'chls'=>$chls,
@@ -610,7 +690,7 @@ class ReviewerMypageController extends Controller
         //관심캠페인
         $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser)->join('campaigns', function($join) {
                 $join->on('bookmarks.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDays(1)->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -636,10 +716,205 @@ class ReviewerMypageController extends Controller
                      'showhtml' => \View::make('reviewers.part_bookmark_list', array('bookmarks' => $bookmarks))->render(),
                 ));
     }
+    public function point(){
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        $points = \App\Point::where('reviewer_id',$nowUser->id)
+            ->with('campaign:id,name')
+//            ->join('campaigns', function($join) {
+//                $join->on('points.campaign_id','=','campaigns.id');
+//            })
+//            ->select(
+//            'points.created_at',
+//            'points.kinds',
+//            'points.amount',
+//            'campaigns.name as campaign_name'
+//        )
+            ->latest()
+            ->get();
+        
+        return view('reviewers.point',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            'points'=>$points,
+            ]);
+    }
+    
+    public function point_search(Request $request){
+        $nowUser = auth()->user()->id;
+        $start=$request->start;
+        $myend=$request->myend;
+        $kinds=$request->kinds;
+//        $find=$request->find;
+        $points = \App\Point::where('reviewer_id',$nowUser)
+            ->when($start, function ($query, $start) {
+                    return $query->whereDate('points.created_at', '>=', $start);
+                })
+            ->when($myend, function ($query, $myend) {
+                    return $query->whereDate('points.created_at', '<=', $myend);
+                })
+            ->when($kinds, function ($query, $kinds) {
+                    return $query->where('kinds', $kinds);
+                })
+//            ->join('campaigns', function($join) use ($find) {
+//                $join->on('points.campaign_id','=','campaigns.id')
+//                    ->where('name', 'like', '%'.$find.'%');
+//            })
+//            ->select(
+//            'points.created_at',
+//            'points.kinds',
+//            'points.amount',
+//            'campaigns.name as campaign_name'
+//        )
+            ->with('campaign:id,name')
+            ->latest()
+            ->get();
+        return \Response::json(array(
+                     'showhtml' => \View::make('reviewers.part_point', array('points' => $points))->render(),
+                ));
+    }
+    
+   //출금신청 
+    public function withdraw(){
+        $nowUser = auth()->user()->id;
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        //은행가져오기
+        $banks=\App\Bank::get();
+        
+        return view('reviewers.withdraw',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            'banks'=>$banks
+            ]);
+    }
+    public function save_withdraw(Request $request){
+        $this->validate($request,[
+            'bank_id' => 'required',
+            'account_holder' => 'required',
+            'account_number' => 'required|numeric',
+            'id_card_image' => 'required|mimes:jpeg,bmp,png,gif,svg',
+            'amount' => 'required|numeric',
+        ]);
+        $deposit = new Deposit;
+        $deposit->reviewer_id = auth()->user()->id;
+        $deposit->bank_id = $request->bank_id;
+        $deposit->account_holder = $request->account_holder;
+        $deposit->account_number = $request->account_number;
+        $deposit->amount = $request->amount;
+        if($request->hasfile('id_card_image')){
+            $file = $request->file('id_card_image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/id_card/'.$filename;
+            $img = Image::make($file);
+            $img->resize(800, null, function ($constraint) {
+    $constraint->aspectRatio();
+});
+            $img->save($location);
+            $deposit->id_card_image = $filename;
+        }
+        $deposit->save();
+        
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = \App\Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        return view('reviewers.withdraw_end',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    }
+    //회원정보수정
+    public function edit_info(){
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        return view('reviewers.edit_info',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    } 
+    //회원정보 업데이트
+    public function update_info(Request $request, Reviewer $reviewer){
+        $this->validate($request,[
+            'origin_pw' => ['required',
+                            function ($attribute, $value, $fail) use ($reviewer) {
+                                    if (!Hash::check($value, $reviewer->password)) {
+                                        $fail('기존 비밀번호가 다릅니다');
+                                    }
+                                },
+                            ],
+            'name' => 'required|max:30',
+            'password' => 'confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
+            'nickname' => 'required|max:30|unique:reviewers,nickname,'.$reviewer->id,
+            'mobile_num' => 'required|digits:11',
+            'birth'=>'required|date',
+            'zipcode'=>'required|digits:5',
+            'address'=>'required',
+            'gender'=>'required'
+        ]);
+        
+        if($request->has('password')){
+            $reviewer->password = bcrypt($request->input('password'));
+        }
+        $reviewer->name = $request->input('name');
+        $reviewer->nickname = $request->input('nickname');
+        $reviewer->mobile_num = $request->input('mobile_num');
+        $reviewer->birth = $request->input('birth');
+        $reviewer->zipcode = $request->input('zipcode');
+        $reviewer->address = $request->input('address');
+        $reviewer->detail_address = $request->input('detail_address');
+        $reviewer->gender = $request->input('gender');
+        $reviewer->save();
+        
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        return view('reviewers.update_success',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    }
+    //mySNS
+    public function mysns(){
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+//        dd($nowUser);
+        
+        return view('reviewers.mysns',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    }
+    public function update_mysns(Request $request){
+        
+        $nowUser = auth()->user()->id;
+        $chls = \App\Channel::select('id','url')->get();
+        foreach($chls as $chl){
+            if($request->input($chl->id)){
+                \App\ChannelReviewer::updateOrCreate([
+                   'channel_id'=>$chl->id,
+                    'reviewer_id'=>$nowUser,
+                    'name'=>$request->input($chl->id),
+                ]);
+            }
+        }
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        
+        return view('reviewers.mysns_update_success',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    }
 }
-
-
-
-
-
-

@@ -114,7 +114,7 @@
 .popup.term .text3 p span.point{ color:#e84250; border-bottom:1px solid #e84250; }
 .popup.term .text3 p.txt-input{ margin-bottom:30px; text-align:left;}
 .popup.term .text3 p.txt-input span{ display:block; margin:15px 0;}
-.popup.term .text3 p input.full_width{ border:1px solid #ddd; margin:5px 0 20px; font-size: 16px;}
+.popup.term .text3 p input.full_width, .popup.term .text3 p select.full_width{ border:1px solid #ddd; margin:5px 0 20px; font-size: 16px;}
 .popup.term .text3 p textarea{ margin:5px 0 30px; }
 
 /* 약관 */

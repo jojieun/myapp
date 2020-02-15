@@ -9,6 +9,7 @@
     <h2 class="mb70 m-text-left">리뷰어 제안</h2>
 	<!-- 리뷰어 제안 목록 -->
 	<div class="my-reviewer bt2" id="suggestion_list">
+        <? $option='apply' ?>
 		@include('reviewers.part_suggestion')
     </div>
     <!-- //나의 캠페인 -->
@@ -57,10 +58,10 @@ $('.no_accept').on('click', function(e){
         });
     });
     
-var camId, suggestId;
+var camid, suggestId;
 //제안수락 클릭시
-$('.no_accept').on('click', function(e){
-    camId = $(this).data('c');
+$('.accept').on('click', function(e){
+    camid = $(this).data('c');
     suggestId = $(this).data('s');
 });
     

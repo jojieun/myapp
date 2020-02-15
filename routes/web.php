@@ -57,6 +57,16 @@ Route::resource('communities', 'CommunitiesController');
 
 
 /********리뷰전략 인플루언서**********/
+//리뷰(어)제안할 캠페인 가져오기
+Route::get('plans/suggestion_campaign',[
+    'as'=>'plans.suggestion_campaign',
+    'uses' => 'PlansController@suggestion_campaign'
+]);
+//리뷰(어)제안하기
+Route::post('plans/reviewer_suggestion',[
+    'as'=>'plans.reviewer_suggestion',
+    'uses' => 'PlansController@reviewer_suggestion'
+]);
 //나의 리뷰전략 보기
 Route::get('plans/showmy/{id}',[
     'as'=>'plans.showmy',
@@ -123,6 +133,13 @@ Route::post('admin/makeQCategory','AdminController@makeQCategory')->name('admin.
 //관리자-일대일문의 카테고리 삭제
 Route::delete('admin/delQCategory/{id}','AdminController@delQCategory');
 
+//관리자-포인트 출금신청내역
+Route::get('admin/apply_deposits','AdminController@apply_deposits')->name('admin.apply_deposits');
+//관리자-포인트 출금신청처리
+Route::post('admin/process_deposits','AdminController@process_deposits')->name('admin.process_deposits');
+//관리자-포인트 출금완료내역
+Route::get('admin/complete_deposits','AdminController@complete_deposits')->name('admin.complete_deposits');
+
 //관리자-리뷰어FAQ 카테고리 보기
 Route::get('admin/rFAQCategory','AdminController@rFAQCategory')->name('admin.rFAQCategory');
 //관리자-리뷰어FAQ 카테고리 저장 ajax
@@ -186,7 +203,7 @@ Route::get('reviewer/plan_reading',[
 Route::get('reviewer/show_campaign/{adId}',[
     'uses' => 'ReviewerMypageController@show_campaign'
 ]);
-//리뷰어 제안
+//리뷰어 제안 내역
 Route::get('reviewer/suggestion',[
     'as'=>'reviewers.suggestion',
     'uses' => 'ReviewerMypageController@suggestion'
@@ -204,7 +221,46 @@ Route::get('reviewer/bookmark_list',[
 Route::post('reviewer/delete_bookmark/{bookmarkId}',[
     'uses' => 'ReviewerMypageController@delete_bookmark'
 ]);
-
+//나의 포인트
+Route::get('reviewer/point',[
+    'as'=>'reviewers.point',
+    'uses' => 'ReviewerMypageController@point'
+]);
+//나의 포인트 검색
+Route::post('reviewer/point_search',[
+    'as'=>'reviewers.point_search',
+    'uses' => 'ReviewerMypageController@point_search'
+]);
+//포인트 출금신청
+Route::get('reviewer/withdraw',[
+    'as'=>'reviewers.withdraw',
+    'uses' => 'ReviewerMypageController@withdraw'
+]);
+//포인트 출금신청처리
+Route::post('reviewer/save_withdraw',[
+    'as'=>'reviewers.save_withdraw',
+    'uses' => 'ReviewerMypageController@save_withdraw'
+]);
+//회원정보수정
+Route::get('reviewer/edit_info',[
+    'as'=>'reviewers.edit_info',
+    'uses' => 'ReviewerMypageController@edit_info'
+]);
+//회원정보업데이트
+Route::put('reviewer/update_info/{reviewer}',[
+    'as'=>'reviewers.update_info',
+    'uses' => 'ReviewerMypageController@update_info'
+]);
+//mysns
+Route::get('reviewer/mysns',[
+    'as'=>'reviewers.mysns',
+    'uses' => 'ReviewerMypageController@mysns'
+]);
+//mysns업데이트
+Route::put('reviewer/update_mysns',[
+    'as'=>'reviewers.update_mysns',
+    'uses' => 'ReviewerMypageController@update_mysns'
+]);
 
 /******광고주마이페이지*********/
 //마이페이지 메인
@@ -240,6 +296,16 @@ Route::get('show_plan/{reviewer_id}',[
 Route::get('advertiser/managecampaign/submit_campaign/{campaign}',[
     'as'=>'advertisers.submit_campaign',
     'uses' => 'AdvertiserMypageController@submit_campaign'
+]);
+//리뷰어만족도평가
+Route::post('advertiser/managecampaign/satisfaction',[
+    'as'=>'advertisers.satisfaction',
+    'uses' => 'AdvertiserMypageController@satisfaction'
+]);
+//미제출(신청) 포인트환불
+Route::get('advertiser/refund/{campaignId}',[
+    'as'=>'advertisers.refund',
+    'uses' => 'AdvertiserMypageController@refund'
 ]);
 //캠페인 대행 의뢰
 Route::resource('advertiser/agency', 'AgencyController');
