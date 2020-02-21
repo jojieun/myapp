@@ -1,5 +1,5 @@
     <table>
-    `   <tr>
+        <tr>
             <th>문의카테고리</th>
         <td>{{$onetoone->qcategory->name}}</td>
         </tr>
@@ -28,7 +28,7 @@
         {!! csrf_field() !!}
         {!! method_field('PUT') !!}
         <table>
-    `   <tr>
+            <tr>
             <th>답변제목</th>
         <td>
             <input name="answer_title"  value="{{ old('answer_title', $onetoone->answer_title) }}">

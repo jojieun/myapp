@@ -15,7 +15,7 @@ class CommunitiesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.both', ['except' => ['index', 'show']]);
+        $this->middleware('auth.both', ['except' => ['index', 'show', 'search']]);
     }
     
     public function index()
@@ -23,7 +23,13 @@ class CommunitiesController extends Controller
         $communities = Community::with('reviewer','advertiser')->latest()->paginate(15);
         return view('communities.index', compact('communities'));
     }
-
+    public function search(Request $request)
+    {
+        $communities = Community::search($request->in_search_word)
+            ->orderBy('updated_at','desc')->paginate(15);
+        return view('communities.index', compact('communities'));
+    }
+    
     /**
      * Show the form for creating a new resource.
      *

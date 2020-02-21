@@ -67,7 +67,6 @@ class PlansController extends Controller
             ->with(['categories','areas','channels','reviewer'])
             ->orderBy('plans.updated_at','desc')->paginate(60);
 
- 
         $nowdate = Carbon::now();//오늘날짜  
         foreach ($plans as $key => $loop)
 		{

@@ -1,4 +1,14 @@
 @charset "utf-8";
+/*약관관련*/
+
+.terms {
+    border:1px solid #bbb;
+    border-collapse: collapse;
+}
+.terms th, .terms td{
+    border:1px solid #999;
+    padding:5px;
+}
 
 /*임시오픈 관련*/
 #temp_wrap {
@@ -1514,6 +1524,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 	.table_default .table_td p.list_info .title{ font-size:17px; }
 	.table_default .table_td p.list_info .sns .blog,
 	.table_default .table_td p.list_info .sns .insta { height: 24px; line-height: 22px ; padding: 0 10px; border-radius:12px; font-size:12px; margin:5px 5px 0 0;}
+    .table_default .table_td p.list_info .sns .ch { height: 24px; line-height: 22px ; padding: 0 10px; border-radius:12px; font-size:12px; margin:5px 5px 0 0;}
 	
 	.table_default.review-info p.list_title2{ width:calc(100% - 110px); padding-left:0; font-size:14px;}
 	.table_default.review-info p.m-w90{ width: 90px;}
@@ -1713,19 +1724,19 @@ ul.pagination li a[aria-label="Next »"]{
 
 	.join-snsurl ul li{height: 36px; line-height: 36px;}
 	.join-snsurl ul li:before{ content:''; top:9px; width: 20px; height: 20px ; background-size:auto 20px; }
-	.join-snsurl ul li:nth-child(2):before{ background-position:-20px 0;}
+	.join-snsurl ul li:nth-child(5):before{ background-position:-20px 0;}
 	.join-snsurl ul li:nth-child(3):before{ background-position:-40px 0;}
-	.join-snsurl ul li:nth-child(4):before{ background-position:-60px 0;}
-	.join-snsurl ul li:nth-child(5):before{ background-position:-80px 0;}
-	.join-snsurl ul li:nth-child(6):before{ background-position:-100px 0;}
+	.join-snsurl ul li:nth-child(2):before{ background-position:-60px 0;}
+	.join-snsurl ul li:nth-child(6):before{ background-position:-80px 0;}
+	.join-snsurl ul li:nth-child(4):before{ background-position:-100px 0;}
 	.join-snsurl ul li span{ padding-left:25px; font-size:12px; }
 	.join-snsurl ul li span em{ display:none;}
 	.join-snsurl ul li:nth-child(1) input,
-	.join-snsurl ul li:nth-child(2) input{ width: calc(100% - 130px);}
+	.join-snsurl ul li:nth-child(5) input{ width: calc(100% - 130px);}
 	.join-snsurl ul li:nth-child(3) input{ width: calc(100% - 160px);}
-	.join-snsurl ul li:nth-child(4) input{ width: calc(100% - 160px);}
-	.join-snsurl ul li:nth-child(5) input{ width: calc(100% - 135px);}
-	.join-snsurl ul li:nth-child(6) input{ width: calc(100% - 195px);}
+	.join-snsurl ul li:nth-child(2) input{ width: calc(100% - 160px);}
+	.join-snsurl ul li:nth-child(6) input{ width: calc(100% - 135px);}
+	.join-snsurl ul li:nth-child(4) input{ width: calc(100% - 195px);}
 
 	.right-content .join-snsurl ul{ padding: 20px 0; margin-bottom:30px; }
 	.right-content .join-snsurl ul li{ margin-bottom:10px; font-size:12px; }

@@ -9,7 +9,7 @@
     z-index: 1;
 }
 #temp_wrap{
-    padding-top:100px;
+    padding-top:0;
 }
 .temp_div{
     position: relative;

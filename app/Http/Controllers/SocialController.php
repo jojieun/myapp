@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Reviewer;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Str;
+use Illuminate\Http\{RedirectResponse, Request, Response};
+use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\User as SocialUser;
 
 class SocialController extends Controller
 {
+    use AuthenticatesUsers;
     /**
      * SocialController constructor.
      */
@@ -15,54 +23,94 @@ class SocialController extends Controller
     }
 
     /**
-     * Handle social login process.
+     * 주어진 provider에 대하여 소셜 응답을 처리합니다.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param string                   $provider
-     * @return \App\Http\Controllers\Response
+     * @param Request $request
+     * @param string  $provider
+     * @return RedirectResponse|Response
      */
-    public function execute(Request $request, $provider)
+    public function execute(Request $request, string $provider)
     {
+
         if (! $request->has('code')) {
             return $this->redirectToProvider($provider);
         }
 
-        return $this->handleProviderCallback($provider);
+        return $this->handleProviderCallback($request, $provider);
     }
 
     /**
-     * Redirect the user to the Social Login Provider's authentication page.
+     * 사용자를 주어진 공급자의 OAuth 서비스로 리디렉션합니다.
      *
      * @param string $provider
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    protected function redirectToProvider($provider)
+    protected function redirectToProvider(string $provider): RedirectResponse
     {
-        return \Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
     /**
-     * Obtain the user information from the Social Login Provider.
+     * 소셜에서 인증을 받은 후 응답입니다.
+     *
+     * @param Request $request
+     * @param string  $provider
+     * @return RedirectResponse|Response
+     */
+    protected function handleProviderCallback(Request $request, string $provider)
+    {
+        $socialUser = Socialite::driver($provider)->user();
+
+        if ($user = Reviewer::where('email', $socialUser->getEmail())->first()) {
+            $this->guard()->login($user, true);
+
+            return $this->sendLoginResponse($request);
+        }
+
+        return $this->register($request, $socialUser);
+    }
+    
+     /**
+     * 주어진 소셜 회원을 응용 프로그램에 등록합니다.
+     *
+     * @param Request    $request
+     * @param SocialUser $socialUser
+     * @return mixed
+     */
+    protected function register(Request $request, SocialUser $socialUser)
+    {
+        event(new Registered($user = Reviewer::create($socialUser->getRaw())));
+
+//        $user->email_verified_at = Date::now();
+//        $user->remember_token = Str::random(60);
+        $user->save();
+
+        $this->guard()->login($user, true);
+
+        return $this->sendLoginResponse($request);
+    }
+
+    /**
+     * 사용자 인증을 받았습니다.
+     *
+     * @param Request $request
+     * @param User    $user
+     */
+    protected function authenticated(Request $request, Reviewer $user): void
+    {
+        flash()->success(__('auth.welcome', ['name' => $user->name]));
+    }
+
+    /**
+     * 지원하지 않는 소셜 공급자에 대한 응답입니다.
      *
      * @param string $provider
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse
      */
-    protected function handleProviderCallback($provider)
+    protected function sendNotSupportedResponse(string $provider): RedirectResponse
     {
-        $user = \Socialite::driver($provider)->user();
+        flash()->error(trans('auth.social.not_supported', ['provider' => $provider]));
 
-        $user = (\App\User::whereEmail($user->getEmail())->first())
-            ?: \App\User::create([
-                'name'  => $user->getName() ?: 'unknown',
-                'email' => $user->getEmail(),
-                'activated' => 1,
-            ]);
-
-        auth()->login($user);
-        flash(
-            trans('auth.sessions.info_welcome', ['name' => auth()->user()->name])
-        );
-
-        return redirect(route('home'));
+        return back();
     }
 }

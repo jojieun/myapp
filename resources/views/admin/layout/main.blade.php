@@ -47,6 +47,10 @@
                 <a href="{{route('admin.waitConfirmCam')}}" class="main_a">캠페인관리</a>
                 <ul class="sub">
                     <li><a href="{{route('admin.waitConfirmCam')}}">검수대기중 캠페인</a></li>
+                    <li><a href="{{route('admin.exposure_purchase')}}">캠페인 노출옵션 구매내역</a></li>
+                    <li><a href="{{route('admin.promotion_purchase')}}">캠페인 홍보옵션 구매내역</a></li>
+                    <li><a href="{{route('admin.exposure')}}">캠페인 노출 옵션 설정</a></li>
+                    <li><a href="{{route('admin.promotion')}}">캠페인 홍보 옵션 설정</a></li>
                 </ul>
             </li>
             <li class="main">

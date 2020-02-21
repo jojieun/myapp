@@ -17,6 +17,13 @@ class NoticeController extends Controller
         $notices = Notice::latest()->paginate(15);
         return view('cscenters.notices.index', compact('notices'));
     }
+    
+    public function search(Request $request)
+    {
+        $notices = Notice::search($request->in_search_word)
+            ->orderBy('updated_at','desc')->paginate(15);
+        return view('cscenters.notices.index', compact('notices'));
+    }
 
     /**
      * Show the form for creating a new resource.

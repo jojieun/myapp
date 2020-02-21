@@ -16,8 +16,12 @@ Route::get('/', [
     'as'=>'main',
     'uses'=>'WelcomeController@index'
 ]);
+//header검색
+Route::get('/search', 'WelcomeController@search')->name('search');
 //개인정보취급방침
 Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
+//개인정보취급방침
+Route::view('terms_of_use', 'terms_of_use')->name('terms_of_use');
 
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
@@ -47,11 +51,15 @@ Route::resource('reviewer_faqs', 'ReviewerFaqController');
 Route::post('advertiser_faqs/editShow/{advertiserFaq}', 'AdvertiserFaqController@editShow');
 Route::match(['get', 'post'],'advertiser_faqs_list/{nowc}', 'AdvertiserFaqController@index')->name('advertiser_faqs.index');
 Route::resource('advertiser_faqs', 'AdvertiserFaqController');
+//공지사항 검색
+Route::get('notices/search', 'NoticeController@search')->name('notice.search');
 //공지사항
 Route::resource('notices', 'NoticeController');
 
 
 /********커뮤니티**********/
+//공지사항 검색
+Route::get('communities/search', 'CommunitiesController@search')->name('communities.search');
 Route::post('makecomment','CommunitiesController@makecomment')->name('makecomment');
 Route::resource('communities', 'CommunitiesController');
 
@@ -106,9 +114,25 @@ Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admi
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
-//캠페인노출관리
 
-//캠페인홍보관리
+//캠페인 노출옵션 구매내역
+Route::get('admin/exposure_
+purchase', 'AdminController@exposure_purchase')->name('admin.exposure_purchase');
+//캠페인 홍보 구매내역
+Route::get('admin/promotion_
+purchase', 'AdminController@promotion_purchase')->name('admin.promotion_purchase');
+//캠페인 노출 옵션 설정
+Route::get('admin/exposure', 'AdminController@exposure')->name('admin.exposure');
+//캠페인 노출 옵션 수정 열기
+Route::get('admin/edit_exposure/{exposure}', 'AdminController@edit_exposure')->name('admin.edit_exposure');
+//캠페인 노출 옵션 업데이트
+Route::put('admin/update_exposure/{exposure}', 'AdminController@update_exposure')->name('admin.update_exposure');
+//캠페인 홍보 옵션 설정
+Route::get('admin/promotion', 'AdminController@promotion')->name('admin.promotion');
+//캠페인 홍보 옵션 수정 열기
+Route::get('admin/edit_promotion/{promotion}', 'AdminController@edit_promotion')->name('admin.edit_promotion');
+//캠페인 홍보 옵션 업데이트
+Route::put('admin/update_promotion/{promotion}', 'AdminController@update_promotion')->name('admin.update_promotion');
 
 
 //캠페인 대행의뢰 목록
@@ -420,12 +444,6 @@ Route::post('reset', [
     'as' => 'reset.store',
     'uses' => 'PasswordsController@postReset',
 ]);
-
-
-
-
-
-
 
 
 Route::get('/home', 'HomeController@index')->name('home');

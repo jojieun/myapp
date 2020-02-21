@@ -47,30 +47,28 @@
 						<span><em>https://</em>blog.naver.com/</span>
 						<input type="text" placeholder="네이버블로그" name="naver_blog" value="{{ old('naver_blog') }}">
 					</li>
+                    <li>
+						<span><em>https://</em>www.instagram.com/</span>
+						<input type="text" placeholder="인스타그램" name="instagram" value="{{ old('instagram') }}">
+					</li>
+                    <li>
+						<span><em>https://</em>www.facebook.com/</span>
+						<input type="text" placeholder="페이스북" name="facebook" value="{{ old('facebook') }}">
+					</li>
+                    <li>
+						<span><em>https://</em>www.youtube.com/channel/</span>
+						<input type="text" placeholder="유튜브" name="youtube" value="{{ old('youtube') }}">
+					</li>
 					<li>
 						<span><em>https://</em>post.naver.com/</span>
 						<input type="text" placeholder="네이버포스트" name="naver_post" value="{{ old('naver_post') }}">
 					</li>
-					
-					<li>
-						<span><em>https://</em>www.facebook.com/</span>
-						<input type="text" placeholder="페이스북" name="facebook" value="{{ old('facebook') }}">
-					</li>
-					
-					<li>
-						<span><em>https://</em>www.instagram.com/</span>
-						<input type="text" placeholder="인스타그램" name="instagram" value="{{ old('instagram') }}">
-					</li>
-					
 					<li>
 						<span><em>https://</em>story.kakao.com/</span>
 						<input type="text" placeholder="카카오스토리" name="kakao" value="{{ old('kakao') }}">
 					</li>
 					
-					<li>
-						<span><em>https://</em>www.youtube.com/channel/</span>
-						<input type="text" placeholder="유튜브" name="youtube" value="{{ old('youtube') }}">
-					</li>
+					
 				</ul>
 			</div>
 			<!-- //sns url -->			

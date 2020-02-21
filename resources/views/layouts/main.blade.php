@@ -23,7 +23,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=0.9') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=1.0') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
@@ -54,7 +54,7 @@
 					<div class="main_menus">
 						<ul class="menulists_xtype" id="main_menus">
 							<li class="search-box pc-none">
-								<span class="search"><input name="" type="text" placeholder="검색어를 입력해주세요" ><a href="#"><img src="/img/common/ico_search.gif" alt="검색" /></a></span>
+								<span class="search"><form method="get" action="{{route('search')}}" class="search_form"><input name="search_word" type="text" placeholder="검색어를 입력해주세요" ><button type="submit"><img src="/img/common/ico_search.gif" alt="검색" /></button></form></span>
 								<span id="close_menu"><a title="가변폭 전체메뉴 닫기버튼">&nbsp;</a></span>
 							</li>
 							<li class="pc-none m-login">
@@ -91,7 +91,8 @@
 
 		<ul class="topmenu">
 			<li class="search">
-				<input name="" type="text"><a href="#"><img src="/img/common/ico_search.gif" alt="검색"></a>
+				<form method="get" action="{{route('search')}}" class="search_form"><input name="search_word" type="text"><button type="submit"><img src="/img/common/ico_search.gif" alt="검색"></button>
+                </form>
 			</li>
 			@if(Auth::guard('web')->check())
             <li class="my">
@@ -156,7 +157,7 @@
 			<div class="footer-link">
 				<ul class="footer-link-lists">
 					<li><a href="{{route('temp_home')}}">서비스소개</a>｜</li>
-					<li><a href="#">이용약관</a>｜</li>
+					<li><a href="{{route('terms_of_use')}}">이용약관</a>｜</li>
 					<li><a href="{{route('privacy_policy')}}">개인정보처리방침</a>｜</li>
 					<li class="br0"><a href="#">운영정책</a></li>
 				</ul>	
@@ -164,7 +165,7 @@
 			<div class="footer-txt">
 				<p>스트롱애드<small>|</small>대표 : 조용완</p>
 				<p>
-					<span>44698 울산광역시 남구 삼산중로 144, 3층<small class="m-none">|</small></span>
+					<span>(48500) 부산광역시 남구 용소로46번길 7, 5층<small class="m-none">|</small></span>
 					<span>MAIL : help@review-power.com<small class="pc-none">|</small></span>
 					<span>사업자등록번호 : 381-69-00094<small class="m-none">|</small></span>
 					<span>통신판매업 신고번호 :  제 2017-부산사하-0040 호<small class="m-none">|</small></span>
@@ -179,3 +180,13 @@
 
 </body>
 </html>
+<script>
+$('.search_form').submit(function(){
+    if($('input[name=search_word]').eq(0).val()||$('input[name=search_word]').eq(1).val()){
+        return true;
+    }else{
+        alert('검색어를 입력해주세요');
+        return false;
+    }
+})
+</script>

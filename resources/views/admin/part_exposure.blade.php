@@ -4,13 +4,13 @@
             <td>{{ $exposure->name }}</td>
             <td>{{ $exposure->price }}</td>
             <td>{{ $exposure->limit }}</td>
+            <td>{{ $exposure->instruction }}</td>
             <td>
-                <button class="edit" value="{{ $advertiserfaq->id }}">수정</button>
-                <button class="del" value="{{ $advertiserfaq->id }}">삭제</button>
+                <button class="edit" value="{{ $exposure->id }}">수정</button>
             </td>
         </tr>
         @empty
         <tr>
-            <td colspan=100>노출옵션이</td>
+            <td colspan=100>노출옵션이 없습니다.</td>
         </tr>
         @endforelse

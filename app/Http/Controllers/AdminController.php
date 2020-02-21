@@ -9,6 +9,10 @@ use App\ReviewerFaqCate;
 use App\AdvertiserFaqCate;
 use App\Campaign;
 use App\Qcategory;
+use App\Exposure;
+use App\Promotion;
+use App\CampaignExposure;
+use App\CampaignPromotion;
 
 class AdminController extends Controller
 {
@@ -48,7 +52,7 @@ class AdminController extends Controller
     
     //리뷰어목록보기
     public static function reveiwerslist(){
-        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->simplePaginate(200);
+        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->paginate(5);
         return view('admin.reviewer')->with('reviewers',$reviewers);
    }
     //리뷰전략보기
@@ -98,6 +102,66 @@ class AdminController extends Controller
             'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),
             ]);
    }
+    
+    //캠페인 노출옵션 구매내역
+    public function exposure_purchase()
+    {
+        $exposure_purchases= CampaignExposure::with('campaign:id,name')->with('exposure:id,name')->get();
+        return view('admin.exposure_purchase',[
+            'exposure_purchases' => $exposure_purchases,
+        ]);
+    }
+    //캠페인 홍보옵션 구매내역
+    public function promotion_purchase()
+    {
+        $promotion_purchases= CampaignPromotion::with('campaign:id,name')->with('promotion:id,name')->get();
+        return view('admin.promotion_purchase',[
+            'promotion_purchases' => $promotion_purchases,
+        ]);
+    }
+    
+    //캠페인 노출 옵션 설정
+    public function exposure()
+    {
+        $exposures= Exposure::get();
+        return view('admin.exposure',[
+            'exposures' => $exposures,
+        ]);
+    }
+    //캠페인 노출 옵션 수정 열기
+    public function edit_exposure(Exposure $exposure)
+    {
+        return \Response::json([
+            'finhtml' => \View::make('admin.edit_exposure', array('exposure' => $exposure))->render(),
+            ]);
+    }
+    //캠페인 노출 옵션 업데이트
+    public function update_exposure(Request $request, Exposure $exposure)
+    {
+        $exposure->update($request->only('name','price','limit','instruction'));
+        return redirect(route('admin.exposure'));
+    }
+    //캠페인 홍보 옵션 설정
+    public function promotion()
+    {
+        $promotions= Promotion::get();
+        return view('admin.promotion',[
+            'promotions' => $promotions,
+        ]);
+    }
+    //캠페인 홍보 옵션 수정 열기
+    public function edit_promotion(Promotion $promotion)
+    {
+        return \Response::json([
+            'finhtml' => \View::make('admin.edit_promotion', array('promotion' => $promotion))->render(),
+            ]);
+    }
+    //캠페인 홍보 옵션 업데이트
+    public function update_promotion(Request $request, Promotion $promotion)
+    {
+        $promotion->update($request->only('name','price','limit','instruction'));
+        return redirect(route('admin.promotion'));
+    }
     
     //일대일문의 카테고리 보기
     public function showQCategory()

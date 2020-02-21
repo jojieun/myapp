@@ -176,7 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 //        이미지저장관련
         Intervention\Image\ImageServiceProvider::class,
-
     ],
 
     /*

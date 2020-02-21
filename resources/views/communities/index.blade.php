@@ -10,7 +10,7 @@
 			<h2>커뮤니티</h2>
 			
 			<div class="board_navi_box list">				
-				<span class="search"><input name="" type="text" placeholder="검색어를 입력해주세요"><a href="#"><img src="/img/common/ico_search.gif" alt="검색"></a></span>
+				<span class="search"><form method="get" action="{{route('communities.search')}}" class="in_search_form"><input name="in_search_word" type="text" placeholder="검색어를 입력해주세요" ><button type="submit"><img src="/img/common/ico_search.gif" alt="검색" /></button></form></span>
 				<a href="{{ route('communities.create') }}" class="btn_type">글쓰기</a>
 			</div>
 			<!-- 여기부터 게시판 목록 테이블폼입니다. -->
@@ -48,4 +48,14 @@
 		</div>
 		<!-- //상세 컨텐츠내용 -->	
 	</div>
+<script>
+$('.in_search_form').submit(function(){
+    if($('input[name=in_search_word]').val()){
+        return true;
+    }else{
+        alert('검색어를 입력해주세요');
+        return false;
+    }
+})
+</script>
 @endsection
