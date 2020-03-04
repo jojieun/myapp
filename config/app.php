@@ -176,6 +176,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 //        이미지저장관련
         Intervention\Image\ImageServiceProvider::class,
+//        Laravel\Socialite\SocialiteServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*
@@ -230,6 +232,7 @@ return [
         'Flash' => Laracasts\Flash\Flash::class,
         
         'Image' => Intervention\Image\Facades\Image::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

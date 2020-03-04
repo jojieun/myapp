@@ -8,7 +8,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Str;
 use Illuminate\Http\{RedirectResponse, Request, Response};
-use Laravel\Socialite\Facades\Socialite;
+//use Laravel\Socialite\Facades\Socialite;
+use Socialite;
 use Laravel\Socialite\Two\User as SocialUser;
 
 class SocialController extends Controller
