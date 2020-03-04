@@ -20,7 +20,7 @@ class NoticeController extends Controller
     
     public function search(Request $request)
     {
-        $notices = Notice::search($request->in_search_word)
+        $notices = Notice::where('title', 'like', '%'.$request->in_search_word.'%')
             ->orderBy('updated_at','desc')->paginate(15);
         return view('cscenters.notices.index', compact('notices'));
     }

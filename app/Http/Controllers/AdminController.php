@@ -52,7 +52,7 @@ class AdminController extends Controller
     
     //리뷰어목록보기
     public static function reveiwerslist(){
-        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->paginate(5);
+        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->paginate(50);
         return view('admin.reviewer')->with('reviewers',$reviewers);
    }
     //리뷰전략보기

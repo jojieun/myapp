@@ -62,12 +62,19 @@ class SocialController extends Controller
         $socialUser = Socialite::driver($provider)->user();
 
         if ($user = Reviewer::where('email', $socialUser->getEmail())->first()) {
-            $this->guard()->login($user, true);
+            $this->guard('web')->login($user, true);
 
-            return $this->sendLoginResponse($request);
+            return redirect()->intended(route('reviewers.mypage'));
         }
-
-        return $this->register($request, $socialUser);
+//        return view('reviewers.social_create',['socialUser'=>$socialUser]);
+        return redirect()->route('reviewers.social_register', ['social_email'=>$socialUser->getEmail(),'social_name'=>$socialUser->getName()]);
+//        
+//        return $this->social_register($request, $socialUser);
+    }
+    
+    /**/
+    protected function social_register($social_email, $social_name){
+        return view('reviewers.social_create',['social_email'=>$social_email, 'social_name'=>$social_name]);
     }
     
      /**

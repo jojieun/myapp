@@ -824,9 +824,9 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .sns-login ul li { width: 50%;  float:left; }
 .sns-login ul li a{ display:inline-block; width: 100%; height: 50px; line-height: 50px; font-size:16px; background: #fff; color:#222;}
 .sns-login ul li a:before{ content: ''; display: inline-block; width: 25px; height: 25px; margin: 12px 20px 0 34px; background: url(/img/common/ico_login_sns.gif) no-repeat 0 0; vertical-align: top;}
-.sns-login ul li:nth-child(2) a:before{ background-position:-25px 0; }
-.sns-login ul li:nth-child(3) a:before{ background-position:-50px 0; }
-.sns-login ul li:nth-child(4) a:before{ background-position:-75px 0; }
+.sns-login ul li:nth-child(4) a:before{ background: none; }
+.sns-login ul li:nth-child(2) a:before{ background-position:-50px 0; }
+.sns-login ul li:nth-child(3) a:before{ background-position:-75px 0; }
 .sns-login ul li:nth-child(1) a, .sns-login ul li:nth-child(3) a{ border-right:1px solid #eee; }
 .sns-login ul li:nth-child(1) a, .sns-login ul li:nth-child(2) a{ border-bottom:1px solid #eee; }
 .sns-login b{ display:block; font-size:26px; margin-top:50px; color:#222; letter-spacing:-1px; }

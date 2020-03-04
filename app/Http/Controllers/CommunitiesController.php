@@ -25,7 +25,7 @@ class CommunitiesController extends Controller
     }
     public function search(Request $request)
     {
-        $communities = Community::search($request->in_search_word)
+        $communities = Community::where('title', 'like', '%'.$request->in_search_word.'%')
             ->orderBy('updated_at','desc')->paginate(15);
         return view('communities.index', compact('communities'));
     }

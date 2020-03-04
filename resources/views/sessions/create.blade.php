@@ -49,10 +49,11 @@
 				</div>
 				<div class="sns-login">
 					<ul>
-						<li><a href="#">네이버 로그인</a></li>
-						<li><a href="#">인스타그램 로그인</a></li>
-						<li><a href="#">카카오 로그인</a></li>
-						<li><a href="#">구글 로그인</a></li>
+						<li><a href="{{route('social.login', 'naver')}}">네이버 로그인</a></li>
+<!--					<li><a href="#">인스타그램 로그인</a></li>-->
+					<li><a href="{{route('social.login', 'kakao')}}">카카오 로그인</a></li>
+					<li><a href="{{route('social.login', 'google')}}">구글 로그인</a></li>
+                        <li><a>-</a></li>
 					</ul>
 				</div>	 
 			</div>

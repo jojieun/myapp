@@ -139,7 +139,11 @@ class ReviewerMypageController extends Controller
             })->count();
         //리뷰전략열람 개수반환
         $plan = \App\Plan::where('reviewer_id',$nowUser->id)->first();
-        $advertiserPlans = \App\AdvertiserPlan::where('plan_id',$plan->id)->count();
+        if($plan){
+            $advertiserPlans = \App\AdvertiserPlan::where('plan_id',$plan->id)->count();
+        }else{
+           $advertiserPlans =0; 
+        }
         //관심캠페인 개수반환
         $bookmarks = \App\Bookmark::where('reviewer_id',$nowUser->id)
 //            ->doesnthave('campaignReviewer')
@@ -834,11 +838,17 @@ class ReviewerMypageController extends Controller
         //리뷰전략 작성 여부
         $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
         $chls = \App\Channel::select('id','url')->get();
-        
-        return view('reviewers.edit_info',[
+        if($nowUser->password===null){
+            return view('reviewers.edit_info2',[
             'user'=>$nowUser,
             'chls'=>$chls,
             ]);
+        }else{
+            return view('reviewers.edit_info',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+        }
     } 
     //회원정보 업데이트
     public function update_info(Request $request, Reviewer $reviewer){
@@ -863,6 +873,38 @@ class ReviewerMypageController extends Controller
         if($request->has('password')){
             $reviewer->password = bcrypt($request->input('password'));
         }
+        $reviewer->name = $request->input('name');
+        $reviewer->nickname = $request->input('nickname');
+        $reviewer->mobile_num = $request->input('mobile_num');
+        $reviewer->birth = $request->input('birth');
+        $reviewer->zipcode = $request->input('zipcode');
+        $reviewer->address = $request->input('address');
+        $reviewer->detail_address = $request->input('detail_address');
+        $reviewer->gender = $request->input('gender');
+        $reviewer->save();
+        
+        $nowUser = auth()->user()->id;
+        //리뷰전략 작성 여부
+        $nowUser = Reviewer::whereId($nowUser)->withCount('plan')->with('channelreviewers')->first();
+        $chls = \App\Channel::select('id','url')->get();
+        
+        return view('reviewers.update_success',[
+            'user'=>$nowUser,
+            'chls'=>$chls,
+            ]);
+    }
+        //소셜회원_회원정보 업데이트
+    public function update_info2(Request $request, Reviewer $reviewer){
+        $this->validate($request,[
+            'name' => 'required|max:30',
+            'nickname' => 'required|max:30|unique:reviewers,nickname,'.$reviewer->id,
+            'mobile_num' => 'required|digits:11',
+            'birth'=>'required|date',
+            'zipcode'=>'required|digits:5',
+            'address'=>'required',
+            'gender'=>'required'
+        ]);
+        
         $reviewer->name = $request->input('name');
         $reviewer->nickname = $request->input('nickname');
         $reviewer->mobile_num = $request->input('mobile_num');

@@ -45,13 +45,19 @@ return [
     ],
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
+//        'client_id' => '751542314493-ls5pep4m113i98oi1kuiec0o346u4uu.apps.googleusercontent.com',
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://your-callback-url',
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
     'naver' => [
         'client_id' => env('NAVER_KEY'),
         'client_secret' => env('NAVER_SECRET'),
         'redirect' => env('NAVER_REDIRECT_URI'),
+    ],
+    'kakao' => [
+        'client_id' => env('KAKAO_KEY'),
+        'client_secret' => env('KAKAO_SECRET'),
+        'redirect' => env('KAKAO_REDIRECT_URI'),
     ],
 
 ];

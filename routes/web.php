@@ -275,6 +275,11 @@ Route::put('reviewer/update_info/{reviewer}',[
     'as'=>'reviewers.update_info',
     'uses' => 'ReviewerMypageController@update_info'
 ]);
+//소셜회원_회원정보업데이트
+Route::put('reviewer/update_info2/{reviewer}',[
+    'as'=>'reviewers.update_info2',
+    'uses' => 'ReviewerMypageController@update_info2'
+]);
 //mysns
 Route::get('reviewer/mysns',[
     'as'=>'reviewers.mysns',
@@ -425,6 +430,14 @@ Route::get('advertiser/logout',[
 Route::get('social/{provider}', [
     'as' => 'social.login',
     'uses' => 'SocialController@execute',
+]);
+Route::get('reviewer/social_register/{social_email}/{social_name}',[
+    'as'=>'reviewers.social_register',
+    'uses' => 'SocialController@social_register'
+]);
+Route::post('reviewer/social_store',[
+    'as'=>'reviewers.social_store',
+    'uses' => 'ReviewersController@social_store'
 ]);
 
 /* 비밀번호 초기화 */

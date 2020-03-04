@@ -24,7 +24,7 @@
         @forelse ($reviewers as $reviewer)
         <tbody>
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $loop->iteration + 50 * ($reviewers->currentPage() -1) }}</td>
                 <td>{{ $reviewer->email }}</td>
                 <td>{{ $reviewer->name }}</td>
                 <td>{{ $reviewer->nickname }}</td>
