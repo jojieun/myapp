@@ -33,9 +33,12 @@
 					<dt>카테고리</dt>
 					<dd>
 						<span class="input-button"><input name="category" type="checkbox" id="category00"><label for="category00">전체</label></span>
-                        @foreach($categories as $cate)
-						<span class="input-button"><input name="category[]" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
-                        @endforeach
+                        
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category01" value="1"><label for="category01">맛집</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category03" value="3"><label for="category03">뷰티</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category04" value="4"><label for="category04">숙박</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category09" value="9"><label for="category09">문화</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category011" value="11"><label for="category011">기타</label></span>
 					</dd>
 				</dl>
 			</div>

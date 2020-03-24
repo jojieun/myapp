@@ -25,7 +25,7 @@
 					<div class="table_form2 bt0">
 						<dl>
 							<dt>리뷰전략 제목</dt>
-							<dd><input name="title" type="text" id="" value="{{ old('title') }}" placeholder="리뷰전략 제목을 입력해주세요." class="full_width mb10" /></dd>
+							<dd><input name="title" type="text" id="" value="{{ old('title') }}" placeholder="리뷰전략 제목을 입력해주세요. (10자 이상)" class="full_width mb10" /></dd>
                             {!! $errors->first('title','<span class="red">:message</span>')!!}
 						</dl>
 						<dl>
@@ -43,7 +43,7 @@
 						</dl>
 						<dl class="bar">
 							<dt>통화가능 시간</dt>
-							<dd><input name="call_time" type="text" id="" value="" placeholder="예) 평일 10:00~17:00" class="full_width mb10" /></dd>
+							<dd><input name="call_time" type="text" id="" value="{{ old('call_time') }}" placeholder="예) 평일 10:00~17:00" class="full_width mb10" /></dd>
                             {!! $errors->first('call_time','<span class="red">:message</span>')!!}
 						</dl>
 
@@ -83,17 +83,17 @@
 						</dl>
                         <dl class="bar">
 							<dt>리워드
-                                <a href="#" class="btn-question"></a>
+                                <a class="btn-question"></a>
 								<div class="question">
 									<p>리뷰작성시 받고싶은 금액(포인트)를 입력해주세요</p>
 								</div>	</dt>
-							<dd><input name="reward" type="number" id="reward" value="" placeholder="숫자만 입력해주세요" class="full_width mb10" mim="0" step="1000"/> &nbsp;point
+							<dd><input name="reward" type="number" id="reward" value="{{ old('reward') }}" placeholder="숫자만 입력해주세요" class="full_width mb10" mim="0" step="1000"/> &nbsp;point
                             </dd>
                             {!! $errors->first('reward','<span class="red">:message</span>')!!}
 						</dl>
 						<dl>
 							<dt>리뷰전략</dt>
-							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요!" class="border2"></textarea></dd>
+							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요! (50자 이상)" class="border2">{{ old('review_plan') }}</textarea></dd>
                             {!! $errors->first('review_plan','<span class="red">:message</span>')!!}
 						</dl>
 					</div>

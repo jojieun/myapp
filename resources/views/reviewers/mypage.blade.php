@@ -20,9 +20,11 @@
 						<li>
                             <a href="{{route('reviewers.suggestion')}}">
                             <span class="title">리뷰제안</span><span class="txt"><b>{{$suggestions}}</b><em>건</em></span></a></li>
+<!--
 						<li>
                             <a href="{{route('reviewers.plan_reading')}}">
                             <span class="title">리뷰전략열람</span><span class="txt"><b>{{$advertiserPlans}}</b><em>건</em></span></a></li>
+-->
 						<li>
                             <a href="{{route('reviewers.bookmark_list')}}">
                             <span class="title">관심캠페인</span><span class="txt"><b>{{$bookmarks}}</b><em>건</em></span></a></li>

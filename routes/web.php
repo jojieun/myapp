@@ -25,6 +25,7 @@ Route::view('terms_of_use', 'terms_of_use')->name('terms_of_use');
 
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
+Route::post('campaigns/brandCheck','CampaignsController@brandCheck')->name('campaigns.brandCheck');
 Route::post('campaigns/firststore','CampaignsController@firstStore')->name('campaigns.firststore');
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');

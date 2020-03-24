@@ -126,8 +126,9 @@ class PlansController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title' => 'required',
+            'title' => 'required|min:10',
             'profile_image' => 'image',
+            'review_plan' => 'required|min:50',
         ]);
         
         $plan = new Plan;
@@ -279,8 +280,9 @@ class PlansController extends Controller
     public function update(Request $request, Plan $plan)
     {
         $this->validate($request,[
-            'title' => 'required',
+            'title' => 'required|min:10',
             'profile_image' => 'image',
+            'review_plan' => 'required|min:50',
         ]);
         
         if($request->hasfile('profile_image')){

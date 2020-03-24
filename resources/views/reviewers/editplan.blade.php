@@ -28,7 +28,7 @@
 					<div class="table_form2 bt0">
 						<dl>
 							<dt>리뷰전략 제목</dt>
-							<dd><input name="title" type="text" id="" value="{{ old('title', $plan->title) }}" placeholder="리뷰전략 제목을 입력해주세요." class="full_width mb10" /></dd>
+							<dd><input name="title" type="text" id="" value="{{ old('title', $plan->title) }}" placeholder="리뷰전략 제목을 입력해주세요. (10자 이상)" class="full_width mb10" /></dd>
                             {!! $errors->first('title','<span class="red">:message</span>')!!}
 						</dl>
 						<dl>
@@ -106,7 +106,7 @@
 						</dl>
 						<dl>
 							<dt>리뷰전략</dt>
-							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요!" class="border2">{{ old('review_plan', $plan->review_plan) }}</textarea></dd>
+							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요! (50자 이상)" class="border2">{{ old('review_plan', $plan->review_plan) }}</textarea></dd>
                             {!! $errors->first('review_plan','<span class="red">:message</span>')!!}
 						</dl>
 					</div>

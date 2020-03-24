@@ -46,7 +46,7 @@
 									<select name="brand_id" type="text" id="brand_select">
                                         @include('campaigns.brand')
 									</select>
-									<a href="#add_brand" class="btn">새 브랜드 추가하기</a>
+                                    <a href="" class="btn delete" id="del_brand">선택 브랜드 삭제하기</a><a href="#add_brand" class="btn">새 브랜드 추가하기</a>
 								</div>
                                 {!! $errors->first('','<span class="red">:message</span>')!!}
                                 <span class="red" id="brand_id"></span>
@@ -84,16 +84,18 @@
 							</dd>
 						</dl>
 						<dl>
-							<dt>제공내역<a href="#" class="btn-question"></a>
+							<dt>제공내역<a class="btn-question"></a>
 								<div class="question">
 									<p>리뷰어가 포인트 출금 신청 시, 수수료 3.3%와 이체 수수료를 공제 후 지급 됩니다.</p>
 								</div>
 							</dt>
 							<dd>
                                 <div class="{{ $errors->has('offer_point') ? 'has-error' : '' }}">
-								<input name="offer_point" type="text" id="" value="{{ old('offer_point') }}" placeholder=" " class="mb10" /><span class="point-add">point  x  1인</span>
+                                    <div class="number">
+                                    <button type="button" class="down" onclick="this.parentNode.querySelector('input[type=number]').stepDown(5000)"><img src="/img/common/btn_minus.gif" alt="-"></button><input name="offer_point" type="number" min="0" id="" value="{{ old('offer_point') }}" placeholder=" " class="mb10" /><button type="button" class="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp(5000)"><img src="/img/common/btn_plus.gif" alt="+"></button><span class="point-add">point  x  1인</span>
                                 {!! $errors->first('offer_point','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_point"></span>
+                                    </div>
                                     </div>
                                 <div class="{{ $errors->has('offer_goods') ? 'has-error' : '' }}">
 								<input name="offer_goods" type="text" id="" value="{{ old('offer_goods') }}" placeholder="제공 물품/서비스를 입력해주세요" class="full_width mb10" />
@@ -115,7 +117,7 @@
 							</dd>
 						</dl>
 						<dl>
-							<dt>캠페인 일정<a href="#" class="btn-question"></a>
+							<dt>캠페인 일정<a class="btn-question"></a>
 								<div class="question">
 									<p>리뷰어 모집시작 : 하루 뒤 부터 가능<br/>리뷰어 모집기간 : 최소 7일<br/>리뷰 제출기간 : 최소 14일</p>
 								</div>							
@@ -178,7 +180,7 @@
 										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>	
 									</label>
 								</span>
-								<span class="add-txt">※ 대표이미지는 530*530 이상 정육면체 사이즈로 작업하여 업로드해주세요.</span>
+								<span class="add-txt">※ 대표이미지는 530*530 이상 정사각형 사이즈로 작업하여 업로드해주세요.</span>
 							</div>
                             <span class="red" id="main_image"></span>
                             {!! $errors->first('main_image','<span class="red">:message</span>')!!}
@@ -410,6 +412,20 @@
             <a class="close" href="#close"></a>
         </div>
 		<!-- //popup : 브랜드추가 -->
+<!--브랜드 삭제 불가-->
+@component('help.popup_ok')
+    @slot('goId')
+        brand_cant_del
+    @endslot
+    진행중 캠페인에 사용중인 브랜드는 삭제 할 수 없습니다.
+@endcomponent
+<!--브랜드 삭제 완료-->
+@component('help.popup_ok')
+    @slot('goId')
+        brand_del_ok
+    @endslot
+    삭제되었습니다.
+@endcomponent
 <!--개인정보 제3자 제공-->
 @component('help.pop_requir')
     개인정보 제3자 제공
@@ -734,7 +750,26 @@ var $data = new FormData();
        }
             
     });
-        
+// 브랜드 삭제관련
+    $('#del_brand').on('click', function(e){
+       e.preventDefault();
+        $.ajax({
+           type:"POST",
+           url:"{{ route('campaigns.brandCheck') }}",
+           data:{brand_id: $("select[name=brand_id]").val()},
+           success:function(data){
+               if(data.b_result){
+                   window.location.hash = '#brand_cant_del';
+               } else{
+                   $('#brand_select').html(data.finhtml);
+                   window.location.hash = '#brand_del_ok';
+               }
+           },
+            error: function(data) {
+                alert('브랜드 삭제에 문제가 있습니다.');
+               }
+        });
+    });
     
 //    브랜드추가관련
     $('#brand_submit').on('click', function(e){

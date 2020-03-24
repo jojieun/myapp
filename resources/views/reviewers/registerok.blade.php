@@ -10,7 +10,7 @@
 
 			<div class="login-group">				
 				<a href="{{route('main')}}" class="btn big w50">메인으로</a>
-				<a href="{{route('reviewers.mypage')}}" class="btn black big w50">마이페이지</a>
+				<a href="{{route('plans.create')}}" class="btn black big w50">리뷰전략 등록하기</a>
 			</div>
 
 		</div>

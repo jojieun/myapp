@@ -115,7 +115,7 @@ foreach ($campaigns as $key => $loop)
         return view('campaigns.visit', [
             'campaigns'=>$campaigns,
             'channels'=>\App\Channel::select('id','name')->get(),
-            'categories'=>\App\Category::get(),
+//            'categories'=>\App\Category::get(),
         ]);
     }
     //방문캠페인 재택캠페인
@@ -189,7 +189,7 @@ foreach ($campaigns as $key => $loop)
         return view('campaigns.athome', [
             'campaigns'=>$campaigns,
             'channels'=>\App\Channel::select('id','name')->get(),
-            'categories'=>\App\Category::get(),
+//            'categories'=>\App\Category::get(),
         ]);
     }
 
@@ -243,6 +243,27 @@ foreach ($campaigns as $key => $loop)
                 'opbrand_id' => $brand->id
             ])->render()
         ]);
+        
+    }
+    //브랜드 삭제가능여부 체크 -> 삭제
+    public function brandCheck(Request $request)
+    {
+        //브랜드 사용중인지 확인
+        $b_result = Campaign::where('brand_id',$request->brand_id)
+            ->whereDate('end_submit','>',Carbon::now())->exists();
+        if($b_result){//사용중이면
+            return response()->json(['b_result'=>$b_result]);
+        } else {
+            \App\Brand::whereId($request->brand_id)->delete();
+            return \Response::json([
+            'finhtml' => \View::make('campaigns.brand', [
+                'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+                'opbrand_id' => 0
+            ])->render(),
+                'b_result'=>$b_result
+            ]);
+        }
+        
         
     }
     public function firstStore(Request $request)

@@ -346,7 +346,33 @@ select {
 .campaign-detail-txt{ width: 1000px; float:left; overflow:hidden; }
 .detail-txt { margin: 50px 0; padding-top:50px ; border-top:1px solid #e9e9e9; overflow:hidden;} 
 .detail-txt dt{ width: 150px; float:left; font-size:24px; font-weight:600;  color:#222; letter-spacing:-1px; }
+.detail-txt dt strong{
+    color:white; background-color:black; font-size: 13px; padding:2px;
+}
 .detail-txt dd{ width: calc(100% - 150px); float:right; font-size:16px; line-height:200%; color:#222;}
+#spon_img{
+    border:1px solid #ddd;
+    padding:15px;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 14px;
+    background-color: white;
+}
+#spon_img hr{
+    border-style: none;
+    height: 1px;
+    background-color: #eee;
+}
+#spon_desc{
+    margin-top:10px;
+    text-align: center;
+}
+#spon_desc button{
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 44px;
+    height: 44px;
+}
 .detail-txt dd .map{ width: 825px; height: 255px; background: #e9e9e9; margin:8px 0 10px; }
 .campaign-detail-navi{ width: 190px; float:right; overflow:hidden; border-top:4px solid #000; background: #fff;}
 .campaign-detail-navi ul{ margin:35px 0 15px; overflow:hidden;}
@@ -468,13 +494,14 @@ select {
 .table_form2 dl dd.date p span.title{ display:inline-block; width: 130px;}
 .table_form2 dl dd.date p span.txt{ font-weight:500; letter-spacing:0; }
 .table_form2 dl dd.date p span.txt span.gray-box{ display:inline-block; width: 175px; height: 40px; line-height: 40px; border:1px solid #ddd; background: #f7f7f7; color:#bbb; padding-left:15px;}
-.table_form2 dl dd .new-brand select{ width: calc(100% - 200px); float:left; }
+.table_form2 dl dd .new-brand select{ width: calc(100% - 400px); float:left; }
 .table_form2 dl dd .new-brand button{ width: 200px; height: 42px; line-height: 40px; padding-right:35px; font-size:15px; background: url(/img/common/ico_plus.png) no-repeat 88% center; background-size: 13px;}
 
 .table_form2 dl dd .new-brand a{ width: 200px; height: 42px; line-height: 40px; padding-right:35px; font-size:15px; background: url(/img/common/ico_plus.png) no-repeat 88% center; background-size: 13px;}
+.table_form2 dl dd .new-brand a.delete{ background-image: url(/img/common/ico_minus.png);}
 .table_form2 dl dd .number {vertical-align:top;}
 .table_form2 dl dd .number button{ padding: 0; display:inline-block; float:left; }
-.table_form2 dl dd .number input{ display:block; float:left; height: 40px; line-height:40px; max-width: 65px; text-align:center; border-top:1px solid #ddd; border-bottom:1px solid #ddd; }
+.table_form2 dl dd .number input{ display:block; float:left; height: 40px; line-height:40px; max-width: 100px; text-align:center; border-top:1px solid #ddd; border-bottom:1px solid #ddd; padding-left: 0;}
 
 .table_form2 dl dd .number input[type="number"] {
   -webkit-appearance: textfield;
@@ -1103,7 +1130,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .my-reviewer-top dl dt a.black:hover{ color: #ff682c; }
 .my-reviewer-top dl dd{ font-size:40px; line-height:100%; color:#222; margin-top:30px; }
 .my-reviewer-top dl dd b{ font-size:46px; font-weight:900; }
-.my-reviewer-top ul{ width: calc(100% - 350px); float:right;}
+.my-reviewer-top ul{ /*width: calc(100% - 350px);*/ float:right;}
 .my-reviewer-top ul li{ width: 146px ; height: 146px; float:left; border-radius:50%; margin-left:8px; background: #f4f4f4; border:1px solid #ddd; text-align:center;}
 .my-reviewer-top ul li:first-child{  margin-left:0; }
 .my-reviewer-top ul li span{ font-size:16px; line-height:120%; color:#222;}
@@ -1639,7 +1666,7 @@ ul.pagination li a[aria-label="Next »"]{
 	.campaign_tab li a span{display:block; line-height:120%; }
 	.campaign_tab li.on a{ border-bottom:4px solid #222; font-weight:600;}
 
-	.campaign_tab2{ display:block; width: 100%; position:fixed; left:0; bottom:0px; min-height: 60px; z-index:9; }
+	.campaign_tab2{ display:block; width: 100%; position:fixed; left:0; bottom:0px; min-height: 60px; z-index:9; background: #f4f4f4;}
 	.campaign_tab2 li .out{ display:block; width:25%;  float:left; box-sizing:border-box; height:60px; padding-top:15px; border-top:0.75px solid #ddd; border-right:0.75px solid #ddd; font-size:13px; color:#222; text-align:center; background: #f4f4f4;}
     .campaign_tab2.reviewermenu li .out{width:20%;}
 	.campaign_tab2 li.fw-500 .out{ width: 40%; padding-top:10px;}
@@ -1893,7 +1920,7 @@ ul.pagination li a[aria-label="Next »"]{
 	.my-reviewer-top dl dt a{ height: 30px; line-height:29px; padding: 0 15px; font-size:13px;margin:0px 0 0 10px;}
 	.my-reviewer-top dl dd{ font-size:30px; margin-top:10px; }
 	.my-reviewer-top dl dd b{ font-size:34px; }
-	.my-reviewer-top ul{ width:340px; margin:0 auto; float:none;}
+	.my-reviewer-top ul{ width:255px; margin:0 auto; float:none;}
 	.my-reviewer-top ul li{ width: 80px ; height: 80px; margin-left:5px; }
 	.my-reviewer-top ul li span{ font-size:11px; }
 	.my-reviewer-top ul li span.title{ margin:16px 0 12px;}

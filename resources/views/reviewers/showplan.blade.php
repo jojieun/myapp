@@ -113,7 +113,8 @@
 				</div>
 				<!-- //나의 리뷰전략 -->
                 <div class="join_btn_wrap">
-					<a class="btn black" href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a>
+					<a class="btn" href="{{route('plans.edit', $plan->id)}}">리뷰전략 수정</a>
+                    <a class="btn black" href="{{route('main')}}">체험단 신청</a>
 				</div>
 			</div>
 			<!-- //오른쪽 컨텐츠 -->

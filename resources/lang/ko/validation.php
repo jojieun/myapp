@@ -148,5 +148,6 @@ return [
         'account_number' => '계좌번호',
         'id_card_image' => '신분증사본',
         'amount' => '출금포인트',
+        'review_plan' => '리뷰전략'
     ],
 ];

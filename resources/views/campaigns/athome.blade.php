@@ -21,9 +21,15 @@
 					<dt>카테고리</dt>
 					<dd>
 						<span class="input-button"><input name="category" type="checkbox" id="category00"><label for="category00">전체</label></span>
-                        @foreach($categories as $cate)
-						<span class="input-button"><input name="category[]" type="checkbox" id="category0{{$cate->id}}" value="{{$cate->id}}"><label for="category0{{$cate->id}}">{{$cate->name}}</label></span>
-                        @endforeach		
+                        
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category02" value="2"><label for="category02">생활</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category06" value="6"><label for="category06">유아동</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category05" value="5"><label for="category05">디지털</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category03" value="3"><label for="category03">뷰티</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category08" value="8"><label for="category08">패션</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category010" value="10"><label for="category010">도서</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category07" value="7"><label for="category07">식품</label></span>
+                        <span class="input-button"><input name="category[]" type="checkbox" id="category012" value="12"><label for="category012">앱 웹</label></span>
 					</dd>
 				</dl>
 			</div>

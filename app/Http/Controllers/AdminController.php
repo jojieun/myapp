@@ -81,7 +81,7 @@ class AdminController extends Controller
     //캠페인검수대기목록
      public function waitConfirmCam()
     {   
-         $waitCampaigns = \App\Campaign::where('confirm',0)->select('id','brand_id','created_at','name')->with('brand')->get();
+         $waitCampaigns = \App\Campaign::where('confirm',0)->where('check_payment',1)->select('id','brand_id','created_at','name')->with('brand')->get();
         return view('admin.waitcam',[
             'waitCampaigns' => $waitCampaigns,
         ]);

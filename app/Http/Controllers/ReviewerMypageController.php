@@ -131,7 +131,11 @@ class ReviewerMypageController extends Controller
         $chls = \App\Channel::select('id','url')->get();
         //미제출리뷰 개수반환
         $notreview = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
-            ->where('selected',1)->doesntHave('review')->count();
+            ->where('selected',1)->doesntHave('review')->join('campaigns', function($join) {
+                $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
+                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
+            })->count();
         //리뷰(어)제안 개수반환
         $suggestions = \App\ReviewerSuggestion::where('reviewer_id',$nowUser->id)->where('accept','null')->join('campaigns', function($join) {
                 $join->on('reviewer_suggestions.campaign_id','=','campaigns.id')
@@ -339,7 +343,6 @@ class ReviewerMypageController extends Controller
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
                     ->whereDate('end_recruit','<',Carbon::now()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
-                
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')

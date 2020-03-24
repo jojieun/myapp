@@ -28,7 +28,7 @@
                             <span class="h">재택</span>
                             @endif
 							<span class="bg-bl">{{ $locaOrCate }}</span>
-							<span class="sns"><span class="channel{{$campaign->channel->id}}">{{$campaign->channel->name}}</span></span>
+							<span class="sns"><span class="channel{{$campaign->channel_id}}">{{$campaign->channel->name}}</span></span>
 						</p>
 						<p class="tag-area-right">
 							<span class="num"><b>신청 {{ $applyCount }}</b> / {{$campaign->recruit_number}}명</span>
@@ -124,6 +124,19 @@
 					<dt>기타사항</dt>
 					<dd>{!! nl2br($campaign->etc) !!}</dd>
 				</dl>
+                <dl id="" class="detail-txt">
+					<dt>스폰서배너<br><strong>필수</strong></dt>
+					<dd><div id="spon_img">
+                        본 리뷰는 <strong>{{$campaign->brand->name}}</strong>에게 대가를 제공받았으나,<br>
+                        주관적인 생각으로 작성하였습니다.<br>
+                        <hr>
+                        <small>리뷰의힘</small>
+                        </div>
+                        <div id="spon_desc">
+                            리뷰작성시 위 배너 이미지 삽입 부탁드립니다. <button class="btn">이미지 저장</button>
+                        </div>
+                    </dd>
+				</dl>
 			</div>
 		</section>
 		<!-- //캠페인 내용 -->
@@ -155,6 +168,34 @@
     @endslot
     @slot('where')
         {{ route('sessions.create') }}
+    @endslot
+@endcomponent
+@component('help.pop_require')
+    @slot('goId')
+        pop_plan
+    @endslot
+    @slot('for')
+        캠페인 신청을 위해
+    @endslot
+    @slot('what')
+        리뷰전략작성
+    @endslot
+    @slot('where')
+        {{ route('plans.create') }}
+    @endslot
+@endcomponent
+@component('help.pop_require')
+    @slot('goId')
+        popup_sns
+    @endslot
+    @slot('for')
+        캠페인 신청을 위해
+    @endslot
+    @slot('what')
+        {{$campaign->channel->name}} 정보입력
+    @endslot
+    @slot('where')
+        {{ route('reviewers.mysns') }}
     @endslot
 @endcomponent
 <!--관심캠페인 등록시 로그인 필요-->
@@ -210,7 +251,19 @@
 @endcomponent
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2014fb587b83de3123a5fcf612f0b7c9&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
 <script>
+//    스폰 이미지 저장
+    $('#spon_desc button').click(function(){
+        html2canvas($("#spon_img"), {
+            onrendered: function(canvas) {
+                canvas.toBlob(function(blob) {
+                    saveAs(blob, 'spon_image.png');
+                });
+            }
+        });
+    });
     $.ajaxSetup({
        headers: {
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -258,7 +311,21 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
      $('.apply_check').on('click', function(e){
          e.preventDefault();
          @if(isset(auth()->user()->name))
-         window.location.hash = '#popup_term';
+            @if(isset(auth()->user()->plan))
+                @forelse (auth()->user()->channelreviewers as $channelreviewer)
+                    @if($campaign->channel_id==$channelreviewer->channel_id)
+                    window.location.hash = '#popup_term';
+                    @break
+                    @endif
+                    @if($loop->last)
+                    window.location.hash = '#popup_sns';
+                    @endif
+                @empty
+                    window.location.hash = '#popup_sns';
+                @endforelse
+            @else
+            window.location.hash = '#pop_plan';
+            @endif
          @else
          window.location.hash = '#pop_review';
          @endif
