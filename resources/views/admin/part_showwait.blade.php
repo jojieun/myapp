@@ -9,7 +9,7 @@
         </tr>
         <tr>
             <th>진행형태</th>
-            <td>{{$campaign->form}}</td>
+            <td>@if($campaign->form=='v')재택@else방문@endif</td>
         </tr>
         <tr>
             <th>브랜드명</th>

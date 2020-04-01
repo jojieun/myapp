@@ -167,7 +167,7 @@ input, textarea {
 .popup {
     background-color: #fff;
     display: inline-block;
-	max-width: 600px;
+	max-width: 800px;
 	max-height: 700px;
     left: 50%;
     opacity: 0;

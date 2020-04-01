@@ -31,13 +31,14 @@
     		<div class="campaign-list-info-right">
 <!--                선정대기중일때-->
                 @if($type=='modi')
-    			<a href="{{route('campaigns.edit',$campaign->id)}}" class="btn btn-check w125">캠페인 수정</a>
+    			<a href="{{route('campaigns.edit',$campaign->id)}}" class="btn btn-check w125">캠페인수정요청</a>
 <!--                리뷰어모집중일때-->
                 @elseif($type=='select')
                 <p class="num">
                     <span class="title">모집현황</span>
                     <span class="txt"><b>{{$campaign->campaignReviewers->count()}}</b> / {{$campaign->recruit_number}}</span>
                 </p>
+                <a href="{{route('campaigns.edit',$campaign->id)}}" class="btn btn-check w125">캠페인수정요청</a>
                 @if($campaign->campaignReviewers->count()>0)
                 <a href="{{route('advertisers.recruit_campaign',$campaign->id)}}" class="btn btn-check w125">리뷰어 선정</a>
                 @endif

@@ -89,7 +89,7 @@
 	.main_menus ul#main_menus li a.mainmenu b{ font-weight:600;}
 	.main_menus ul#main_menus li:last-child a.mainmenu{ position:relative; padding: 0;}
 	.main_menus ul#main_menus li:last-child a.mainmenu:after{ content:''; position:absolute; right:-13px; top:36px; width: 7px; height:7px; background:#e84250;border-radius:50%;}
-	.main_menus ul#main_menus ol.depth{ position:absolute; top:90px; left:320px; border:1px solid #333; padding: 15px 20px; background: #fff;}
+	.main_menus ul#main_menus ol.depth{ position:absolute; top:90px; left:435px; border:1px solid #333; padding: 15px 20px; background: #fff;}
 	.main_menus ul#main_menus ol.depth li a{ display:block; line-height:130%; padding: 5px 0;  margin:0;  letter-spacing:-1px; font-size:15px; }
 	.main_menus ul#main_menus ol.depth li a:hover { color:#e84250;}
 	#btn_home {display:none;}

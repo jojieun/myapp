@@ -22,6 +22,7 @@ class AdvertiserMypageController extends Controller
 //        검수중
         $waitCampaigns = \App\Campaign::where('advertiser_id',$nowuser->id)
             ->where('confirm',0)
+            ->where('check_payment',1)
             ->select('name')
             ->get();
 //        리뷰어모집(선정대기)중
@@ -64,6 +65,7 @@ class AdvertiserMypageController extends Controller
         //        검수중
         $waitCampaigns = \App\Campaign::where('campaigns.advertiser_id',$nowuser->id)
             ->where('confirm',0)
+            ->where('check_payment',1)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','regions.id','=','areas.region_id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')

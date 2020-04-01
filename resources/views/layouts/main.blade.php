@@ -23,7 +23,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=1.2') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=1.3') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
@@ -71,6 +71,7 @@
 							</li>
 							<li><a href="{{route('visit')}}"  class="mainmenu" id="mainmenu01"><b>방문</b></a></li>
 							<li><a href="{{route('athome')}}"  class="mainmenu" id="mainmenu02"><b>재택</b></a></li>
+                            <li><a href="{{ route('communities.index') }}"  class="mainmenu" id="mainmenu04">커뮤니티</a></li>
 							<li class="mainMenu"><a href="{{route('reviewer_faqs.index')}}"  class="mainmenu" id="mainmenu03">고객센터</a>
 								<ol class="submenu depth" id="submenu03" style="display:none;">
 									<li><a href="{{route('onetoones.create')}}">1:1 문의하기</a></li>
@@ -79,7 +80,7 @@
 									<li><a href="{{route('onetoones.index')}}">문의내역</a></li>
 								</ol>
 							</li>
-							<li><a href="{{ route('communities.index') }}"  class="mainmenu" id="mainmenu04">커뮤니티</a></li>	
+								
 							<li><a href="{{route('influencers.index')}}"  class="mainmenu" id="mainmenu05"><b>인플루언서</b></a></li>
 						</ul>
 						<div class="" name="back_z" id="back_z" style="left: 0px; display: block;"></div>

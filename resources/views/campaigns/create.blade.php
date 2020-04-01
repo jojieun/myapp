@@ -366,9 +366,22 @@
 								</div>
 							</dd>
 						</dl>
+                        <dl>
+							<dt>포인트사용</dt>
+							<dd>
+                                <div class="price-list">
+                                    <p>
+										<span>보유포인트 : <b id="has_point">{{$user->point}}</b>P</span>
+										<span class="price">
+                                            <input type="number" id="use_point" name="use_point"> P 사용
+                                        </span>
+									</p>
+                                </div>
+							</dd>
+						</dl>
 						<dl>
 							<dt>결제방법</dt>
-							<dd class="mt10">						
+							<dd class="mt10">					
 								<span class="input-button"><input name="pay_method" type="radio" id="pay1" value="card" checked><label for="pay1">신용카드</label></span>
 								<span class="input-button"><input name="pay_method" type="radio" id="pay2" value="trans"><label for="pay2">실시간계좌이체</label></span>
 								<span class="input-button"><input name="pay_method" type="radio" id="pay3" value="vbank"><label for="pay3">가상계좌</label></span>
@@ -449,7 +462,8 @@
            return false;
        }
     });
-    
+    var use_point = 0;
+    var total = 0;
     function contentShow(now){
         $('.right-content').css({
             height:0
@@ -495,12 +509,25 @@
         totalprice();
     });
 //    ----------홍보옵션선택
+    //포인트 사용
+    
+    $('#use_point').change(function(){
+        use_point = $('#use_point').val();
+        if(use_point> {{$user->point}}){
+            use_point = {{$user->point}};
+        }
+        if(use_point > total){
+            use_point = total;
+        }
+        $('#use_point').val(use_point);
+        totalprice();
+    });
 //    결제총합
     function totalprice(){
-       var total = notmoney($('#basic_price').html())+notmoney($('#point_price').html())+notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
-        var vat = total*0.1;
-        var final = total+vat;
-        $('#total_price').html(money(total));
+       total = notmoney($('#basic_price').html())+notmoney($('#point_price').html())+notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
+        var vat = (total-use_point)*0.1;
+        var final = (total-use_point)+vat;
+        $('#total_price').html(money((total-use_point)));
         $('#vat').html(money(vat));
         $('#final_price').html(money(final));
         $('input[name=payment]').val(final);
@@ -730,7 +757,11 @@ var $data = new FormData();
         data: s_data,
         success: function(data) {
             $('span').filter('.red').html('');
+            if($('input[name=payment]').val()>0){
             request_pay(data.m_uid);
+                } else {
+                    window.location.href = "{{ route('campaigns.storeend') }}";
+                }
         },
         error: function(data) {
             if(data.status==422){

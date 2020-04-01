@@ -65,7 +65,7 @@
                             <dd class="sns">
                                 @if(Auth::guard('advertiser')->check())
                                 @foreach($plan->reviewer->channelreviewers as $chal)
-                                <span class="channel{{$chal->channel->id}}"><a href="{{$chal->channel->url}}{{$chal->name}}">{{$chal->channel->url}}{{$chal->name}}</a></span>
+                                <span class="channel{{$chal->channel->id}}"><a target="_blank" href="{{$chal->channel->url}}{{$chal->name}}">{{$chal->channel->url}}{{$chal->name}}</a></span>
                                 @endforeach
                                 @else
                                 광고주회원에게만 공개됩니다.

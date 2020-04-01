@@ -10,9 +10,8 @@
 <?php $opbrand_id = 1; ?>
 @endif
 
-<form action="{{ route('campaigns.update', $campaign->id) }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
+<form action="{{ route('campaigns.update_c', $campaign->id) }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
-    {!! method_field('PUT') !!}
 			<!-- 오른쪽 컨텐츠 1 -->
 			<div class="right-content">
 				<!-- 탭 -->
@@ -24,19 +23,6 @@
 				<!-- //탭 -->
 				<!-- 기본정보 입력 -->
 				<div class="">
-					<!-- 이전 캠페인 불러오기 -->
-<!--
-					<div class="select-style01 mb20">
-						<select name="" type="text" id="">
-							@forelse($campaigns as $campaign)
-							<option value="{{ $campaign->id }}">{{ $campaign->name }} [등록일 : {{ $campaign->updated_at }}]</option>		
-                                     @empty
-							<option value="">이전 캠페인이 없습니다</option>
-                                     @endforelse
-						</select>
-					</div>
--->
-					<!-- //이전 캠페인 불러오기 -->
 					<div class="table_form2">
 						<dl>
 							<dt>브랜드선택</dt>
@@ -44,8 +30,7 @@
 								<div class="new-brand" style="overflow:hidden;">
 									<select name="brand_id" type="text" id="brand_select">
                                         @include('campaigns.brand')
-									</select>
-									<a href="#add_brand" class="btn">새 브랜드 추가하기</a>
+									</select><a href="" class="btn delete" id="del_brand">선택 브랜드 삭제하기</a><a href="#add_brand" class="btn">새 브랜드 추가하기</a>
 								</div>
                                 {!! $errors->first('','<span class="red">:message</span>')!!}
                                 <span class="red" id="brand_id"></span>
@@ -83,14 +68,16 @@
 							</dd>
 						</dl>
 						<dl>
-							<dt>제공내역<a href="#" class="btn-question"></a>
+							<dt>제공내역<a class="btn-question"></a>
 								<div class="question">
 									<p>리뷰어가 포인트 출금 신청 시, 수수료 3.3%와 이체 수수료를 공제 후 지급 됩니다.</p>
 								</div>
 							</dt>
 							<dd>
                                 <div class="{{ $errors->has('offer_point') ? 'has-error' : '' }}">
-								<input name="offer_point" type="text" id="" value="{{ old('offer_point', $campaign->offer_point) }}" placeholder=" " class="mb10" /><span class="point-add">point  x  1인</span>
+                                    <div class="number">
+                                        <button type="button" class="down" onclick="this.parentNode.querySelector('input[type=number]').stepDown(5000)"><img src="/img/common/btn_minus.gif" alt="-"></button>
+								<input name="offer_point" type="number" id="" value="{{ old('offer_point', $campaign->offer_point) }}" placeholder=" " class="mb10" /><button type="button" class="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp(5000)"><img src="/img/common/btn_plus.gif" alt="+"></button><span class="point-add">point  x  1인</span>
                                 {!! $errors->first('offer_point','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_point"></span>
                                     </div>
@@ -98,6 +85,7 @@
 								<input name="offer_goods" type="text" id="" value="{{ old('offer_goods', $campaign->offer_goods) }}" placeholder="제공 물품/서비스를 입력해주세요" class="full_width mb10" />
                                 {!! $errors->first('offer_goods','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_goods"></span>
+                                    </div>
                                 </div>
 							</dd>
 						</dl>
@@ -123,8 +111,8 @@
 								<p class="{{ $errors->has('start_recruit') ? 'has-error' : '' }} {{ $errors->has('end_recruit') ? 'has-error' : '' }}">
 									<span class="title">리뷰어 모집기간</span>
 									<span class="txt">
-										<input value="{{ old('start_recruit', $campaign->start_recruit)?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" min="{{ date('Y-m-d', strtotime('tomorrow')) }}" size="20" title="시작일" class="m_mb10 input-date" /> <em>~</em>
-										<input value="{{ old('end_recruit', $campaign->end_recruit)?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" min="{{ date('Y-m-d', strtotime('+7 day')) }}" class="m_mb10 input-date" />
+										<input value="{{ old('start_recruit', $campaign->start_recruit)?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" size="20" title="시작일" class="m_mb10 input-date" /> <em>~</em>
+										<input value="{{ old('end_recruit', $campaign->end_recruit)?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" class="m_mb10 input-date" />
 									</span>
                                     {!! $errors->first('start_recruit','<span class="red">:message</span>')!!}
                                     {!! $errors->first('end_recruit','<span class="red">:message</span>')!!}
@@ -137,7 +125,7 @@
                                     <span class="title">리뷰 제출기간</span>
 									<span class="txt">
 										<span class="gray-box" id="submit_start">{{ date('Y-m-d', strtotime('+9 day')) }}</span> <em>~</em>
-										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit', $campaign->end_submit) ?: date('Y-m-d', strtotime('+22 day')) }}" min="{{ date('Y-m-d', strtotime('+22 day')) }}"/>
+										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit', $campaign->end_submit) ?: date('Y-m-d', strtotime('+22 day')) }}"/>
 									</span>
                                     {!! $errors->first('end_submit','<span class="red">:message</span>')!!}
 								</p>
@@ -222,16 +210,19 @@
                         <dl>
                             <dt>캠페인지역</dt>
                             <dd>
-                                <select id="regions" class="select_po">
+                                <select id="regions" class="select_po" name="region_id">
                                     <option value="선택">선택</option>
                                      @forelse($regions as $region)
-										<option value="{{ $region->id }}" @if( $region->id == old('region_id', $campaign->region_id) ) selected @endif>{{ $region->name }}</option>		
+										<option value="{{ $region->id }}" @if($campaign->area_id && $region->id == $campaign->area->region_id ) selected @endif>{{ $region->name }}</option>		
                                         @empty
 										<option value="">지역이 없습니다</option>
                                         @endforelse
                                 </select>
-                                <select id='areas' class='select_po hide' name='area_id' value="">
+                                <select id='areas' class="select_po @if(!old('area_id', $campaign->area_id)) hide @endif" name='area_id' value="">
                                     <option value="">지역이 없습니다</option>
+                                    @if(old('area_id', $campaign->area_id))
+                                    <option value="{{$campaign->area_id}}" selected>{{$campaign->area->name}}</option>
+                                    @endif
                                 </select>
                                 {!! $errors->first('area_id','<span class="red">:message</span>')!!}
                                 <span class="red" id="area_id"></span>
@@ -297,25 +288,7 @@
 				</div>
 			</div>
 <!-- 오른쪽 컨텐츠 3-->
-			<div class="right-content">
-				<!-- 탭 -->
-				<ul class="member-tab w3">
-					<li><b>01</b> 기본정보 입력</li>
-					<li><b>02</b> 상세정보 입력</li>
-					<li class="on"><b>03</b> 수정완료</li>
-				</ul>
-				<!-- //탭 -->
-				<!-- 기본정보 입력 -->
-				<div style="overflow:hidden;">
-					
-				</div>
-				<!-- //기본정보 입력 -->
 
-				<div class="join_btn_wrap mt30">
-					<a class="btn" onclick="contentShow(1)">이전단계</a>
-					<a href="" class="btn black">캠페인 관리</a>
-				</div>
-		</div>
 </form>
 <!-- popup : 브랜드추가 -->
         <a href="#" class="overlay" id="add_brand"></a>
@@ -357,11 +330,6 @@
         $('.right-content').css({
             height:0
         }).eq(now).removeAttr('style');
-        if(now==2){
-            var pp = $('input[name=offer_point]').val()*$('input[name=recruit_number]').val();
-            $('#point_price').html(money(pp));
-            totalprice();
-        }
     };
 //    방문재택선택
     $('input[name=form]').change(function(){
@@ -379,6 +347,14 @@
     var endD;
     var pickD;
     var endS;
+    //시작시 날짜 정리
+    $(function(){
+    pickD = dateAdd($('input[name=end_recruit]').val(), +1);
+        $('#pickday').html(pickD);
+        $('#submit_start').html(dateAdd(pickD,+1));
+        $('#fin').html(dateAdd($('input[name=end_submit]').val(), +1));
+    });
+    
     $('input[name=start_recruit]').change(function(){
         endD = dateAdd($(this).val(), +7);
         $('input[name=end_recruit]').attr({
@@ -420,7 +396,7 @@
         var end_submit = $("input[name=end_submit]").val();
         $.ajax({
            type:"POST",
-           url:"{{ route('campaigns.firststore') }}",
+           url:"{{ route('campaigns.firststore2') }}",
            data:{
                name:name,
                brand_id:brand_id,

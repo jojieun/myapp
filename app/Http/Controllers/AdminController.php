@@ -13,6 +13,7 @@ use App\Exposure;
 use App\Promotion;
 use App\CampaignExposure;
 use App\CampaignPromotion;
+use App\ModifyCampaign;
 
 class AdminController extends Controller
 {
@@ -102,6 +103,60 @@ class AdminController extends Controller
             'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),
             ]);
    }
+    //수정요청 캠페인
+    public function modify_campaign()
+    {
+        $modify_campaigns = ModifyCampaign::where('confirm','w')->select('id','campaign_id','brand_id','created_at','name')->with('brand')->get();
+        return view('admin.modify_campaign',[
+            'modify_campaigns' => $modify_campaigns,
+        ]);
+    }
+    //수정요청캠페인자세히보기
+    public static function show_modify(ModifyCampaign $modify_campaign, Campaign $campaign){
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_show_modify', array('modify_campaign' => $modify_campaign, 'campaign' => $campaign))->render(),
+            ]);
+   }
+    //수정요청 승인
+    public static function confirmModify(Request $request){
+        $nowId = $request->nowId;
+        $nowResult = $request->c_result;
+        
+      ModifyCampaign::where('id', $nowId)->update(['confirm' => $nowResult]);
+        if($nowResult=='a'){
+            $modi=ModifyCampaign::whereId($nowId)->first();
+            Campaign::whereId($modi->campaign_id)->update([
+                'channel_id' => $modi->channel_id,
+                'brand_id' => $modi->brand_id,
+                'name' => $modi->name,
+                'form' => $modi->form,
+                'recruit_number' => $modi->recruit_number,
+                'offer_point' => $modi->offer_point,
+                'offer_goods' => $modi->offer_goods,
+                'start_recruit' => $modi->start_recruit,
+                'end_recruit' => $modi->end_recruit,
+                'end_submit' => $modi->end_submit,
+                'contact' => $modi->contact,
+                'mission' => $modi->mission,
+                'keyword' => $modi->keyword,
+                'area_id' => $modi->area_id,
+                'etc' => $modi->etc,
+                'visit_time' => $modi->visit_time,
+                'zipcode' => $modi->zipcode,
+                'address' => $modi->address,
+                'detail_address' => $modi->detail_address,
+                'main_image' => $modi->main_image,
+                'sub_image1' => $modi->sub_image1,
+                'sub_image2' => $modi->sub_image2,
+                'sub_image3' => $modi->sub_image3,
+            ]);
+        }
+        $modify_campaigns = ModifyCampaign::where('confirm','w')->select('id','campaign_id','brand_id','created_at','name')->with('brand')->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_modify_campaign', array('modify_campaigns' => $modify_campaigns))->render(),
+            ]);
+   }
+    
     
     //캠페인 노출옵션 구매내역
     public function exposure_purchase()

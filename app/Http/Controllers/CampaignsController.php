@@ -282,6 +282,20 @@ foreach ($campaigns as $key => $loop)
         ]);
         return response()->json(['now'=>'1']);
     }
+    //캠페인수정시 첫번째 유효성검사
+    public function firstStore2(Request $request)
+    {
+        $this->validate($request,[
+            'brand_id' => 'required',
+            'name' => 'required|max:255',
+            'form' => 'required',
+            'recruit_number' => 'required|numeric|max:65534',
+            'offer_point' => 'required|numeric|max:4294967294',
+            'offer_goods' => 'max:255',
+            'channel_id' => 'required',
+        ]);
+        return response()->json(['now'=>'1']);
+    }
     public function secondStore(Request $request)
     {
         $this->validate($request, [
@@ -438,6 +452,9 @@ foreach ($campaigns as $key => $loop)
             Image::make($file)->save($location);
             $campaign->sub_image3 = $filename;
         }
+        if($request->payment<=0){
+                $campaign->check_payment = true;
+            }
         $campaign -> save();
         if($request->has('exposure_id')){
         $campaignexposure = \App\CampaignExposure::create([
@@ -450,6 +467,10 @@ foreach ($campaigns as $key => $loop)
             'campaign_id'=>$campaign->id,
             'promotion_id'=>$request->input('promotion_id'),
         ]);
+        }
+        if($request->has('use_point')){
+        \App\Advertiser::whereId(auth()->guard('advertiser')->user()->id)->decrement('point', $request->use_point);
+            
         }
         if(! $campaign){
             return back()->withInput();
@@ -632,11 +653,11 @@ foreach ($campaigns as $key => $loop)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Campaign $campaign)
+    public function update_c(Request $request, $oldcamId)
     {
         $this->validate($request, [
             'contact' => 'required|max:255',
-            'mission' => 'max:255',
+            'mission' => 'required',
             'keyword' => 'max:255',
             'area_id' => $request->form == 'v' ?'required|numeric': '',
             'address' => $request->form == 'v' ?'required': '',
@@ -644,6 +665,35 @@ foreach ($campaigns as $key => $loop)
         ], [
             'area_id.numeric'=>'캠페인지역은 필수 입력사항입니다.'
         ]);
+        
+        $oldCam = Campaign::whereId($oldcamId)->first();
+        //수정요청캠페인 저장
+        $campaign = new \App\ModifyCampaign;
+        $campaign->campaign_id=$oldCam->id;
+        $campaign->advertiser_id=auth()->guard('advertiser')->user()->id;
+        $campaign->channel_id=$request->channel_id;
+        $campaign->brand_id=$request->brand_id;
+        $campaign->name=$request->name;
+        $campaign->form=$request->form;
+        $campaign->recruit_number=$request->recruit_number;
+        $campaign->offer_point=$request->offer_point;
+        $campaign->offer_goods=$request->offer_goods;
+        $campaign->start_recruit=$request->start_recruit;
+        $campaign->end_recruit=$request->end_recruit;
+        $campaign->end_submit=$request->end_submit;
+        $campaign->contact=$request->contact;
+        $campaign->mission=$request->mission;
+        $campaign->keyword=$request->keyword;
+        $campaign->area_id=$request->area_id;
+        $campaign->etc=$request->etc;
+        $campaign->visit_time=$request->visit_time;
+        $campaign->zipcode=$request->zipcode;
+        $campaign->address=$request->address;
+        $campaign->detail_address=$request->detail_address;
+        $campaign->main_image = $oldCam->main_image;
+        $campaign->sub_image1 = $oldCam->sub_image1;
+        $campaign->sub_image2 = $oldCam->sub_image2;
+        $campaign->sub_image3 = $oldCam->sub_image3;
         
         if($request->hasfile('main_image')){
             \File::delete('files/'.$campaign->main_image);
@@ -679,14 +729,8 @@ foreach ($campaigns as $key => $loop)
             Image::make($file)->save($location);
             $campaign->sub_image3 = $filename;
         }
+        $campaign -> save();
         
-        
-        $campaign->update($request->except([
-            'main_image',
-            'sub_image1',
-            'sub_image2',
-            'sub_image3',
-        ]));
         return view('campaigns.editend',[
             'user'=>auth()->guard('advertiser')->user(),
         ]);

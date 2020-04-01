@@ -27,12 +27,15 @@ Route::view('terms_of_use', 'terms_of_use')->name('terms_of_use');
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
 Route::post('campaigns/brandCheck','CampaignsController@brandCheck')->name('campaigns.brandCheck');
 Route::post('campaigns/firststore','CampaignsController@firstStore')->name('campaigns.firststore');
+Route::post('campaigns/firststore2','CampaignsController@firstStore2')->name('campaigns.firststore2');
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
 //ajax 저장
 Route::post('campaigns/store_c','CampaignsController@store_c')->name('campaigns.store_c');
 Route::post('campaigns/complate','CampaignsController@complate')->name('campaigns.complate');
 Route::get('campaigns/storeend','CampaignsController@storeEnd')->name('campaigns.storeend');
+
+Route::post('campaigns/update_c/{oldcamId}','CampaignsController@update_c')->name('campaigns.update_c');
 
 Route::match(['get', 'post'], 'visit','CampaignsController@indexV')->name('visit');
 Route::match(['get', 'post'],'athome', 'CampaignsController@indexH')->name('athome');
@@ -115,6 +118,14 @@ Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admi
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
+
+
+//수정요청 캠페인
+Route::get('admin/modify_campaign', 'AdminController@modify_campaign')->name('admin.modify_campaign');
+//수정요청 캠페인 - show
+Route::get('admin/show_modify/{modify_campaign}/{campaign}', 'AdminController@show_modify')->name('admin.show_modify');
+//캠페인검수 승인
+Route::post('admin/confirmModify', 'AdminController@confirmModify')->name('admin.confirmModify');
 
 //캠페인 노출옵션 구매내역
 Route::get('admin/exposure_

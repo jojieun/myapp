@@ -103,6 +103,9 @@
         <span><a href="{{ route('influencers.index') }}">인플루언서 검색</a></span>
         <span><a href="{{ route('advertisers.edit_info') }}">회원정보수정</a></span>
     </p>
+    <p class="my-btn-bottom">
+        <span><button class="btn w50"><b>보유포인트</b> : <b>{{ number_format($user->point) }}</b>P</button></span>
+    </p>
 </div>
 <!-- //오른쪽 컨텐츠 -->
 

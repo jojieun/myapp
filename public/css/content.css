@@ -1008,7 +1008,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .list-info-top .tag-area span.dday.on{ color: #ff4e4e; }
 .list-info-top .subject{ font-size:25px; color:#222; font-weight:500; line-height:140%; margin:20px 0 7px;}
 .list-info-top .subtxt{ font-size:17px; color:#222;  }
-.campaign-list-info-right{ width: 260px;  position:absolute; bottom:25px; right:25px; text-align:right; }
+.campaign-list-info-right{ width: 300px;  position:absolute; bottom:25px; right:25px; text-align:right; }
 .campaign-list-info-right .num{ margin:0 10px 10px 0; }
 .campaign-list-info-right .num .title{ display:block; }
 .campaign-list-info-right .num .txt{ font-size:25px; }

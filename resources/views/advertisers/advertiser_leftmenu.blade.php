@@ -17,8 +17,8 @@
                 
 			</p>
 			<ul> 
-				<li @if(Request::segment(1)=='campaigns')class="on"@endif><a href="{{ route('campaigns.create') }}"><span>캠페인 등록</span></a></li>
-				<li @if(Request::segment(2)=='managecampaign')class="on"@endif><a href="{{ route('advertisers.managecampaign').'#waitCampaigns' }}"><span>캠페인 관리</span></a></li>
+				<li @if(Request::segment(1)=='campaigns'&& Request::segment(3)!='edit')class="on"@endif><a href="{{ route('campaigns.create') }}"><span>캠페인 등록</span></a></li>
+				<li @if(Request::segment(2)=='managecampaign'||Request::segment(3)=='edit')class="on"@endif><a href="{{ route('advertisers.managecampaign').'#waitCampaigns' }}"><span>캠페인 관리</span></a></li>
 <!--				<li @if(Request::segment(2)=='')class="on"@endif><a href="#"><span>인플루언서 검색</span></a></li>-->
 				<li @if(Request::segment(2)=='agency')class="on"@endif><a href="{{ route('agency.index') }}"><span>캠페인 대행 의뢰</span></a></li>
 				<li @if(Request::segment(2)=='edit_info')class="on"@endif><a href="{{ route('advertisers.edit_info') }}"><span>회원정보수정</span></a></li>
