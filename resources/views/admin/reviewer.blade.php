@@ -1,7 +1,7 @@
 @extends('admin.layout.main')
 @section('content')
     <h1>리뷰어 회원 목록</h1>
-    <table>
+    <table id="reviewer_list">
         <thead>
             <tr>
                 <th>번호</th>
@@ -13,12 +13,12 @@
                 <th>생년월일</th>
                 <th>성별</th>
                 <th>수신동의</th>
-                <th>마지막로그인</th>
                 <th>가입일</th>
                 <th>정보수정일</th>
                 <th>포인트</th>
                 <th>sns</th>
                 <th>리뷰전략</th>
+                <th>처리</th>
             </tr>
         </thead>
         @forelse ($reviewers as $reviewer)
@@ -33,12 +33,11 @@
                 <td>{{ $reviewer->birth }}</td>
                 <td>{{ $reviewer->gender }}</td>
                 <td>{{ $reviewer->receive_agreement }}</td>
-                <td>{{ $reviewer->last_login }}</td>
                 <td>{{ $reviewer->created_at }}</td>
                 <td>{{ $reviewer->updated_at }}</td>
                 <td>{{ $reviewer->point }}</td>
                 <td>
-                    @if(isset($reviewer->channelreviewers))
+                    @if($reviewer->channelreviewers->count())
                     <a class="sns" data-id="{{$reviewer->id}}" href="">sns보기</a>
                     @else
                     없음
@@ -50,6 +49,10 @@
                     @else
                     미작성
                     @endif
+                </td>
+                <td>
+                    <button class="modi" value="{{$reviewer->id}}">수정</button>
+                    <button class="del" value="{{$reviewer->id}}">탈퇴(삭제)</button>
                 </td>
             </tr>
         </tbody>
@@ -71,6 +74,36 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+    //삭제(탈퇴)
+    $('#reviewer_list').on('click', '.del', function(e){
+        e.preventDefault();
+       var rId = $(this).val();
+      if (confirm('해당 리뷰어를 삭제합니다. 삭제 후 복구할 수 없습니다.')) {
+        $.ajax({
+          type: 'POST',
+          url: '/reviewers/' + rId,
+            data: {"rId": rId , _method: 'delete'},
+        success:function(data){
+        }
+        }).then(function () {
+          window.location.href = "{{route('admin.reviewers')}}";
+        });
+      }
+    });
+    //수정클릭
+    $('#reviewer_list').on('click', '.modi', function(e){
+        e.preventDefault();
+       var rId = $(this).val();
+        $.ajax({
+            type:"get",
+          url: '/reviewers/' + rId+'/edit',
+        success:function(data){
+                $('.popup').html(data.showhtml)
+                window.location.hash = '#answer'; 
+        }
+        });
+    });
+    
 $('.plan').on('click', function(e){
        e.preventDefault();
     var nowId = $(this).data('id');

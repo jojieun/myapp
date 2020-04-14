@@ -474,6 +474,11 @@ Route::post('reviewer/register',[
     'as'=>'reviewers.store',
     'uses' => 'ReviewersController@store'
 ]);
+//reviewer 리소스
+Route::resource('reviewers', 'ReviewersController')->except([
+    'show'
+]);
+
 //reviewer 인증 관련
 Route::get('reviewer/login',[
     'as'=>'sessions.create',

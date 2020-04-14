@@ -2,22 +2,28 @@
 @section('content')
     <h1>공지사항 관리</h1>
 <h2>새 공지사항 만들기</h2>
-    <form id="makefaq" type="post">
+    <form id="makefaq" method="post" action="{{route('notices.store')}}" enctype="multipart/form-data">
         {!! csrf_field() !!}
         <table>
     `   <tr>
             <th>제목</th>
-        <td>
-            <input name="title"  value="{{ old('title') }}">
+            <td>
+            <input name="title" value="{{ old('title') }}">
+            </td>
+        </tr>
+        <tr>
+            <th>이미지</th>
+            <td>
+            <input name="image" type="file">
             </td>
         </tr>
         <tr>
             <th>내용</th>
-        <td><textarea name="content" rows="5">{{ old('content') }}</textarea></td>
+            <td><textarea name="content" rows="5">{{ old('content') }}</textarea></td>
         </tr>
             <tr>
                 <td colspan="1000" align="right">
-                    <button id="makefaq_b">저장</button>
+                    <button type="submit" id="makefaq_b">저장</button>
                 </td>
             </tr>
     </table>
@@ -46,23 +52,16 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
-    //새 공지사항 저장 클릭시
-    $('#makefaq_b').on('click', function(e){
+    //    이미지업로드바로보기
+    $('.popup').on('change', 'input[name=image].modi', function(e){
        e.preventDefault();
-        $.ajax({
-           type:"POST",
-           url:'{{route('notices.store')}}',
-            data:{
-                'title':$('#makefaq input[name=title]').val(),
-                'content':$('#makefaq textarea[name=content]').val(),
-            },
-            success: function(data){
-                $('#list').html(data.finhtml);
-                $('#makefaq')[0].reset();
-            }
-        });
-        
-    });
+        $(this).next().next().attr({
+                   src:URL.createObjectURL(event.target.files[0])
+               });
+         });
+    
+        //-----이미지업로드바로보기
+
     //목록삭제
     $('#list').on('click', '.del', function(e){
         e.preventDefault();
@@ -89,24 +88,6 @@ $('#list').on('click','.edit', function(e){
             success: function(data){
                 $('.popup').html(data.showhtml)
                 window.location.hash = '#answer'; 
-            }
-        });
-        
-    });
-    // 수정입력 클릭시
-    $('.popup').on('click','#modal_submit', function(e){
-       e.preventDefault();
-    var nowId = $(this).data('id');
-        $.ajax({
-           type:"put",
-           url:'/notices/' + nowId,
-            data:{
-                'title':$('#answer input[name=title]').val(),
-                'content':$('#answer textarea[name=content]').val(),
-            },
-            success: function(data){
-                window.location.hash = '#close'; 
-                $('#list').html(data.finhtml)
             }
         });
         

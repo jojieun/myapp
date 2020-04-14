@@ -186,10 +186,29 @@ $result = $iamport->findCertificationByImpUID($request->imp_uid); //IamportResul
                                 'certification_key'=>$unique_key]);
     } 
 	}
-} else {
-	return response()->json(['name'=>'error']);
-}
+        } else {
+            return response()->json(['name'=>'error']);
+        }
         
     }
+    //리뷰어수정
+    public function edit(\App\Reviewer $reviewer)
+    {
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_edit_reviewer', array('reviewer' => $reviewer))->render(),
+            ]);
+    }
+    //리뷰어수정입력
+    public function update(Request $request, \App\Reviewer $reviewer)
+    {
+        $reviewer->update($request->all());
+        return redirect(route('admin.reviewers'));
+    }
     
+    //리뷰어 삭제
+    public function destroy(\App\Reviewer $reviewer)
+    {
+        $reviewer->delete();
+        return response()->json([], 204);
+    }
 }

@@ -146,6 +146,10 @@ td{
 input, textarea {
     min-width: 300px;
 }
+input[type=radio], input[type=checkbox], input[name=zipcode]{
+    min-width: inherit;
+}
+
 
 /*modal화면*/
 .overlay {

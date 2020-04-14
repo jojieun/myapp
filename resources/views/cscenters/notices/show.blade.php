@@ -26,7 +26,15 @@
 						</div>
 						<div class="txt_view">
 							<div class="txt_view_con">
+                                @isset($notice->image)
+                                <div>
+                                <img src="/files/notice/{{$notice->image}}">
+                                 </div>
+                                @endisset
+
+                                <div>
 								{!! nl2br($notice->content) !!}
+                                </div>
 							</div>
 						</div>					
 					</div>				
