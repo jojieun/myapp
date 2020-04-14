@@ -56,7 +56,7 @@
 						<dd>
 							<ul class="age_graph">
                                 @foreach($ages as $age)
-                                <li><span>{{$loop->iteration}}0대</span><div style="height:{{$age/$r_count*100}}%"><em>{{$age/$r_count*100}}%</em></div></li>
+                                <li><span>{{$loop->iteration}}0대</span><div style="height:{{$age/$r_count*100}}%"><em>{{round($age/$r_count*100)}}%</em></div></li>
                                 @endforeach
 							</ul>
 						</dd>
@@ -66,7 +66,7 @@
 						<dd>
 							<ul>
                                 @forelse($regions as $key=>$value)
-                                <li><span class="num">{{$loop->iteration}}.</span><span class="area-txt">{{$key}}</span><span class="fl-r">{{$value/$r_count*100}}%</span></li>
+                                <li><span class="num">{{$loop->iteration}}.</span><span class="area-txt">{{$key}}</span><span class="fl-r">{{round($value/$r_count*100)}}%</span></li>
                                 @if($loop->iteration==4)
                                 @break
                                 @endif
@@ -97,6 +97,7 @@
 					<ul class="reviewer-td2">
                     @include('advertisers.part_submit_campaign')
                         </ul>
+                    <a href="#" class="btn-down">리뷰 제출 결과 다운로드</a>
 				</div>
 				<!-- //신청 리뷰어 -->
 			</div>

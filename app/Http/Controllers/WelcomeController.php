@@ -157,6 +157,9 @@ class WelcomeController extends Controller
             'prCampaigns'=>$prCampaigns,
             'gCampaigns'=>$gCampaigns,
             'nCampaigns'=>$nCampaigns,
+            'main_banners'=>\App\MainBanner::get(),
+            'middle_banners'=>\App\MiddleBanner::get(),
+            'bottom_banners'=>\App\BottomBanner::get(),
         ]);
     }
     

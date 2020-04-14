@@ -50,7 +50,7 @@
 						<dd>
 							<ul class="age_graph">
                                 @foreach($ages as $age)
-                                <li><span>{{$loop->iteration}}0대</span><div style="height:{{$age/$r_count*100}}%"><em>{{$age/$r_count*100}}%</em></div></li>
+                                <li><span>{{$loop->iteration}}0대</span><div style="height:{{$age/$r_count*100}}%"><em>{{round($age/$r_count*100)}}%</em></div></li>
                                 @endforeach
 							</ul>
 						</dd>
@@ -60,7 +60,7 @@
 						<dd>
 							<ul>
                                 @forelse($regions as $key=>$value)
-                                <li><span class="num">{{$loop->iteration}}.</span><span class="area-txt">{{$key}}</span><span class="fl-r">{{$value/$r_count*100}}%</span></li>
+                                <li><span class="num">{{$loop->iteration}}.</span><span class="area-txt">{{$key}}</span><span class="fl-r">{{round($value/$r_count*100)}}%</span></li>
                                 @if($loop->iteration==4)
                                 @break
                                 @endif
@@ -74,25 +74,34 @@
 				<!-- //캠페인 신청 리뷰어 통계 -->
 
 				<!-- 신청 리뷰어 -->
-				<div class="reviewer" id="reviewer1">
+				<div class="reviewer up_r" id="reviewer1">
                     <form method="post" action="{{ route('advertisers.select_reviewer', $campaign->id) }}">
                         {!! csrf_field() !!}
                     <? $campaignreviewers = $campaignreviewers1; ?>
 					<h3>신청 리뷰어</h3>
                     @include('advertisers.part_recruit_campaign')
-					<button type="submit" class="btn black fl-r mt20">선택 리뷰어 선정</button>
+                        <div class="text-center">
+					<button type="button" class="btn black mt20" id="reviewer_select">선택 리뷰어 선정</button>
+                        </div>
+@component('help.popup_confirm')
+    @slot('goId')
+        confirm
+    @endslot
+    선정 후 취소 할 수 없습니다.
+@endcomponent
                         </form>
 				</div>
 				<!-- //신청 리뷰어 -->
                 
                 <!-- 선정된 리뷰어 -->
 				<div class="reviewer" id="reviewer2">
-                    <form method="post" action="{{ route('advertisers.deselect_reviewer', $campaign->id) }}">
+                    <form method="post" action="">
                         {!! csrf_field() !!}
                     <? $campaignreviewers = $campaignreviewers2; ?>
 					<h3>선정된 리뷰어</h3>
                     @include('advertisers.part_recruit_campaign')
-                    <button type="submit" class="btn black fl-r mt20">선택 리뷰어 선정 해제</button>
+                        <a href="{{route('downe',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
+<!--                    <button type="submit" class="btn black fl-r mt20">선택 리뷰어 선정 해제</button>-->
                         </form>
 				</div>
 				<!-- //선정 리뷰어 -->
@@ -108,6 +117,7 @@
     @endslot
     모집인원을 초과해 선정 할 수 없습니다.
 @endcomponent
+
 <!--//리뷰전략보기-->
 @include('advertisers.advertiser_leftmenu_tail')
 <script>
@@ -130,12 +140,14 @@
         
     });
     
-$('#reviewer1').submit(function(e) {
+$('#reviewer_select').click(function(e) {
   var canNum = {{$campaign->recruit_number}} - {{$campaignreviewers2->count()}};
                        if($('#reviewer1 .reviewer_select:checked').length>canNum){
     location.hash = 'cant_submit';
-    e.preventDefault();
-}                       
+    } else{
+        location.hash = 'confirm';
+    }
+    
 });
 </script>
 @endsection

@@ -84,6 +84,14 @@
             <li class="main">
                 <a href="{{route('notices.create')}}" class="main_a">공지사항</a>
             </li>
+            <li class="main">
+                <a href="{{route('admin.main_banner_edit')}}" class="main_a">배너관리</a>
+                <ul class="sub">
+                    <li><a href="{{route('admin.main_banner_edit')}}">메인배너관리</a></li>
+                    <li><a href="{{route('admin.middle_banner_edit')}}">중단배너관리</a></li>
+                    <li><a href="{{route('admin.bottom_banner_edit')}}">하단배너관리</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
     </header>

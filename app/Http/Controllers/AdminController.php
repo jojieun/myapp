@@ -14,6 +14,7 @@ use App\Promotion;
 use App\CampaignExposure;
 use App\CampaignPromotion;
 use App\ModifyCampaign;
+use Image;
 
 class AdminController extends Controller
 {
@@ -403,6 +404,149 @@ class AdminController extends Controller
         return \Response::json([
             'finhtml' => \View::make('admin.part_rFAQCategory', array('rFAQCategories' => $aFAQCategories))->render(),
             ]);
+    }
+    
+    //배너관리
+    //메인배너관리
+    public function main_banner_edit()
+    {
+        $main_banners = \App\MainBanner::get();
+        return view('admin.main_banner_edit',[
+            'banners' => $main_banners,
+        ]);
+    }
+    //메인배너-수정
+    public function main_banner_modi(Request $request, \App\MainBanner $main_banner)
+    {
+        $main_banner->url=$request->url;
+        if($request->hasfile('name')){
+            \File::delete('files/banner/'.$main_banner->name);
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $main_banner->name = $filename;
+        }
+        $main_banner -> save();
+        return redirect(route('admin.main_banner_edit'));
+    }
+    //메인배너-삭제
+    public function main_banner_del(\App\MainBanner $main_banner)
+    {
+        \File::delete('files/banner/'.$main_banner->name);
+        $main_banner->delete();
+        return redirect(route('admin.main_banner_edit'));
+    }
+    //메인배너-추가
+    public function main_banner_add(Request $request){
+        
+        $main_banner = new \App\MainBanner;
+        $main_banner->url=$request->url;
+        if($request->hasfile('name')){
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $main_banner->name = $filename;
+        }
+        $main_banner -> save();
+        return redirect(route('admin.main_banner_edit'));
+    }
+    //중단배너관리
+    public function middle_banner_edit()
+    {
+        $middle_banners = \App\MiddleBanner::get();
+        return view('admin.middle_banner_edit',[
+            'banners' => $middle_banners,
+        ]);
+    }
+    //중단배너-수정
+    public function middle_banner_modi(Request $request, \App\MiddleBanner $middle_banner)
+    {
+        $middle_banner->url=$request->url;
+        if($request->hasfile('name')){
+            \File::delete('files/banner/'.$middle_banner->name);
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $middle_banner->name = $filename;
+        }
+        $middle_banner -> save();
+        return redirect(route('admin.middle_banner_edit'));
+    }
+    //중단배너-삭제
+    public function middle_banner_del(\App\MiddleBanner $middle_banner)
+    {
+        \File::delete('files/banner/'.$middle_banner->name);
+        $middle_banner->delete();
+        return redirect(route('admin.middle_banner_edit'));
+    }
+    //중단배너-추가
+    public function middle_banner_add(Request $request){
+        
+        $middle_banner = new \App\MiddleBanner;
+        $middle_banner->url=$request->url;
+        if($request->hasfile('name')){
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $middle_banner->name = $filename;
+        }
+        $middle_banner -> save();
+        return redirect(route('admin.middle_banner_edit'));
+    }
+    //하단배너관리
+    public function bottom_banner_edit()
+    {
+        $bottom_banners = \App\BottomBanner::get();
+        return view('admin.bottom_banner_edit',[
+            'banners' => $bottom_banners,
+        ]);
+    }
+    //하단배너-수정
+    public function bottom_banner_modi(Request $request, \App\BottomBanner $bottom_banner)
+    {
+        $bottom_banner->url=$request->url;
+        if($request->hasfile('name')){
+            \File::delete('files/banner/'.$bottom_banner->name);
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $bottom_banner->name = $filename;
+        }
+        $bottom_banner -> save();
+        return redirect(route('admin.bottom_banner_edit'));
+    }
+    //하단배너-삭제
+    public function bottom_banner_del(\App\BottomBanner $bottom_banner)
+    {
+        \File::delete('files/banner/'.$bottom_banner->name);
+        $bottom_banner->delete();
+        return redirect(route('admin.bottom_banner_edit'));
+    }
+    //하단배너-추가
+    public function bottom_banner_add(Request $request){
+        
+        $bottom_banner = new \App\BottomBanner;
+        $bottom_banner->url=$request->url;
+        if($request->hasfile('name')){
+            $file = $request->file('name');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/banner/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $bottom_banner->name = $filename;
+        }
+        $bottom_banner -> save();
+        return redirect(route('admin.bottom_banner_edit'));
     }
 
 }

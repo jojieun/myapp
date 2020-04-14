@@ -1,4 +1,7 @@
 <?php
+namespace App\Http\Controllers;
+use Exception;
+
 if (!class_exists('IamportAuthException')) {
     class IamportAuthException extends Exception
     {

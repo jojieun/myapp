@@ -28,7 +28,7 @@
 
 
 /** 서브페이지 레이아웃 **/
-.sub-container{ position:relative; width:100%; overflow:hidden; word-break:keep-all; font-weight:400;}
+.sub-container{ position:relative; width:100%; word-break:keep-all; font-weight:400;}
 .bt-ddd{ border-top:1px solid #ddd; }
 .sub-container h2{ font-size:38px; font-weight:600; letter-spacing:-1px; color:#000; margin-bottom:20px; }
 .bg-gray{ background:#f4f4f4 ; overflow:hidden; }
@@ -100,7 +100,9 @@ textarea,input[type=password],input[type=email],input[type=number],select{ heigh
 select[name=qcategory_id]{
     line-height: 1.4em;
 }
-
+input:disabled, input:read-only{
+    background-color: #f4f4f4;
+}
 input[type="date"] {
   background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  98% 50% no-repeat ;
 }
@@ -226,21 +228,49 @@ select {
     position: relative;
 }
 .list_title .map a{ display:inline-block; padding-right:22px; font-size:24px; color:#000; background:url("/img/common/b_arrow.gif") no-repeat 99% center; }
-.list_title .map div.map-on{ position:absolute; top:56px; left:230px; max-width: 350px; height: 470px; 
+.list_title .map div.map-on{ position:absolute; top:56px; left:230px; width: 520px; 
     border:1px solid #999;
     z-index:999; background: #fff; display:none; }
-
+.region_wrap{
+    padding:10px 15px;
+    border-bottom:1px solid #eee;
+    font-size: 15px;
+}
+.map-on .region_wrap:nth-child(n+4){
+    width:25%;
+    float: left;
+}
+.region_name{
+    float: left;
+    width:40px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.area_wrap{
+    float: left;
+    width:calc(100% - 40px);
+}
+.area_wrap .area{
+    cursor: pointer;
+    display: inline-block;
+    padding:0 5px;
+    color:#888;
+}
+.area_wrap .area:hover{
+    color:#000;
+}
+ 
+.region_wrap::after{
+    content: '';
+    display: block;
+    clear: both;
+}
 #all_area {
-    position: absolute;
-    top:10px;
-    left: 10px;
-    padding-left:20px;
-    padding-right:20px;
-    font-size: 14px;
     color:#000;
     cursor:pointer;
 }
 /*지도 관련*/
+/*
 .dg-map{
   text-align: center;
   background: #eee;
@@ -272,10 +302,12 @@ select {
 #area_close{
     cursor: pointer;
 }
+
 #show_area span:hover, #all_area:hover{
     background-color: black;
     color:white;
 }
+
 #region_name{
     position: absolute;
     top:3px;
@@ -295,8 +327,13 @@ select {
 .regions:hover{
     fill: rgb(200, 200, 200);
 }
+*/
 @media (max-width: 770px){
-    .list_title .map div.map-on{ top:35px; left:0px;}
+    .list_title .map div.map-on{ top:35px; left:0px; width:auto; max-width: 350px;}
+    .region_wrap{font-size: 13px;}
+    .region_name{
+        width:30px;
+    }
 }
 
 .category{ width: 100%; clear:both; display:table;}
@@ -1035,6 +1072,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 
 
 .reviewer{ position:relative; margin:30px 0; font-size:15px; padding-bottom:50px;}
+.reviewer.up_r{padding-bottom:0;}
 .reviewer a.btn-down{ position:absolute; top:15px; right:0px; background:url('/img/common/ico_download.gif') no-repeat 0 2px; background-size:21px; padding-left:30px ; color:#222; }
 .reviewer-th{width: 100%; border-top:2px solid#222; border-bottom:1px solid#222; overflow:hidden; }
 .reviewer-th li{ line-height:100%; padding:20px 0 ; text-align:center; float:left; }

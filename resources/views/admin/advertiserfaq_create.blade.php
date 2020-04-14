@@ -2,7 +2,7 @@
 @section('content')
     <h1>광고주 FAQ 관리</h1>
 <h2>새 광고주 FAQ 만들기</h2>
-    <form id="makefaq" type="post">
+    <form id="makefaq">
         {!! csrf_field() !!}
         <table>
             <tr>

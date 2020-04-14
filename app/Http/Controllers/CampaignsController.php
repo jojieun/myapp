@@ -116,6 +116,7 @@ foreach ($campaigns as $key => $loop)
             'campaigns'=>$campaigns,
             'channels'=>\App\Channel::select('id','name')->get(),
 //            'categories'=>\App\Category::get(),
+            'areas'=>\App\Area::get()
         ]);
     }
     //방문캠페인 재택캠페인

@@ -373,7 +373,7 @@
                                     <p>
 										<span>보유포인트 : <b id="has_point">{{$user->point}}</b>P</span>
 										<span class="price">
-                                            <input type="number" id="use_point" name="use_point"> P 사용
+                                            <input type="number" id="use_point" name="use_point" value="0"> P 사용
                                         </span>
 									</p>
                                 </div>

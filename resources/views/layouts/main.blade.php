@@ -147,7 +147,7 @@
 	<footer>
 		<div class="footer-call">
 			<p>고객센터</p>
-			<b class=""><a href="tel:051-256-2735">051-256-2735</a></b>
+			<b class=""><a href="tel:051-256-2735">070-4348-2627</a></b>
 			<small>월-금  오전 9시 - 오후 6시 /  주말, 공휴일 휴무</small>
 			<p class="f-btn">
 				<a href="{{route('reviewer_faqs.index')}}">FAQ</a>
@@ -172,7 +172,7 @@
 					<span>통신판매업 신고번호 :  제 2017-부산사하-0040 호<small class="m-none">|</small></span>
 					<span>개인정보보호책임 : 김성근</span>
 				</p>
-				<p class="copyright">© 2019.BLOXION. ALL RIGHTS RESERVED.</p>
+				<p class="copyright">© 2019.STRONGAD. ALL RIGHTS RESERVED.</p>
 			</div>
 		</div>
 	</footer>

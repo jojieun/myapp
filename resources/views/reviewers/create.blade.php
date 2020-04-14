@@ -162,8 +162,8 @@
 						</tr>
 						<tr>	
 							<th>이름</th>
-							<td class="{{ $errors->has('email') ? 'has-error' : '' }}">
-                <input type="text" name="name" placeholder="이름" value="{{old('name')}}">
+							<td class="{{ $errors->has('name') ? 'has-error' : '' }}">
+                <input type="text" name="name" placeholder="휴대폰 인증해주세요" readonly value="{{old('name')}}">
                 {!! $errors->first('name','<span class="red">:message</span>')!!}</td>							
 						</tr>
 						<tr>	
@@ -181,7 +181,7 @@
 						<tr>
 							<th>휴대폰번호</th>
 							<td class="{{ $errors->has('mobile_num') ? 'has-error' : '' }}">
-                <input type="tel" name="mobile_num" placeholder="'-'없이 숫자만 입력해주세요!" value="{{old('mobile_num')}}" class="w150"><button type="button" name="button" class="btn btn-check">인증번호 발송</button>
+                <input type="tel" name="mobile_num" placeholder="'-'없이 숫자만 입력해주세요!" pattern="(010)\d{7,8}" value="{{old('mobile_num')}}" class="w150"><button type="button" name="button" class="btn btn-check" id="call_cert">인증번호 발송</button>
                 {!! $errors->first('mobile_num','<span class="red">:message</span>')!!}</td>					
 						</tr>
 						<tr>						
@@ -209,7 +209,7 @@
 				</table>
 			</div>
 			<!-- //필수정보입력 -->
-			
+			<input type="hidden" name="certification_key" value="{{old('certification_key')}}">
 			<div class="join_btn_wrap">
 				<button type="button" id="prev_content" name="" class="btn">이전단계</button>
 				<button type="submit" id="" name="" class="btn black">가입완료</button>
@@ -221,8 +221,63 @@
 <!--    .sub-container-->
 </form>
 @include('help.addjs')
+<!-- iamport.payment.js -->
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
 $(function(){
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
+    });
+    var IMP = window.IMP; // 생략해도 괜찮습니다.
+    IMP.init("imp81498957"); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+    //sms 인증함수
+    function certification(){
+        IMP.certification({
+    merchant_uid : 'merchant_' + new Date().getTime(), //본인인증과 연관된 가맹점 내부 주문번호가 있다면 넘겨주세요
+            phone:$('input[name=mobile_num]').val()
+}, function(rsp) {
+    if ( rsp.success ) {
+    	 // 인증성공
+        console.log(rsp.imp_uid);
+        console.log(rsp.merchant_uid);
+        
+        $.ajax({
+				type : 'POST',
+				url : "{{ route('reviewer.certification')}}",
+				dataType : 'json',
+				data : {
+					imp_uid : rsp.imp_uid
+				}
+		 }).done(function(rsp) {
+		 		if(rsp.name=='error'){
+                    alert('인증에 실패했습니다.');
+                }else if(rsp.name=='exists'){
+                    alert('이미 가입된 회원입니다.')
+                }else{
+                    $('input[name=name]').val(rsp.name);
+                    $('input[name=certification_key]').val(rsp.certification_key);
+                }
+		 });
+        	
+    } else {
+    	 // 인증취소 또는 인증실패
+        var msg = '인증에 실패하였습니다.';
+        msg += '에러내용 : ' + rsp.error_msg;
+
+        alert(msg);
+    }
+});
+    }//---sms 인증함수
+    
+    $('#call_cert').click(function(){
+        if($('input[name=mobile_num]').val()){
+        certification();
+        } else {
+            alert('휴대폰번호를 입력해주세요!');
+        }
+    });
     checkcheck();
     var nextclick = 0;
     $('#next_content').click(function(){

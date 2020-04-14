@@ -3,10 +3,9 @@
 @section('content')
 <!-- 메인배너 -->
 	<div class="main-banner m-t60" align="center">
-		<div><img src="/img/main/main_slide01.jpg" alt=""></div>
-		<div><img src="/img/main/main_slide01.jpg" alt=""></div>
-		<div><img src="/img/main/main_slide01.jpg" alt=""></div>
-		<div><img src="/img/main/main_slide01.jpg" alt=""></div>
+        @foreach($main_banners as $main_banner)
+        <a href="{{$main_banner->url}}"><img src="/files/banner/{{$main_banner->name}}" alt=""></a>
+        @endforeach
 	</div>
 	<!-- //메인배너 -->
 
@@ -26,10 +25,9 @@
 
 		<!-- 중단 배너 -->
 		<div class="main-banner" align="center">
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
+            @foreach($middle_banners as $middle_banner)
+        <a href="{{$middle_banner->url}}"><img src="/files/banner//{{$middle_banner->name}}" alt=""></a>
+        @endforeach
 		</div>	
 		<!-- 중단 배너 -->
 
@@ -45,14 +43,13 @@
 		</section>		
 		<!-- //프라임 캠페인 -->
 
-		<!-- 중단 배너2 -->
+		<!-- 하단 배너 -->
 		<div class="main-banner" align="center">
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
-			<div><img src="/img/main/banner.jpg" alt=""></div>
+			@foreach($bottom_banners as $bottom_banner)
+        <a href="{{$bottom_banner->url}}"><img src="/files/banner/{{$bottom_banner->name}}" alt=""></a>
+        @endforeach
 		</div>	
-		<!-- 중단 배너2 -->
+		<!-- //하단 배너 -->
 
 		<!-- 그랜드 캠페인 -->
 		<section class="content-in">
@@ -81,6 +78,8 @@
 		infinite: true,
 		autoplay: true,
 		autoplaySpeed: 2500,
+        arrows: true,
+        responsive: [ { /* 반응형웹*/ breakpoint: 700, /* 기준화면사이즈 */ settings: {arrows: false } /* 사이즈에 적용될 설정 */ },]
 	});
 </script>	
 

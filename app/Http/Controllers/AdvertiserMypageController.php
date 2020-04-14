@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use App\Advertiser;
 use App\Campaign;
+use App\Exports\CampaignReviewerExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AdvertiserMypageController extends Controller
@@ -280,7 +282,7 @@ class AdvertiserMypageController extends Controller
             }
         }
    
-        $gender_f=$gender_f/$campaignreviewers->count()*100;
+        $gender_f=round($gender_f/$campaignreviewers->count()*100);
         //총개수
         $r_count = $campaignreviewers->count();
         //선정대기
@@ -320,14 +322,28 @@ class AdvertiserMypageController extends Controller
         return redirect()->route('advertisers.recruit_campaign', ['campaign' => $campaign]);
     }
     //리뷰어 선정 해제
-    public function deselect_reviewer(Request $request, Campaign $campaign){
-        if($request->selected){
-        foreach($request->selected as $selected){
-            \App\CampaignReviewer::whereId($selected)->update(['selected' => 0]);
-        }
-        }
-        return redirect()->route('advertisers.recruit_campaign', ['campaign' => $campaign]);
-    }
+//    public function deselect_reviewer(Request $request, Campaign $campaign){
+//        if($request->selected){
+//        foreach($request->selected as $selected){
+//            \App\CampaignReviewer::whereId($selected)->update(['selected' => 0]);
+//        }
+//        }
+//        return redirect()->route('advertisers.recruit_campaign', ['campaign' => $campaign]);
+//    }
+    public function downe($camId){
+        $re = \App\CampaignReviewer::where('campaign_id',$camId)->where('selected',1)->with('reviewer')->get();
+        
+        Excel::download('users', function($excel) use($re) {
+    $excel->sheet('Sheet 1', function($sheet) use($re) {
+        $sheet->fromArray($users);
+    })->export('xls');
+
+    });
+        
+        //        return (new CampaignReviewerExport($camId))->download('test.xlsx');
+                      }
+    
+    
     //진행결과보기
     public function submit_campaign(Campaign $campaign){
         $nowuser = auth()->guard('advertiser')->user();
@@ -397,7 +413,7 @@ class AdvertiserMypageController extends Controller
             }
         }
         if($campaignreviewers->count()!=0){
-        $gender_f=$gender_f/$campaignreviewers->count()*100;
+        $gender_f=round($gender_f/$campaignreviewers->count()*100);
             } else {
             $gender_f = null;
         }

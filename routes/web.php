@@ -23,6 +23,41 @@ Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
 //개인정보취급방침
 Route::view('terms_of_use', 'terms_of_use')->name('terms_of_use');
 
+Route::get('/SendSMS','TaskController@SendSMS');
+
+Route::get('mail', function(){
+//    $result = \App\CampaignReviewer::where('campaign_id',32)->where('selected', 1)->with('reviewer')->get();
+    
+    $cam=\App\Campaign::whereId(32)
+            ->with('campaignReviewers','brandCategory','area')
+            ->first();
+    //캠페인 링크 주소를 위한 요소
+    $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
+    //캠페인 링크 주소 구하기
+    $cam_link = route('campaigns.show', [$cam->id, 'd'=>'모집마감', 'applyCount'=>$cam->campaignReviewers->count(), 'locaOrCate'=>$locaOrCate]);
+     //선정된 리뷰어 구하기
+    $select_reviewers =  $cam->campaignReviewers->where('selected',1);
+    //전송할 메일주소 구하기
+    $to = array();
+    foreach($select_reviewers as $re){
+        $to[] = $re->reviewer->email;
+    }
+    $subject = '캠페인 리뷰어 선정 안내 메일입니다.';
+    $data = [
+        'cam_img' => route('main').'/files/'.$cam->main_image,
+        'cam_link' => $cam_link,
+        'cam_name' => $cam->name,
+    ];
+    return Mail::send(
+        'emails.campaigns.reviewer_selected',
+        $data,
+        function($message) use($to, $subject) {
+            $message->to($to)->subject($subject);
+        });
+});
+
+Route::get('downe/{camId}', 'AdvertiserMypageController@downe')->name('downe');
+
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
 Route::post('campaigns/brandCheck','CampaignsController@brandCheck')->name('campaigns.brandCheck');
@@ -190,6 +225,35 @@ Route::post('admin/saveaFAQCategory','AdminController@saveaFAQCategory')->name('
 //관리자-리뷰어FAQ 카테고리 삭제
 Route::delete('admin/delaFAQCategory/{id}','AdminController@delaFAQCategory');
 
+//관리자-메인배너관리
+Route::get('admin/main_banner_edit','AdminController@main_banner_edit')->name('admin.main_banner_edit');
+//관리자-메인배너관리-수정
+Route::post('admin/main_banner_modi/{main_banner}','AdminController@main_banner_modi')->name('admin.main_banner_modi');
+//관리자-메인배너관리-삭제
+Route::get('admin/main_banner_del/{main_banner}','AdminController@main_banner_del')->name('admin.main_banner_del');
+//관리자-메인배너관리-추가
+Route::post('admin/main_banner_add','AdminController@main_banner_add')->name('admin.main_banner_add');
+
+//관리자-중단배너관리
+Route::get('admin/middle_banner_edit','AdminController@middle_banner_edit')->name('admin.middle_banner_edit');
+//관리자-중단배너관리-수정
+Route::post('admin/middle_banner_modi/{middle_banner}','AdminController@middle_banner_modi')->name('admin.middle_banner_modi');
+//관리자-중단배너관리-삭제
+Route::get('admin/middle_banner_del/{middle_banner}','AdminController@middle_banner_del')->name('admin.middle_banner_del');
+//관리자-중단배너관리-추가
+Route::post('admin/middle_banner_add','AdminController@middle_banner_add')->name('admin.middle_banner_add');
+
+//관리자-하단배너관리
+Route::get('admin/bottom_banner_edit','AdminController@bottom_banner_edit')->name('admin.bottom_banner_edit');
+//관리자-하단배너관리-수정
+Route::post('admin/bottom_banner_modi/{bottom_banner}','AdminController@bottom_banner_modi')->name('admin.bottom_banner_modi');
+//관리자-하단배너관리-삭제
+Route::get('admin/bottom_banner_del/{bottom_banner}','AdminController@bottom_banner_del')->name('admin.bottom_banner_del');
+//관리자-하단배너관리-추가
+Route::post('admin/bottom_banner_add','AdminController@bottom_banner_add')->name('admin.bottom_banner_add');
+
+
+
 
 /******리뷰어마이페이지*********/
 //마이페이지 메인
@@ -324,11 +388,11 @@ Route::post('advertiser/managecampaign/select_reviewer/{campaign}',[
     'as'=>'advertisers.select_reviewer',
     'uses' => 'AdvertiserMypageController@select_reviewer'
 ]);
-//리뷰어 선정취소
-Route::post('advertiser/managecampaign/deselect_reviewer/{campaign}',[
-    'as'=>'advertisers.deselect_reviewer',
-    'uses' => 'AdvertiserMypageController@deselect_reviewer'
-]);
+//리뷰어 선정 해제
+//Route::post('advertiser/managecampaign/deselect_reviewer/{campaign}',[
+//    'as'=>'advertisers.deselect_reviewer',
+//    'uses' => 'AdvertiserMypageController@deselect_reviewer'
+//]);
 //모집현황에서 리뷰전략 보기
 Route::get('show_plan/{reviewer_id}',[
     'uses' => 'AdvertiserMypageController@show_plan'
@@ -391,6 +455,15 @@ Route::post('plan/pre_create',[
 ]);
 
 /////////////////////////////////////////
+
+Route::post('reviewer/certification',[    
+    'as'=>'certification',
+    'uses' => 'AdvertisersController@certification'
+]);
+Route::post('certification',[    
+    'as'=>'reviewer.certification',
+    'uses' => 'ReviewersController@certification'
+]);
 
 //reviewer 가입 관련
 Route::get('reviewer/register',[    
@@ -471,5 +544,5 @@ Route::post('reset', [
 ]);
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 

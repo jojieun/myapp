@@ -16,20 +16,30 @@
     src: url('./fonts/slick.eot?#iefix') format('embedded-opentype'), url('./fonts/slick.woff') format('woff'), url('./fonts/slick.ttf') format('truetype'), url('./fonts/slick.svg#slick') format('svg');
 }
 /* Arrows */
+/*
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus
+{
+    color: transparent;
+    outline: none;
+    background: transparent;
+}*/
 .slick-prev,
 .slick-next
 {
     font-size: 0;
     line-height: 0;
 
-    /*position: absolute;*/
+    position: absolute;
     top: 50%;
 
-    /*display: block;*/
-	display:none !important; 
-
+    display: block;
+	/*display:none !important; */
     width: 20px;
-    height: 20px;
+    height: 28px;
     padding: 0;
     -webkit-transform: translate(0, -50%);
     -ms-transform: translate(0, -50%);
@@ -40,16 +50,17 @@
     color: transparent;
     border: none;
     outline: none;
-    background: transparent;
+    background: url(/img/common/my_arrow.gif) no-repeat 0 0;
+	z-index:9;
 }
-.slick-prev:hover,
-.slick-prev:focus,
-.slick-next:hover,
-.slick-next:focus
-{
-    color: transparent;
-    outline: none;
-    background: transparent;
+.main-banner .slick-prev{
+    left:15px;
+}
+.main-banner .slick-next{
+    right:15px;
+}
+.slick-next{
+    background-position:-20px 0;
 }
 .slick-prev:hover:before,
 .slick-prev:focus:before,
@@ -72,7 +83,7 @@
     line-height: 1;
 
     opacity: .75;
-    color: white;
+    color: black;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -87,32 +98,34 @@
     right: -25px;
     left: auto;
 }
+/*
 .slick-prev:before
 {
-    content: '←';
+    content: '<';
 }
 [dir='rtl'] .slick-prev:before
 {
-    content: '→';
+    content: '>';
 }
 
 .slick-next
 {
-    right: -25px;
+    right: 0;
 }
 [dir='rtl'] .slick-next
 {
     right: auto;
-    left: -25px;
+    left: 0;
 }
 .slick-next:before
 {
-    content: '→';
+    content: '>';
 }
 [dir='rtl'] .slick-next:before
 {
-    content: '←';
+    content: '<';
 }
+*/
 
 /* Dots */
 .slick-dotted.slick-slider
