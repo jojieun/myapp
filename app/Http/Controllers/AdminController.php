@@ -15,6 +15,9 @@ use App\CampaignExposure;
 use App\CampaignPromotion;
 use App\ModifyCampaign;
 use Image;
+use App\Exports\ReviewerExport;
+use App\Exports\AdvertiserExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -71,12 +74,20 @@ class AdminController extends Controller
             'showhtml' => \View::make('admin.part_sns', array('snss' => $snss))->render(),
             ]);
    }
+    //관리자 리뷰어 목록 다운로드
+    public static function down_reviewer(){
+        return Excel::download(new ReviewerExport, date('YndHis').'rivewers.xlsx');
+   }
     //광고주목록보기
     public static function advertisers(){
         $advertisers = \App\Advertiser::simplePaginate(30);
         return view('admin.advertisers',[
             'advertisers'=>$advertisers,
         ]);
+   }
+    //관리자 광고주 목록 다운로드
+    public static function down_advertiser(){
+        return Excel::download(new AdvertiserExport, date('YndHis').'advertisers.xlsx');
    }
     
     //**********캠페인

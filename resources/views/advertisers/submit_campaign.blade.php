@@ -97,7 +97,7 @@
 					<ul class="reviewer-td2">
                     @include('advertisers.part_submit_campaign')
                         </ul>
-                    <a href="#" class="btn-down">리뷰 제출 결과 다운로드</a>
+                    <a  href="{{route('down_reviewer_info',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
 				</div>
 				<!-- //신청 리뷰어 -->
 			</div>

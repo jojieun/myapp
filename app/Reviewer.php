@@ -26,7 +26,7 @@ protected $guarded = ['id','last_login'];
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'certification_key'
     ];
 
     /**

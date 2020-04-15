@@ -19,4 +19,8 @@ class CampaignReviewer extends Model
     {
         return $this->hasOne('App\Review', 'campaign_id', 'campaign_id');
     }
+    public function channel_reviewer()
+    {
+        return $this->hasMany('App\ChannelReviewer', 'reviewer_id', 'reviewer_id');
+    }
 }

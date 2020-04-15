@@ -100,7 +100,7 @@
                     <? $campaignreviewers = $campaignreviewers2; ?>
 					<h3>선정된 리뷰어</h3>
                     @include('advertisers.part_recruit_campaign')
-                        <a href="{{route('downe',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
+                        <a href="{{route('down_reviewer_info',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
 <!--                    <button type="submit" class="btn black fl-r mt20">선택 리뷰어 선정 해제</button>-->
                         </form>
 				</div>

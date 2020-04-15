@@ -330,19 +330,10 @@ class AdvertiserMypageController extends Controller
 //        }
 //        return redirect()->route('advertisers.recruit_campaign', ['campaign' => $campaign]);
 //    }
-    public function downe($camId){
-        $re = \App\CampaignReviewer::where('campaign_id',$camId)->where('selected',1)->with('reviewer')->get();
-        
-        Excel::download('users', function($excel) use($re) {
-    $excel->sheet('Sheet 1', function($sheet) use($re) {
-        $sheet->fromArray($users);
-    })->export('xls');
-
-    });
-        
-        //        return (new CampaignReviewerExport($camId))->download('test.xlsx');
-                      }
-    
+    //리뷰어 정보 다운로드
+    public function down_reviewer_info($camId){
+        return Excel::download(new CampaignReviewerExport($camId), date('YndHis').'reviewer_info.xlsx');
+    }
     
     //진행결과보기
     public function submit_campaign(Campaign $campaign){

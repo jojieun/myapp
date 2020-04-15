@@ -56,7 +56,6 @@ Route::get('mail', function(){
         });
 });
 
-Route::get('downe/{camId}', 'AdvertiserMypageController@downe')->name('downe');
 
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
@@ -143,9 +142,13 @@ Route::get('admin/reviewers','AdminController@reveiwerslist')->name('admin.revie
 Route::get('admin/plan/{id}','AdminController@plan')->name('admin.plan');
 //관리자-리뷰어회원->sns보기
 Route::get('admin/sns/{reviewerid}','AdminController@sns')->name('admin.sns');
+//관리자 리뷰어 목록 다운로드
+Route::get('admin/down_reviewer', 'AdminController@down_reviewer')->name('admin.down_reviewer');
 
 //관리자-광고주회원목록
 Route::get('admin/advertisers','AdminController@advertisers')->name('admin.advertisers');
+//관리자 광고주 목록 다운로드
+Route::get('admin/down_advertiser', 'AdminController@down_advertiser')->name('admin.down_advertiser');
 
 //캠페인검수대기목록
 Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admin.waitConfirmCam');
@@ -397,6 +400,8 @@ Route::post('advertiser/managecampaign/select_reviewer/{campaign}',[
 Route::get('show_plan/{reviewer_id}',[
     'uses' => 'AdvertiserMypageController@show_plan'
 ]);
+//리뷰어 정보 다운로드
+Route::get('down_reviewer_info/{camId}', 'AdvertiserMypageController@down_reviewer_info')->name('down_reviewer_info');
 //진행결과보기
 Route::get('advertiser/managecampaign/submit_campaign/{campaign}',[
     'as'=>'advertisers.submit_campaign',
@@ -501,6 +506,10 @@ Route::get('advertiser/register',[
 Route::post('advertiser/register',[
     'as'=>'advertisers.store',
     'uses' => 'AdvertisersController@store'
+]);
+//reviewer 리소스
+Route::resource('advertisers', 'AdvertisersController')->except([
+    'show'
 ]);
 //advertiser 인증 관련
 Route::get('advertiser/login',[

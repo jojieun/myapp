@@ -75,6 +75,25 @@ $result = $iamport->findCertificationByImpUID($request->imp_uid); //IamportResul
 }
         
     }
+    //광고주수정
+    public function edit(\App\Advertiser $advertiser)
+    {
+         return \Response::json([
+            'showhtml' => \View::make('admin.part_edit_advertiser', array('advertiser' => $advertiser))->render(),
+            ]);
+    }
+    //광고주수정입력
+    public function update(Request $request, \App\Advertiser $advertiser)
+    {
+        $advertiser->update($request->all());
+        return redirect(route('admin.advertisers'));
+    }
     
+    //광고주 삭제
+    public function destroy(\App\Advertiser $advertiser)
+    {
+        $advertiser->delete();
+        return response()->json([], 204);
+    }
     
 }

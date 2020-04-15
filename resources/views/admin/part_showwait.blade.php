@@ -1,5 +1,5 @@
     <table>
-    `   <tr>
+        <tr>
             <th width="100">광고주</th>
             <td>{{$campaign->advertiser->name}}</td>
         </tr>

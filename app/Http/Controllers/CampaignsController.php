@@ -632,6 +632,7 @@ foreach ($campaigns as $key => $loop)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //광고주 직접 수정요청
     public function edit(Campaign $campaign)
     {
         return view('campaigns.edit',[
@@ -654,6 +655,7 @@ foreach ($campaigns as $key => $loop)
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //광고주 수정요청 저장
     public function update_c(Request $request, $oldcamId)
     {
         $this->validate($request, [

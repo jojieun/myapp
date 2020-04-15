@@ -44,7 +44,7 @@ class Advertiser extends Authenticatable
 
     protected $hidden = [
 
-        'password', 'remember_token',
+        'password', 'remember_token', 'certification_key'
 
     ];
     public function brands(){

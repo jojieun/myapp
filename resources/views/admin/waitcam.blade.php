@@ -25,6 +25,7 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+    //보기
     $('#list').on('click', '.show', function(e){
        e.preventDefault();
     var nowId = $(this).data('id');
@@ -36,8 +37,8 @@
                 window.location.hash = '#answer'; 
             }
         });
-        
     });
+    //검수
 $('.popup').on('click','.confirm', function(e){
        e.preventDefault();
         var nowId = $(this).val();
@@ -52,6 +53,22 @@ $('.popup').on('click','.confirm', function(e){
                 window.location.hash = '#';
             }
         });
+    });
+    //삭제(탈퇴)
+    $('#list').on('click', '.del', function(e){
+        e.preventDefault();
+       var cId = $(this).val();
+      if (confirm('주의!! 해당 캠페인을 삭제합니다. 삭제 후 복구할 수 없습니다.')) {
+        $.ajax({
+          type: 'POST',
+          url: '/campaigns/' + aId,
+            data: {"aId": aId , _method: 'delete'},
+        success:function(data){
+        }
+        }).then(function () {
+          window.location.href = "{{route('admin.advertisers')}}";
+        });
+      }
     });
     </script>
 @endsection

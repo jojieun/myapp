@@ -1,6 +1,7 @@
 @extends('admin.layout.main')
 @section('content')
     <h1>리뷰어 회원 목록</h1>
+<a href="{{route('admin.down_reviewer')}}" class="down_excel">리뷰어 회원 목록 엑셀 다운로드</a>
     <table id="reviewer_list">
         <thead>
             <tr>
