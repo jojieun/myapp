@@ -18,6 +18,7 @@ use Image;
 use App\Exports\ReviewerExport;
 use App\Exports\AdvertiserExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -168,23 +169,122 @@ class AdminController extends Controller
             'finhtml' => \View::make('admin.part_modify_campaign', array('modify_campaigns' => $modify_campaigns))->render(),
             ]);
    }
+//리뷰어 모집중 캠페인
+    public function recruit_cam()
+    {
+        $recruitCampaigns = Campaign::where('confirm',1)
+            ->whereDate('end_recruit', '>=', Carbon::now()->toDateString())
+            ->select('id','name','recruit_number','start_recruit','end_recruit','brand_id')
+            ->with('brand')
+            ->withCount('campaignReviewers')
+            ->latest()
+            ->get();
+        return view('admin.recruit_cam',[
+            'recruitCampaigns' => $recruitCampaigns,
+        ]);
+    }
+    //리뷰어 모집중 캠페인 --신청 리뷰어 보기
+    public function recruit_reviewer(int $camId)
+    {
+        $campaign_reviewers = \App\CampaignReviewer::where('campaign_id',$camId)->with('reviewer:id,email,name')->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_campaign_reviewers', array('campaign_reviewers' => $campaign_reviewers))->render(),
+            ]);
+    }
+    // 리뷰 진행중 캠페인
+    public function submit_cam()
+    {
+        $submit_cams = Campaign::where('confirm',1)
+            ->whereDate('end_recruit', '<', Carbon::now()->subDay()->toDateString())
+            ->whereDate('end_submit', '>=', Carbon::now()->toDateString())
+            ->select('id','name','recruit_number','end_submit','brand_id')
+            ->with('brand')
+            ->withCount(['campaignReviewers' => function ($query) {
+                $query->where('selected', 1);
+            }])
+            ->latest()
+            ->get();
+        return view('admin.submit_cams',[
+            'submit_cams' => $submit_cams,
+        ]);
+    }
+    //리뷰 진행중 캠페인 --선정 리뷰어 보기
+    public function submit_reviewer(int $camId)
+    {
+        $campaign_reviewers = \App\CampaignReviewer::where('campaign_id',$camId)
+            ->where('selected',1)
+            ->with(['new_review','reviewer:id,email,name'])->get();
+        return \Response::json([
+            'finhtml' => \View::make('admin.part_submit_campaign_reviewers', array('campaign_reviewers' => $campaign_reviewers))->render(),
+            ]);
+    }
+// 완료 캠페인
+    public function end_cam()
+    {
+        $end_cams = Campaign::where('confirm',1)
+            ->whereDate('end_submit', '<', Carbon::now()->toDateString())
+            ->select('id','name','recruit_number','end_submit','brand_id')
+            ->with('brand')
+            ->withCount('reviews')
+            ->withCount(['campaignReviewers' => function ($query) {
+                $query->where('selected', 1);
+            }])
+            ->latest()
+            ->get();
+        return view('admin.end_cam',[
+            'end_cams' => $end_cams,
+        ]);
+    }
+    
+    // 미제출 리뷰어(블랙리스트)
+    public function black_list()
+    {
+        $black_lists = \App\CampaignReviewer::where('selected', 1)
+            ->whereHas('campaign',function ($query) {
+                $query->whereDate('end_submit', '<', Carbon::now()->toDateString());
+            })
+            ->doesntHave('new_review')
+            ->with(['reviewer:id,name,email','campaign:id,name,end_submit'])
+            ->latest()
+            ->get();
+
+        return view('admin.black_list',[
+            'black_lists' => $black_lists,
+        ]);
+    }
     
     
+    
+    //*********** 캠페인 옵션
     //캠페인 노출옵션 구매내역
     public function exposure_purchase()
     {
-        $exposure_purchases= CampaignExposure::with('campaign:id,name')->with('exposure:id,name')->get();
+        $exposure_purchases= CampaignExposure::with('campaign:id,name')->with('exposure:id,name')->latest()->get();
         return view('admin.exposure_purchase',[
             'exposure_purchases' => $exposure_purchases,
+            'exposures'=>Exposure::select('id', 'name')->get()
         ]);
     }
+    //캠페인 노출옵션 구매내역 수정
+    public function exposure_purchase_update(Request $request, CampaignExposure $campaign_exposure)
+    {
+        $campaign_exposure->update(['exposure_id'=>$request->exposure_id]);
+        return $this->exposure_purchase();
+    }
+    
     //캠페인 홍보옵션 구매내역
     public function promotion_purchase()
     {
-        $promotion_purchases= CampaignPromotion::with('campaign:id,name')->with('promotion:id,name')->get();
+        $promotion_purchases= CampaignPromotion::with('campaign:id,name')->with('promotion:id,name')->latest()->get();
         return view('admin.promotion_purchase',[
             'promotion_purchases' => $promotion_purchases,
         ]);
+    }
+    //캠페인 홍보옵션 구매내역 처리확인
+    public function promotion_purchase_update(CampaignPromotion $campaign_promotion)
+    {
+        $campaign_promotion->update(['process'=>true]);
+        return $this->promotion_purchase();
     }
     
     //캠페인 노출 옵션 설정

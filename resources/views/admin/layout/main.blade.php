@@ -11,7 +11,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=5.0, user-scalable=yes,target-densitydpi=device-dpi">	
      <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('css/adminstyle.css?v=0.2') }}" rel="stylesheet">
+    <link href="{{ asset('css/adminstyle.css?v=0.3') }}" rel="stylesheet">
 	<!-- script -->
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="{{ asset('js/admin.js') }}" defer></script>
@@ -48,6 +48,15 @@
                 <ul class="sub">
                     <li><a href="{{route('admin.waitConfirmCam')}}">검수대기중 캠페인</a></li>
                     <li><a href="{{route('admin.modify_campaign')}}">수정요청 캠페인</a></li>
+                    <li><a href="{{route('admin.recruit_cam')}}">리뷰어 모집중 캠페인</a></li>
+                    <li><a href="{{route('admin.submit_cam')}}">리뷰 진행중 캠페인</a></li>
+                    <li><a href="{{route('admin.end_cam')}}">완료 캠페인</a></li>
+                    <li><a href="{{route('admin.black_list')}}">미제출 리뷰어(블랙리스트)</a></li>
+                </ul>
+            </li>
+            <li class="main">
+                <a href="{{route('admin.exposure_purchase')}}" class="main_a">캠페인옵션관리</a>
+                <ul class="sub">
                     <li><a href="{{route('admin.exposure_purchase')}}">캠페인 노출옵션 구매내역</a></li>
                     <li><a href="{{route('admin.promotion_purchase')}}">캠페인 홍보옵션 구매내역</a></li>
                     <li><a href="{{route('admin.exposure')}}">캠페인 노출 옵션 설정</a></li>

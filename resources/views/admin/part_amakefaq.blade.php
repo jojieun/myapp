@@ -14,7 +14,7 @@
                     </select>
                 </td>
             </tr>
-    `   <tr>
+            <tr>
             <th>질문</th>
         <td>
             <input name="question"  value="{{ old('question', $advertiserfaq->question) }}">

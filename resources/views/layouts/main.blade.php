@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163840965-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-163840965-1');
+</script>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="robots" content="INDEX, FOLLOW"/>
@@ -23,10 +32,10 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=1.3') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=1.4') }}" rel="stylesheet">
     
-    <link href="{{ asset('plugin/slick-1.8.1/slick.css') }}" rel="stylesheet">
-    <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('plugin/slick-1.8.1/slick.css?ver=0.2') }}" rel="stylesheet">
+    <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css?ver=0.2') }}" rel="stylesheet">
 	<!-- script -->
 	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

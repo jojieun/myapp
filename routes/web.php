@@ -135,7 +135,7 @@ Route::post('admin/login','AdminController@store')->name('admin.loginstore');
 //admin로그아웃
 Route::get('admin/logout','AdminController@destory')->name('admin.logout');
 
-
+/**** 관리자admin **********회원 ****/
 //관리자-리뷰어회원목록
 Route::get('admin/reviewers','AdminController@reveiwerslist')->name('admin.reviewers');
 //관리자-리뷰어회원->리뷰전략보기
@@ -144,19 +144,18 @@ Route::get('admin/plan/{id}','AdminController@plan')->name('admin.plan');
 Route::get('admin/sns/{reviewerid}','AdminController@sns')->name('admin.sns');
 //관리자 리뷰어 목록 다운로드
 Route::get('admin/down_reviewer', 'AdminController@down_reviewer')->name('admin.down_reviewer');
-
 //관리자-광고주회원목록
 Route::get('admin/advertisers','AdminController@advertisers')->name('admin.advertisers');
 //관리자 광고주 목록 다운로드
 Route::get('admin/down_advertiser', 'AdminController@down_advertiser')->name('admin.down_advertiser');
 
+/**** 관리자admin **********캠페인 ****/
 //캠페인검수대기목록
 Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admin.waitConfirmCam');
 //캠페인검수대기목록 - show
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
-
 
 //수정요청 캠페인
 Route::get('admin/modify_campaign', 'AdminController@modify_campaign')->name('admin.modify_campaign');
@@ -165,12 +164,30 @@ Route::get('admin/show_modify/{modify_campaign}/{campaign}', 'AdminController@sh
 //캠페인검수 승인
 Route::post('admin/confirmModify', 'AdminController@confirmModify')->name('admin.confirmModify');
 
+//리뷰어 모집중 캠페인
+Route::get('admin/recruit_cam', 'AdminController@recruit_cam')->name('admin.recruit_cam');
+//리뷰어 모집중 캠페인-- 신청 리뷰어 보기
+Route::post('admin/recruit_reviewer/{camId}', 'AdminController@recruit_reviewer')->name('admin.recruit_reviewer');
+// 리뷰 진행중 캠페인
+Route::get('admin/submit_cam', 'AdminController@submit_cam')->name('admin.submit_cam');
+//리뷰어 모집중 캠페인-- 선정 리뷰어 보기
+Route::post('admin/submit_reviewer/{camId}', 'AdminController@submit_reviewer')->name('admin.submit_reviewer');
+// 완료 캠페인
+Route::get('admin/end_cam', 'AdminController@end_cam')->name('admin.end_cam');
+
+// 미제출 리뷰어(블랙리스트)
+Route::get('admin/black_list', 'AdminController@black_list')->name('admin.black_list');
+
+
+/**** 관리자admin **********옵션 ****/
 //캠페인 노출옵션 구매내역
-Route::get('admin/exposure_
-purchase', 'AdminController@exposure_purchase')->name('admin.exposure_purchase');
+Route::get('admin/exposure_purchase', 'AdminController@exposure_purchase')->name('admin.exposure_purchase');
+//캠페인 노출옵션 구매내역 수정
+Route::post('admin/exposure_purchase_update/{campaign_exposure}', 'AdminController@exposure_purchase_update')->name('admin.exposure_purchase_update');
 //캠페인 홍보 구매내역
-Route::get('admin/promotion_
-purchase', 'AdminController@promotion_purchase')->name('admin.promotion_purchase');
+Route::get('admin/promotion_purchase', 'AdminController@promotion_purchase')->name('admin.promotion_purchase');
+//캠페인 홍보 구매내역 수정 (처리확인)
+Route::get('admin/promotion_purchase_update/{campaign_promotion}', 'AdminController@promotion_purchase_update')->name('admin.promotion_purchase_update');
 //캠페인 노출 옵션 설정
 Route::get('admin/exposure', 'AdminController@exposure')->name('admin.exposure');
 //캠페인 노출 옵션 수정 열기
