@@ -13,6 +13,6 @@
         </tr>
         @empty
         <tr>
-            <td colspan=100>노출옵션이 없습니다.</td>
+            <td colspan=100>홍보옵션 구매내역이 없습니다.</td>
         </tr>
         @endforelse

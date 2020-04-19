@@ -28,7 +28,7 @@ class TaskController extends Controller
     $this->PopbillMessaging->IsTest(config('popbill.IsTest'));
   }
     
-    public function SendSMS(){
+    public function SendSMS(String $tel, String $name){
 
     // 팝빌 회원 사업자번호, "-"제외 10자리
     $testCorpNum = '3816900094';
@@ -47,9 +47,9 @@ class TaskController extends Controller
     $Messages[] = array(
         'snd' => '07043482627',		// 발신번호, 팝빌에 등록되지 않은 발신번호 기재시 오류처리
         'sndnm' => '리뷰의힘',			// 발신자명
-        'rcv' => '01028858620',			// 수신번호
-        'rcvnm' => '임호윤',		// 수신자성명
-        'msg'	=> '문자가는지 확인합니다.'	// 개별 메시지 내용
+        'rcv' => $tel,			// 수신번호
+        'rcvnm' => $name,		// 수신자성명
+        'msg'	=> '지원하신 캠페인 리뷰어로 선정되었습니다! -리뷰의힘 https://review-power.com'	// 개별 메시지 내용
     );
 
     try {

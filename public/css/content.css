@@ -1475,7 +1475,7 @@ table.tbl_terms tbody td.center{ text-align:center;}
 	.leftmenu{ display:none; }
 	.m-top-title{ display:block;}
 	.m-top-title{ width: 100%; padding: 20px 20px 30px; background: #222; color:#fff;}
-	.m-top-title b{ font-size:30px; font-weight:700;}
+	.m-top-title b{display:block; font-size:30px; font-weight:700;}
 	.m-top-title span{ display:block; font-size:13px; margin-top:5px; color:#fff; }
 
 	.right-content{ width: 100%; float:none; overflow:hidden; }
@@ -1644,8 +1644,8 @@ ul.pagination li a[aria-label="Next »"]{
 	.table_default.influencer-view .table_th{ display:block; padding: 20px 0; }
 	.table_default.influencer-view .table_th .title{ font-size:18px;  }
 	.table_default.influencer-view .table_td_line{ padding: 20px 0;}
-	.table_default.influencer-view .table_td .view-img { position:absolute; top:17px; right:0; width: 100%; max-width: 115px; }
-	.table_default.influencer-view .table_td .view-img img{ width:100%; height: auto; max-height: 120px; }
+	.table_default.influencer-view .table_td .view-img { width: 100%; max-width: 200px; float: none; padding-bottom: 20px; margin: 0 auto;}
+	.table_default.influencer-view .table_td .view-img img{ width:100%; height: auto; max-height: 200px; }
 	.table_default.influencer-view .table_td .view-title{ width: 100%; float:none;  text-align:left; }
 	.table_default.influencer-view .table_td .view-title h3{ font-size:18px; margin-bottom:15px; }
 	.table_default.influencer-view .table_td .view-info{ width:100%; float:none; text-align:left; font-size:14px; }
