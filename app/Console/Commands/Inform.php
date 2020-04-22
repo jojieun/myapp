@@ -55,7 +55,6 @@ class Inform extends Command
             \App\Campaign::whereId($cam->id)->update(['send_sms' => 1]);
         }//endforeach
         
-        /*
         //선정 메일 보내기
         $cams=\App\Campaign::where('confirm',1)
             ->where('send_mail',0)
@@ -89,6 +88,6 @@ class Inform extends Command
             //메일 전송했음을 저장
             \App\Campaign::whereId($cam->id)->update(['send_mail' => 1]);
         }//endforeach
-        */
+
     }
 }

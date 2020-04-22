@@ -470,8 +470,15 @@ foreach ($campaigns as $key => $loop)
         ]);
         }
         if($request->has('use_point')){
-        \App\Advertiser::whereId(auth()->guard('advertiser')->user()->id)->decrement('point', $request->use_point);
-            
+        $nowuser = auth()->guard('advertiser')->user();
+        //환불실행 
+          \App\Refund::create([
+            'advertiser_id'=>$nowuser->id,
+            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 결제 사용',
+            'point'=>$point,
+              'kinds'=>'o'
+        ]);  
+        \App\Advertiser::whereId($nowuser->id)->decrement('point', $request->use_point);
         }
         if(! $campaign){
             return back()->withInput();
@@ -647,6 +654,31 @@ foreach ($campaigns as $key => $loop)
             'promotions' => \App\Promotion::with('campaignpromotions')->get(),
         ]);
     }
+    //관리자 수정요청
+    public function edit_a(Campaign $campaign)
+    {
+        return view('campaigns.edit',[
+            'campaign'=>$campaign,
+            'user'=>auth()->guard('advertiser')->user(),
+            'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
+            'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+            'categories' => \App\Category::get(),
+            'channels' => \App\Channel::get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
+            'exposures' => \App\Exposure::with('campaignexposures')->get(),
+            'promotions' => \App\Promotion::with('campaignpromotions')->get(),
+        ]);
+        
+        return \Response::json([
+            'showhtml' => \View::make('admin.part_edit_campaign', array('campaign' => $campaign))->render(),
+            ]);
+    }
+    //관리자 수정요청 저장
+    public function update(Request $request, Campaign $campaign)
+    {
+        $campaign->update($request->all());
+        return redirect(route('admin.waitConfirmCam'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -739,14 +771,26 @@ foreach ($campaigns as $key => $loop)
         ]);
     }
 
+    
+    
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Campaign $campaign)
     {
-        //
+        $point = $campaign->payment * 10 /11 ;
+        $nowuser = auth()->guard('advertiser')->user();
+        //환불실행
+        \App\Advertiser::whereId($nowuser->id)->increment('point', $point);
+        \App\Refund::create([
+            'advertiser_id'=>$nowuser->id,
+            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 취소 환급',
+            'point'=>$point
+        ]);
+        $campaign->delete();
+        return response()->json([], 204);
     }
 }

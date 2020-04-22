@@ -7,7 +7,7 @@
             <td>{{$waitCampaign->brand->name}}</td>
             <td>
                 <button class="show" data-id="{{$waitCampaign->id}}">보기</button>
-                <button class="modi" value="{{$waitCampaign->id}}">수정</button>
+<!--                <button class="modi" value="{{$waitCampaign->id}}">수정</button>-->
                 <button class="del" value="{{$waitCampaign->id}}">삭제</button></td>
         </tr>
         @empty

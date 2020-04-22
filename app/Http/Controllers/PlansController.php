@@ -84,6 +84,7 @@ class PlansController extends Controller
             'plans'=>$plans,
             'channels'=>\App\Channel::select('id','name')->get(),
             'categories'=>\App\Category::get(),
+            'areas'=>\App\Area::get()
         ]);
         
         

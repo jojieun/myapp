@@ -4,8 +4,16 @@
             <td>{{$campaign->advertiser->name}}</td>
         </tr>
         <tr>
+            <th>광고주 연락처</th>
+            <td>{{$campaign->advertiser->mobile_num}}</td>
+        </tr>
+        <tr>
             <th>작성일</th>
             <td>{{$campaign->created_at}}</td>
+        </tr>
+        <tr>
+            <th>결제금액</th>
+            <td>{{number_format($campaign->payment)}}원</td>
         </tr>
         <tr>
             <th>진행형태</th>

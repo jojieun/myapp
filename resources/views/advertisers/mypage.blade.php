@@ -104,16 +104,41 @@
         <span><a href="{{ route('advertisers.edit_info') }}">회원정보수정</a></span>
     </p>
     <p class="my-btn-bottom">
-        <span><button class="btn w50"><b>보유포인트</b> : <b>{{ number_format($user->point) }}</b>P</button></span>
+        <span><button class="btn w50" id="show_point"><b>보유포인트</b> : <b>{{ number_format($user->point) }}</b>P</button></span>
     </p>
 </div>
 <!-- //오른쪽 컨텐츠 -->
-
+<!-- popup : 포인트리스트 불러오기 -->
+        <a href="#" class="overlay" id="point_list"></a>
+        <div class="popup h350">
+            <div id="refund_point">
+            </div>
+        <a class="close" href="#close"></a>
+        </div>
+		<!-- //popup : 포인트리스트불러오기 -->
 @include('advertisers.advertiser_leftmenu_tail')
 <script type="text/javascript">
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
+    });
     $('.campaign-banner').slick({
         infinite: true,
         arrows: true
+    });
+    $('#show_point').click(function(){
+        $.ajax({
+           type:"get",
+           url:"{{ route('advertiser.refund_point') }}",
+           success:function(data){
+                   $('#refund_point').html(data.showhtml);
+                   window.location.hash = '#point_list';
+           },
+            error: function(data) {
+                alert('포인트리스트 불러오기에 문제가 있습니다.');
+               }
+        });
     });
 </script>
 @endsection

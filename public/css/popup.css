@@ -54,8 +54,11 @@
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-#add_brand~.popup{
+#add_brand~.popup, #point_list~.popup{
     width:500px;
+}
+#point_list~.popup{
+    overflow-y: scroll;
 }
 .overlay:target+.popup {
     top: 48%;
@@ -193,7 +196,7 @@
 
 @media all and (min-width:340px) and (max-width:770px) {
 	.popup { width: 320px; height: 210px;}
-    #add_brand~.popup{
+    #add_brand~.popup, #point_list~.popup{
     width: 320px; height: 310px;
 }
 	.popup .text{ margin-top:60px;}

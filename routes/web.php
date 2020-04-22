@@ -23,39 +23,6 @@ Route::view('privacy_policy', 'privacy_policy')->name('privacy_policy');
 //개인정보취급방침
 Route::view('terms_of_use', 'terms_of_use')->name('terms_of_use');
 
-Route::get('/SendSMS','TaskController@SendSMS');
-
-Route::get('mail', function(){
-//    $result = \App\CampaignReviewer::where('campaign_id',32)->where('selected', 1)->with('reviewer')->get();
-    
-    $cam=\App\Campaign::whereId(32)
-            ->with('campaignReviewers','brandCategory','area')
-            ->first();
-    //캠페인 링크 주소를 위한 요소
-    $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
-    //캠페인 링크 주소 구하기
-    $cam_link = route('campaigns.show', [$cam->id, 'd'=>'모집마감', 'applyCount'=>$cam->campaignReviewers->count(), 'locaOrCate'=>$locaOrCate]);
-     //선정된 리뷰어 구하기
-    $select_reviewers =  $cam->campaignReviewers->where('selected',1);
-    //전송할 메일주소 구하기
-    $to = array();
-    foreach($select_reviewers as $re){
-        $to[] = $re->reviewer->email;
-    }
-    $subject = '캠페인 리뷰어 선정 안내 메일입니다.';
-    $data = [
-        'cam_img' => route('main').'/files/'.$cam->main_image,
-        'cam_link' => $cam_link,
-        'cam_name' => $cam->name,
-    ];
-    return Mail::send(
-        'emails.campaigns.reviewer_selected',
-        $data,
-        function($message) use($to, $subject) {
-            $message->to($to)->subject($subject);
-        });
-});
-
 
 /********캠페인**********/
 Route::post('campaigns/brandstore','CampaignsController@brandStore')->name('campaigns.brandstore');
@@ -156,6 +123,8 @@ Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admi
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
+//캠페인검수 수정
+Route::get('admin/edit_a/{campaign}','CampaignsController@storeEnd')->name('admin.edit_a');
 
 //수정요청 캠페인
 Route::get('admin/modify_campaign', 'AdminController@modify_campaign')->name('admin.modify_campaign');
@@ -392,6 +361,11 @@ Route::put('reviewer/update_mysns',[
 Route::get('advertiser/mypage',[
     'as'=>'advertisers.mypage',
     'uses' => 'AdvertiserMypageController@home'
+]);
+//포인트목록
+Route::get('advertiser/refund_point',[
+    'as'=>'advertiser.refund_point',
+    'uses' => 'AdvertiserMypageController@refund_point'
 ]);
 //캠페인 관리
 Route::get('advertiser/managecampaign',[

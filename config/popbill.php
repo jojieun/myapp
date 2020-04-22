@@ -12,5 +12,5 @@ return [
     'LINKHUB_COMM_MODE' => 'CURL',
 
     // 연동환경 설정값, 개발용(true), 상업용(false)
-    'IsTest' => true,
+    'IsTest' => false,
 ];

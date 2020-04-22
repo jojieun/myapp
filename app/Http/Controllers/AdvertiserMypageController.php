@@ -427,10 +427,18 @@ class AdvertiserMypageController extends Controller
         \App\Review::whereId($request->reviewId)->update(['satisfaction'=>$request->val]);
         return;
     }
+    //포인트 리스트
+    public function refund_point(){
+        $nowuser = auth()->guard('advertiser')->user();
+        $refunds=\App\Refund::where('advertiser_id', $nowuser->id)->latest()->get();
+        return \Response::json([
+            'showhtml' => \View::make('advertisers.pop_refund_list', array('refunds' => $refunds))->render(),
+         ]);
+    } 
     //미제출(신청) 포인트환불
     public function refund ($campaignId){
         $campaign = Campaign::whereId($campaignId)
-            ->select('recruit_number', 'offer_point')->first();
+            ->select('recruit_number', 'offer_point', 'name')->first();
         $recruit_number = $campaign->recruit_number;
         $review_count = \App\Review::where('campaign_id',$campaignId)->count();
         $offer_point = $campaign->offer_point;
@@ -442,7 +450,8 @@ class AdvertiserMypageController extends Controller
         \App\Refund::create([
             'advertiser_id'=>$nowuser->id,
             'campaign_id'=>$campaignId,
-            'point'=>$point
+            'point'=>$point,
+            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 미제출(선정) 환급',
         ]);
         return view('advertisers.refund_complete',[
             'user'=>$nowuser,

@@ -58,17 +58,30 @@ $('.popup').on('click','.confirm', function(e){
     $('#list').on('click', '.del', function(e){
         e.preventDefault();
        var cId = $(this).val();
-      if (confirm('주의!! 해당 캠페인을 삭제합니다. 삭제 후 복구할 수 없습니다.')) {
+      if (confirm('주의!! 포인트 환급 후 해당 캠페인을 삭제합니다. 삭제 후 복구할 수 없습니다.')) {
         $.ajax({
           type: 'POST',
-          url: '/campaigns/' + aId,
-            data: {"aId": aId , _method: 'delete'},
+          url: '/campaigns/' + cId,
+            data: {"campaign": cId , _method: 'delete'},
         success:function(data){
         }
         }).then(function () {
-          window.location.href = "{{route('admin.advertisers')}}";
+          window.location.href = "{{route('admin.waitConfirmCam')}}";
         });
       }
+    });
+    //수정클릭
+    $('#list').on('click', '.modi', function(e){
+        e.preventDefault();
+       var cId = $(this).val();
+        $.ajax({
+            type:"get",
+          url: '/admin/edit_a/' + cId,
+        success:function(data){
+                $('.popup').html(data.showhtml)
+                window.location.hash = '#answer'; 
+        }
+        });
     });
     </script>
 @endsection
