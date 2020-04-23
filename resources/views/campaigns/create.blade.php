@@ -747,7 +747,7 @@ var $data = new FormData();
         });
       }     
       //****ajax 최종 저장
-        $('#store_c').on('click', function(e){
+        $('#store_c').one('click', function(e){
        e.preventDefault();
             if($('#checkAgree1').is(':checked')) {
            var s_data = new FormData($("#test_form")[0]);

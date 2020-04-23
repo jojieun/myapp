@@ -471,11 +471,12 @@ foreach ($campaigns as $key => $loop)
         }
         if($request->has('use_point')){
         $nowuser = auth()->guard('advertiser')->user();
-        //환불실행 
+        //
           \App\Refund::create([
             'advertiser_id'=>$nowuser->id,
-            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 결제 사용',
-            'point'=>$point,
+              'campaign_id'=>$campaign->id,
+            'description'=>substr($campaign->name, 0 ,50).'... 캠페인 결제 사용',
+            'point'=>$request->use_point,
               'kinds'=>'o'
         ]);  
         \App\Advertiser::whereId($nowuser->id)->decrement('point', $request->use_point);
@@ -782,12 +783,15 @@ foreach ($campaigns as $key => $loop)
     public function destroy(Campaign $campaign)
     {
         $point = $campaign->payment * 10 /11 ;
+        if($usep=\App\Refund::where('campaign_id',$campaign->id)->where('kinds','o')->first()){
+            $point += $usep->point;
+        }
         $nowuser = auth()->guard('advertiser')->user();
         //환불실행
         \App\Advertiser::whereId($nowuser->id)->increment('point', $point);
         \App\Refund::create([
             'advertiser_id'=>$nowuser->id,
-            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 취소 환급',
+            'description'=>substr($campaign->name, 0 ,50).'... 캠페인 취소 환급',
             'point'=>$point
         ]);
         $campaign->delete();

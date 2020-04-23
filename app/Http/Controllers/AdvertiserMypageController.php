@@ -451,7 +451,7 @@ class AdvertiserMypageController extends Controller
             'advertiser_id'=>$nowuser->id,
             'campaign_id'=>$campaignId,
             'point'=>$point,
-            'description'=>substr($campaign->name, 0 ,40).'... 캠페인 미제출(선정) 환급',
+            'description'=>substr($campaign->name, 0 ,50).'... 캠페인 미제출(선정) 환급',
         ]);
         return view('advertisers.refund_complete',[
             'user'=>$nowuser,

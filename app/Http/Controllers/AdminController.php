@@ -111,7 +111,7 @@ class AdminController extends Controller
         $nowCamId = $request->nowId;
       \App\Campaign::where('id', $nowCamId)->update(['confirm' => 1]);
 //        \App\CampaignExposure::where('campaign_id',$nowCamId)->update
-        $waitCampaigns = \App\Campaign::where('confirm',0)->select('id','brand_id','created_at','name')->with('brand')->get();
+        $waitCampaigns = \App\Campaign::where('confirm',0)->where('check_payment',1)->select('id','brand_id','created_at','name')->with('brand')->get();
         return \Response::json([
             'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),
             ]);
