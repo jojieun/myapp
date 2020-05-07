@@ -452,7 +452,7 @@ Route::post('plan/pre_create',[
 
 /////////////////////////////////////////
 
-Route::post('reviewer/certification',[    
+Route::post('advertiser/certification',[    
     'as'=>'certification',
     'uses' => 'AdvertisersController@certification'
 ]);

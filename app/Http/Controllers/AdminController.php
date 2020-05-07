@@ -81,7 +81,7 @@ class AdminController extends Controller
    }
     //광고주목록보기
     public static function advertisers(){
-        $advertisers = \App\Advertiser::simplePaginate(30);
+        $advertisers = \App\Advertiser::orderBy('advertisers.created_at','desc')->paginate(50);
         return view('admin.advertisers',[
             'advertisers'=>$advertisers,
         ]);

@@ -47,7 +47,7 @@ class AdvertisersController extends Controller
     }
     
     public function certification(Request $request){
-        include(app_path() . '\Http\Controllers\iamport.php');
+        include(app_path() . '/Http/Controllers/iamport.php');
         date_default_timezone_set('Asia/Seoul');
         $iamport = new Iamport('7637754882413623', 'jcpbcXwUyUEht95jovvJbI44Vw0IuvvNIVYUSuPqptITDOc1kILvqPzmmA5Q6AEOwDJo8zPx3xqGlDIF');
         #1. imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호)

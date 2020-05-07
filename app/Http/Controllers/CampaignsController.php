@@ -492,7 +492,7 @@ foreach ($campaigns as $key => $loop)
         \App\Campaign::where('merchant_uid',$request->m_uid)->update(['check_payment'=>true]);
         return response()->json(['now'=>true]);
         
-//        include(app_path() . '\Http\Controllers\particle\iamport.php');
+//        include(app_path() . '/Http/Controllers/iamport.php');
 //        $iamport = new Iamport('7637754882413623', 'jcpbcXwUyUEht95jovvJbI44Vw0IuvvNIVYUSuPqptITDOc1kILvqPzmmA5Q6AEOwDJo8zPx3xqGlDIF');
 
 #1. imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호)
