@@ -8,7 +8,7 @@
                                 {{$community->advertiser->name}}
                                 @endif
                             </p>
-							<p class="list_date">{{$community->updated_at}}</p>
+							<p class="list_date">{{$community->created_at}}</p>
 							<p class="list_count">{{$community->view_count}}</p>
 						</div>
 						

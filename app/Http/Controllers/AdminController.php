@@ -531,7 +531,7 @@ class AdminController extends Controller
     {
         $main_banner->url=$request->url;
         if($request->hasfile('name')){
-            \File::delete('files/banner/'.$main_banner->name);
+            \File::delete('filesbanner'.$main_banner->name);
             $file = $request->file('name');
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/banner/'.$filename;

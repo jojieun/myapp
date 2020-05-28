@@ -24,7 +24,7 @@
 					<span class="num"><b>신청 {{$campaign->applyCount}}</b> / {{$campaign->recruit_number}}명</span>
 				</p>
 				<span class="subject">{{$campaign->name}}</span>
-				<span class="subtxt">{{number_format($campaign->offer_point)}}point / {{$campaign->offer_goods}} 제공</span>							
+				<span class="subtxt">@if($campaign->offer_point!=0){{number_format($campaign->offer_point)}}point / @endif{{$campaign->offer_goods}} 제공</span>							
 			</div>
 		</div>
 		</a>

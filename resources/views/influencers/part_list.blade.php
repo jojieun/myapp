@@ -1,5 +1,5 @@
 <div class="table_th">
-						<p class="list_name">이름</p>
+						<p class="list_name">닉네임</p>
 						<p class="list_info">정보요약</p>
 						<p class="list_update">업데이트</p>
 					</div>
@@ -8,7 +8,7 @@
 						<a href="{{route('plans.show',$plan->id)}}">
 							<div class="table_td_line">
 								<p class="list_name">
-                                    <span>{{$plan->reviewer->name}}</span>{{$plan->reviewer->nickname}}</p>
+                                    {{$plan->reviewer->nickname}}</p>
 								<p class="list_info">
 									<span class="title">{{$plan->title}}</span>
 									<span class="txt">

@@ -60,15 +60,19 @@
                     @include('campaigns.part_campaign', ['empty_msg' => '그랜드 캠페인을 등록해보세요!'])
 				</ul>
 			</div>
-<!--            일반캠페인-->
-            <div class="campaign-list w6">
+		</section>		
+		<!-- //그랜드 캠페인 -->
+        
+        <!--            일반캠페인-->
+		<section class="content-in">
+			<div class="campaign-list w6">
 				<ul>
                     <? $campaigns = $nCampaigns ?>
                     @include('campaigns.part_campaign', ['empty_msg' => ''])
 				</ul>
 			</div>
 		</section>		
-		<!-- //그랜드 캠페인 -->
+		<!-- //프라임 캠페인 -->
 
 	</div>
 	

@@ -947,11 +947,11 @@ class ReviewerMypageController extends Controller
         $chls = \App\Channel::select('id','url')->get();
         foreach($chls as $chl){
             if($request->input($chl->id)){
-                \App\ChannelReviewer::updateOrCreate([
-                   'channel_id'=>$chl->id,
-                    'reviewer_id'=>$nowUser,
-                    'name'=>$request->input($chl->id),
-                ]);
+                \App\ChannelReviewer::updateOrCreate(
+                    ['channel_id'=>$chl->id,
+                    'reviewer_id'=>$nowUser],
+                    ['name'=>$request->input($chl->id)]
+                );
             }
         }
         //리뷰전략 작성 여부

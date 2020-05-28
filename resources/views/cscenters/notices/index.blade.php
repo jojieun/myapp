@@ -30,7 +30,7 @@
 							<div class="table_td_line">
 								<p class="list_num">{{ $loop->iteration }}</p>
 								<p class="list_subj"><a href="{{route('notices.show', $notice->id)}}"><span>{{$notice->title}}</span></a></p>
-								<p class="list_date">{{$notice->updated_at}}</p>
+								<p class="list_date">{{$notice->created_at}}</p>
 							</div>
 						</div>
                         @empty
