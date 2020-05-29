@@ -137,6 +137,9 @@ Route::post('admin/confirmModify', 'AdminController@confirmModify')->name('admin
 Route::get('admin/recruit_cam', 'AdminController@recruit_cam')->name('admin.recruit_cam');
 //리뷰어 모집중 캠페인-- 신청 리뷰어 보기
 Route::post('admin/recruit_reviewer/{camId}', 'AdminController@recruit_reviewer')->name('admin.recruit_reviewer');
+//리뷰어 모집중 캠페인 --노출옵션수정
+Route::post('admin/exposure_purchase_make/{camId}', 'AdminController@exposure_purchase_make')->name('admin.exposure_purchase_make');
+
 // 리뷰 진행중 캠페인
 Route::get('admin/submit_cam', 'AdminController@submit_cam')->name('admin.submit_cam');
 //리뷰어 모집중 캠페인-- 선정 리뷰어 보기

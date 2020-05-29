@@ -45,6 +45,7 @@ class CampaignsController extends Controller
         else{
             $myarea = null;
         }
+        $ordering = $myorder=='campaigns.end_recruit' ? 'asc' : 'desc';
         
         $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','v')
@@ -93,7 +94,7 @@ class CampaignsController extends Controller
             'channels.name as channel_name',
             'channels.id as channel_id'
         )
-            ->orderBy($myorder, 'desc')
+            ->orderBy($myorder, $ordering)
             ->paginate(60);
 //        디데이 구하기
 foreach ($campaigns as $key => $loop)
@@ -128,6 +129,7 @@ foreach ($campaigns as $key => $loop)
         $cate = $request->cate ?:null;
         //정렬방법
         $myorder = $request->myorder?:'campaigns.created_at';
+        $ordering = $myorder=='campaigns.end_recruit' ? 'asc' : 'desc';
         
         $nowdate = Carbon::now();//오늘날짜  
         $campaigns = \App\Campaign::where('form','h')
@@ -167,7 +169,7 @@ foreach ($campaigns as $key => $loop)
             'channels.name as channel_name',
             'channels.id as channel_id'
         )
-            ->orderBy($myorder, 'desc')
+            ->orderBy($myorder, $ordering)
             ->paginate(60);
 
 //        디데이 구하기
@@ -428,6 +430,7 @@ foreach ($campaigns as $key => $loop)
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             $img = Image::make($file);
+            $img->orientate();
             $img->fit(530,530);
             $img->save($location);
             $campaign->main_image = $filename;

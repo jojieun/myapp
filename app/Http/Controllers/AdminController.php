@@ -176,11 +176,14 @@ class AdminController extends Controller
             ->whereDate('end_recruit', '>=', Carbon::now()->toDateString())
             ->select('id','name','recruit_number','start_recruit','end_recruit','brand_id')
             ->with('brand')
+            ->with('campaignexposure')
             ->withCount('campaignReviewers')
             ->latest()
             ->get();
+//        dd($recruitCampaigns);
         return view('admin.recruit_cam',[
             'recruitCampaigns' => $recruitCampaigns,
+            'exposures'=>Exposure::select('id', 'name')->get()
         ]);
     }
     //리뷰어 모집중 캠페인 --신청 리뷰어 보기
@@ -191,6 +194,20 @@ class AdminController extends Controller
             'finhtml' => \View::make('admin.part_campaign_reviewers', array('campaign_reviewers' => $campaign_reviewers))->render(),
             ]);
     }
+    //리뷰어 모집중 캠페인 --노출옵션수정
+    public function exposure_purchase_make(Request $request, int $camId)
+    {
+        if($request->exposure_id){
+            CampaignExposure::updateOrCreate(
+                ['campaign_id' => $camId],
+                ['exposure_id' => $request->exposure_id]
+            );
+        } else {
+            CampaignExposure::where('campaign_id',$camId)->delete();
+        }
+        return $this->recruit_cam();
+    }
+    
     // 리뷰 진행중 캠페인
     public function submit_cam()
     {

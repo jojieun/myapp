@@ -143,6 +143,7 @@ class PlansController extends Controller
             $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/profile/'.$filename;
             $img = Image::make($file);
+            $img->orientate();
             $img->fit(220,220);
             $img->save($location);
             $plan->profile_image = $filename;

@@ -20,7 +20,7 @@ class Campaign extends Model
         return $this->belongsTo(Area::class);
     }
     public function campaignexposure(){
-        return $this->belongsTo(CampaignExposure::class);
+        return $this->hasOne(CampaignExposure::class);
     }
     public function campaignpromotion(){
         return $this->belongsTo(CampaignPromotion::class);

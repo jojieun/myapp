@@ -56,7 +56,7 @@
 									<dt>SNS</dt>
 									<dd class="sns">
 										@foreach($plan->reviewer->channelreviewers as $chal)
-                                    <span class="channel{{$chal->channel->id}}"><a href="{{$chal->channel->url}}{{$chal->name}}">{{$chal->channel->url}}{{$chal->name}}</a></span>
+                                    <span class="channel{{$chal->channel->id}}"><a href="{{$chal->channel->url}}{{$chal->name}}" target="_blank">{{$chal->channel->url}}{{$chal->name}}</a></span>
                                     @endforeach
 									</dd>	
 								</dl>

@@ -78,9 +78,9 @@
 				<div class="list-filter">
 					<p id="nowcount">{{$campaigns->count()}}개의 캠페인</p>
 					<ul>
-						<li class="myorder on"><a href="#">최신순</a></li>
-						<li class="myorder" data-o="campaigns.end_recruit"><a href="#">마감임박순</a></li>
-						<li class="myorder" data-o="campaigns.view_count"><a href="#">인기순</a></li>
+						<li class="myorder on"><a>최신순</a></li>
+						<li class="myorder" data-o="campaigns.end_recruit"><a>마감임박순</a></li>
+						<li class="myorder" data-o="campaigns.view_count"><a>인기순</a></li>
 					</ul>
 				</div>
 				<!-- //상단 리스트 필터 -->

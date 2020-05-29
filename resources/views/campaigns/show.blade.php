@@ -1,15 +1,15 @@
 @extends('layouts.main')
 @section('content')
 <div class="sub-container">
-		<ul class="campaign_tab @if($campaign->form=='h') w5 @endif">
-			<li class="on"><a href="#"><span>캠페인</span><span>개요</span></a></li>
-			<li><a href="#campaign01"><span>상세</span><span>이미지</span></a></li>
-			<li><a href="#campaign02"><span>리뷰</span><span>미션</span></a></li>
-			<li><a href="#campaign03"><span>리뷰</span><span>키워드</span></a></li>
+		<ul class="campaign_tab @if($campaign->form=='h') w5 @endif campaign_menu">
+			<li class="on" data-l=""><a><span>캠페인</span><span>개요</span></a></li>
+			<li data-l="campaign01"><a><span>상세</span><span>이미지</span></a></li>
+			<li data-l="campaign02"><a><span>리뷰</span><span>미션</span></a></li>
+			<li data-l="campaign03"><a><span>리뷰</span><span>키워드</span></a></li>
             @if($campaign->form=='v')
-			<li><a href="#campaign04"><span>방문</span><span>안내</span></a></li>
+			<li data-l="campaign04"><a><span>방문</span><span>안내</span></a></li>
             @endif
-			<li><a href="#campaign05"><span>기타</span><span>사항</span></a></li>
+			<li data-l="campaign05"><a><span>기타</span><span>사항</span></a></li>
 		</ul>
 	
 		<!-- 캠페인 개요 -->
@@ -67,16 +67,16 @@
 		<!-- 캠페인 내용 -->
 		<section class="content-in-sub">			
 			<!-- 우측메뉴 -->
-			<div id="navbar" class="campaign-detail-navi">
+			<div id="navbar" class="campaign-detail-navi campaign_menu">
 				<ul>
-					<li class="on"><a href="#">캠페인개요</a></li>
-					<li><a href="#campaign01">상세이미지</a></li>
-					<li><a href="#campaign02">리뷰미션</a></li>
-					<li><a href="#campaign03">리뷰키워드</a></li>
-                    @if($campaign->form=='v')
-			         <li><a href="#campaign04">방문안내</a></li>
-                    @endif
-					<li><a href="#campaign05">기타사항</a></li>
+                    <li class="on" data-l=""><a>캠페인개요</a></li>
+			<li data-l="campaign01"><a>상세이미지</a></li>
+			<li data-l="campaign02"><a>리뷰미션</a></li>
+			<li data-l="campaign03"><a>리뷰키워드</a></li>
+            @if($campaign->form=='v')
+			<li data-l="campaign04"><a>방문안내</a></li>
+            @endif
+			<li data-l="campaign05"><a>기타사항</a></li>
 				</ul>
 				<a  class="btn black apply_check">신청하기</a>
 			</div>
@@ -384,5 +384,12 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
          window.location.hash = '#pop_login';
      @endif
     });
+        //메뉴선택 클래스 지정
+        $('.campaign_menu li').click(function(){
+            $('.campaign_menu li').removeClass('on');
+            $(this).addClass('on');
+            var baseUrl = window.location.href.split('#')[0];
+            window.location.replace( baseUrl + '#' + $(this).data('l') );
+        })
 </script>
 @endsection

@@ -11,6 +11,7 @@
             <th>모집마감일</th>
             <th>모집인원</th>
             <th>신청인원</th>
+            <th>노출옵션</th>
         </tr>
             </thead>
         <tbody id="list">
