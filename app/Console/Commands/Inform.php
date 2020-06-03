@@ -48,9 +48,15 @@ class Inform extends Command
             ->get();
         $task_controller = new TaskController;
         foreach($cams as $cam){
+            //캠페인 링크 주소를 위한 요소
+            $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
+            //캠페인 링크 주소 구하기
+            $cam_link = route('campaigns.show', [$cam->id, 'd'=>'모집마감', 'applyCount'=>$cam->campaignReviewers->count(), 'locaOrCate'=>$locaOrCate]);
+            
+            //선정된 리뷰어 구하기
             $select_reviewers =  $cam->campaignReviewers->where('selected',1);
             foreach($select_reviewers as $re){
-                $task_controller->SendSMS($re->reviewer->mobile_num, $re->reviewer->name);
+                $task_controller->SendLMS($re->reviewer->mobile_num, $re->reviewer->name, $cam_link, $cam->end_submit, $cam->name);
             }
             \App\Campaign::whereId($cam->id)->update(['send_sms' => 1]);
         }//endforeach
@@ -73,7 +79,7 @@ class Inform extends Command
             foreach($select_reviewers as $re){
                 $to[] = $re->reviewer->email;
             }
-            $subject = '캠페인 리뷰어 선정 안내 메일입니다.';
+            $subject = '캠페인 리뷰어 선정 알림 메일입니다.';
             $data = [
                 'cam_img' => route('main').'/files/'.$cam->main_image,
                 'cam_link' => $cam_link,

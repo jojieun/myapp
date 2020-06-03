@@ -170,6 +170,9 @@ class WelcomeController extends Controller
         $campaigns = \App\Campaign::where('confirm',1)
             ->whereDate('end_recruit','>=',$nowdate)
             ->where('campaigns.name', 'like', '%'.$request->search_word.'%')
+            ->orWhereHas('brands', function( $query ) use ( $request ){
+                      $query->where('name', 'like', '%'.$request->search_word.'%');
+                  })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
