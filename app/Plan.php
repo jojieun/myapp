@@ -10,6 +10,7 @@ class Plan extends Model
     public function areas(){
         return $this->hasManyThrough('App\Area', 'App\AreaPlan', 'plan_id', 'id', 'id', 'area_id');
     }
+    //기능 안하는듯?
     public function regions(){
         return $this->hasManyThrough('App\Region', 'App\AreaPlan', 'area_id', 'id', 'id', 'area_id');
     }

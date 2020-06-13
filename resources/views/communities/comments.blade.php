@@ -13,6 +13,9 @@
 						<span class="comment-txt">
     {!! nl2br($comment->content) !!}
     </span>
+    @if((Auth::guard('advertiser')->check() && (auth()->guard('advertiser')->user()->id==$comment->advertiser->id)) || (Auth::guard('web')->check() && (auth()->guard('web')->user()->id==$comment->reviewer->id)) || Auth::guard('admin')->check() )
+    <a class="comment_del" data-id="{{$comment->id}}">삭제</a>
+    @endif
 					</li>
 @empty
 					<li>

@@ -22,13 +22,19 @@
     <a href="{{ route('admin') }}" id="logo">{{ config('app.name') }} 관리자페이지</a>
     <nav id="gnb">
         <ul>
+            @if(Auth::guard('admin')->check())
             <li>
-                @if(Auth::guard('admin')->check())
-                <a href="{{route('admin.logout')}}">로그아웃</a>
-                @else
-                <a href="{{route('admin.login')}}">로그인</a>
-                @endif
+                <a href="{{route('admins.edit',Auth::guard('admin')->user()->id)}}">{{Auth::guard('admin')->user()->name}}(정보수정)</a>
             </li>
+            <li>
+                
+                <a href="{{route('admin.logout')}}">로그아웃</a>
+            </li>
+            @else
+            <li>
+                <a href="{{route('admin.login')}}">로그인</a>
+            </li>
+            @endif
             <li>
                 <a href="{{ route('main') }}">사이트메인으로</a>
             </li>
@@ -41,6 +47,9 @@
                 <ul class="sub">
                     <li><a href="{{route('admin.reviewers')}}">리뷰어회원</a></li>
                     <li><a href="{{route('admin.advertisers')}}">광고주회원</a></li>
+                    @if(Auth::guard('admin')->user()->authority == 10)
+                    <li><a href="{{route('admins.index')}}">관리자</a></li>
+                    @endif
                 </ul>
             </li>
             <li class="main">

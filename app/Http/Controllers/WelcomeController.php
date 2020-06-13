@@ -170,8 +170,17 @@ class WelcomeController extends Controller
         $campaigns = \App\Campaign::where('confirm',1)
             ->whereDate('end_recruit','>=',$nowdate)
             ->where('campaigns.name', 'like', '%'.$request->search_word.'%')
-            ->orWhereHas('brands', function( $query ) use ( $request ){
-                      $query->where('name', 'like', '%'.$request->search_word.'%');
+            ->orWhereHas('brand', function( $query ) use ( $request ){
+                      $query->where('brands.name', 'like', '%'.$request->search_word.'%');
+                  })
+            ->orWhereHas('area', function( $query ) use ( $request ){
+                      $query->where('areas.name', 'like', '%'.$request->search_word.'%');
+                  })
+            ->orWhereHas('region', function( $query ) use ( $request ){
+                      $query->where('regions.name', 'like', '%'.$request->search_word.'%');
+                  })
+            ->orWhereHas('brandCategory', function( $query ) use ( $request ){
+                      $query->where('categories.name', 'like', '%'.$request->search_word.'%');
                   })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -203,6 +212,15 @@ class WelcomeController extends Controller
         
         $plans = \App\Plan::where('title', 'like', '%'.$request->search_word.'%')
             ->orwhere('review_plan', 'like', '%'.$request->search_word.'%')
+            ->orWhereHas('reviewer', function( $query ) use ( $request ){
+                      $query->where('nickname', 'like', '%'.$request->search_word.'%');
+                  })
+            ->orWhereHas('areas', function( $query ) use ( $request ){
+                      $query->where('areas.name', 'like', '%'.$request->search_word.'%');
+                  })
+            ->orWhereHas('categories', function( $query ) use ( $request ){
+                      $query->where('name', 'like', '%'.$request->search_word.'%');
+                  })
             ->with(['categories','areas','channels','reviewer'])
             ->orderBy('plans.updated_at','desc')->take(30)->get();
 

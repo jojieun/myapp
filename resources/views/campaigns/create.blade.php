@@ -9,9 +9,28 @@
 @else
 <?php $opbrand_id = 1; ?>
 @endif
+<!-- cdn for modernizr, if you haven't included it already -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
+<!-- polyfiller file to detect and load polyfills -->
+<script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+    <script>
+  webshims.setOptions('waitReady', false);
+  webshims.setOptions('forms-ext', {types: 'date'});
+  webshims.polyfill('forms forms-ext');
+        $.webshims.formcfg = {
+    en: {
+        dFormat: '-',
+        dateSigns: '-',
+        patterns: {
+                 d:"yy-mm-dd"
+             }
+        }
+  };
+  $.webshims.activeLang('en');
 
+</script>
 <!--<form action="{{ route('campaigns.store') }}" method="post" class="form__auth" enctype="multipart/form-data" id="test_form">-->
-    
+
     <form method="post" class="form__auth" enctype="multipart/form-data" id="test_form">
     {!! csrf_field() !!}
 			<!-- 오른쪽 컨텐츠 1 -->
@@ -126,8 +145,8 @@
 								<p class="{{ $errors->has('start_recruit') ? 'has-error' : '' }} {{ $errors->has('end_recruit') ? 'has-error' : '' }}">
 									<span class="title">리뷰어 모집기간</span>
 									<span class="txt">
-										<input value="{{ old('start_recruit')?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" min="{{ date('Y-m-d', strtotime('tomorrow')) }}" size="20" title="시작일" class="m_mb10 input-date" /> <em>~</em>
-										<input value="{{ old('end_recruit')?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" min="{{ date('Y-m-d', strtotime('+7 day')) }}" class="m_mb10 input-date" />
+										<input value="{{ old('start_recruit')?: date('Y-m-d', strtotime('tomorrow')) }}" name="start_recruit" type="date" min="{{ date('Y-m-d', strtotime('tomorrow')) }}" size="20" title="시작일" class="m_mb10 input-date" data-date='{"startView": 2, "openOnMouseFocus": true}' placeholder="년도-월-일" /> <em>~</em>
+										<input value="{{ old('end_recruit')?: date('Y-m-d', strtotime('+7 day')) }}" name="end_recruit" type="date" size="20" title="종료일" min="{{ date('Y-m-d', strtotime('+7 day')) }}" class="m_mb10 input-date" data-date='{"startView": 2, "openOnMouseFocus": true}' placeholder="년도-월-일"/>
 									</span>
                                     {!! $errors->first('start_recruit','<span class="red">:message</span>')!!}
                                     {!! $errors->first('end_recruit','<span class="red">:message</span>')!!}
@@ -140,7 +159,7 @@
                                     <span class="title">리뷰 제출기간</span>
 									<span class="txt">
 										<span class="gray-box" id="submit_start">{{ date('Y-m-d', strtotime('+9 day')) }}</span> <em>~</em>
-										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit') ?: date('Y-m-d', strtotime('+22 day')) }}" min="{{ date('Y-m-d', strtotime('+22 day')) }}"/>
+										<input name="end_submit" type="date" size="20" title="종료일" class="m_mb10 input-date" value="{{ old('end_submit') ?: date('Y-m-d', strtotime('+22 day')) }}" min="{{ date('Y-m-d', strtotime('+22 day')) }}" data-date='{"startView": 2, "openOnMouseFocus": true}' placeholder="년도-월-일"/>
 									</span>
                                     {!! $errors->first('end_submit','<span class="red">:message</span>')!!}
 								</p>
@@ -446,7 +465,8 @@
  <!-- iamport.payment.js -->
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-    
+    //결재진행 중복클릭 금지
+    var notWork = true;
     
     //    content보기 설정
     $(function(){
@@ -737,9 +757,11 @@ var $data = new FormData();
                     } else {
                         alert('결제에 오류가 있습니다. 고객센터로 연락주세요.')
                     }
+                    notWork=true;
                 });
             } else {
                 // 결제 실패 시 로직,
+                notWork=true;
                 var msg = '결제에 실패하였습니다.';
                 msg += '에러내용 : ' + rsp.error_msg;
                 alert(msg);
@@ -747,39 +769,43 @@ var $data = new FormData();
         });
       }     
       //****ajax 최종 저장
-        $('#store_c').one('click', function(e){
-       e.preventDefault();
+    $('#store_c').on('click', function(e){
+        e.preventDefault();
+        if(notWork){
+            notWork=false;
             if($('#checkAgree1').is(':checked')) {
-           var s_data = new FormData($("#test_form")[0]);
-    $.ajax({
-        type: 'POST',
-        url: "{{ route('campaigns.store_c') }}",
-        data: s_data,
-        success: function(data) {
-            $('span').filter('.red').html('');
-            if($('input[name=payment]').val()>0){
-            request_pay(data.m_uid);
-                } else {
-                    window.location.href = "{{ route('campaigns.storeend') }}";
-                }
-        },
-        error: function(data) {
-            if(data.status==422){
-                    $('span').filter('.red').html('');
-                    $.each(data.responseJSON.errors, function (i, error) {
-                        var el = $('.red').filter('#'+i);
-                            el.html(error[0]);
-                    });
-                  }
-        },
-        processData: false,
-        contentType: false
-    });
-       } else {
-           window.location.hash = "#popup_requir";
-           return false;
-       }
-            
+                var s_data = new FormData($("#test_form")[0]);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('campaigns.store_c') }}",
+                    data: s_data,
+                    success: function(data) {
+                        $('span').filter('.red').html('');
+                        if($('input[name=payment]').val()>0){
+                            request_pay(data.m_uid);
+                        } else {
+                            window.location.href = "{{ route('campaigns.storeend') }}";
+                        }
+                    },
+                    error: function(data) {
+                        notWork=true;
+                        if(data.status==422){
+                            $('span').filter('.red').html('');
+                            $.each(data.responseJSON.errors, function (i, error) {
+                                var el = $('.red').filter('#'+i);
+                                el.html(error[0]);
+                            });
+                        }
+                    },
+                    processData: false,
+                    contentType: false
+                });
+            } else {
+                notWork=true;
+                window.location.hash = "#popup_requir";
+                return false;
+            }
+        }
     });
 // 브랜드 삭제관련
     $('#del_brand').on('click', function(e){

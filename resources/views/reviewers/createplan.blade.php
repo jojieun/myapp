@@ -94,7 +94,8 @@
 						<dl>
 							<dt>리뷰전략</dt>
 							<dd><textarea name="review_plan" id="" cols="1" rows="5" placeholder="리뷰에 대한 나의 노하우나 경력으로 광고주에게 어필하세요! (50자 이상)" class="border2">{{ old('review_plan') }}</textarea></dd>
-                            {!! $errors->first('review_plan','<span class="red">:message</span>')!!}
+                            {!! $errors->first('review_plan','<span class="red">:message</span><script>
+                            alert("리뷰전략은 50자 이상 작성하셔야 합니다.");</script>')!!}
 						</dl>
 					</div>
 

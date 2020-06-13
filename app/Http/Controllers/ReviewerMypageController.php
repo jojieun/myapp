@@ -29,7 +29,7 @@ class ReviewerMypageController extends Controller
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDay()->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -218,7 +218,7 @@ class ReviewerMypageController extends Controller
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->subDay()->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -864,7 +864,7 @@ class ReviewerMypageController extends Controller
                                 },
                             ],
             'name' => 'required|max:30',
-            'password' => 'confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
+            'password' => 'nullable|confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
             'nickname' => 'required|max:30|unique:reviewers,nickname,'.$reviewer->id,
             'mobile_num' => 'required|digits:11',
             'birth'=>'required|date',
@@ -873,7 +873,7 @@ class ReviewerMypageController extends Controller
             'gender'=>'required'
         ]);
         
-        if($request->has('password')){
+        if($request->input('password')){
             $reviewer->password = bcrypt($request->input('password'));
         }
         $reviewer->name = $request->input('name');

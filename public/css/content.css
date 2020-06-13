@@ -545,6 +545,9 @@ select {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+.date-input-buttons .step-controls, .number-input-buttons .step-controls {
+    display: none;
+}
 
 .table_form2 dl dd .number input[type=number]::-webkit-inner-spin-button,
 .table_form2 dl dd .number input[type=number]::-webkit-outer-spin-button {
@@ -776,10 +779,11 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .comment .comment-input textarea{ width: calc( 100% - 116px) ; height: 130px; margin-right:10px; font-size:16px;}
 .comment .comment-input a{ display:inline-block; float:right; width: 100px; height: 130px; line-height: 130px; text-align:center; background: #222; color:#fff;}
 .comment .comment-list{ border-top:2px solid #000; margin-top:20px;}
-.comment .comment-list li{ padding: 25px 0; border-bottom:1px solid #ddd; vertical-align:top; overflow:hidden;}
+.comment .comment-list li{ padding: 25px 0; border-bottom:1px solid #ddd; vertical-align:top; overflow:hidden; position: relative;}
 .comment .comment-list li .comment-id{  display:inline-block; width: 170px; font-size:14px; }
 .comment .comment-list li .comment-id p{ font-size:15px; font-weight:700; margin-bottom:5px; color:#222;}
 .comment .comment-list li .comment-txt{ display:inline-block; width: calc( 100% - 175px); float:right; }
+.comment .comment-list li .comment_del{ position: absolute; bottom:15px; right:10px; background-color: #999; padding:3px 5px; color:white; font-size: 0.85em;}
 
 .comment2{ background: #fafafa; padding:30px 25px; border-top:1px solid #222;  border-bottom:1px solid #222; margin:0 0 30px; font-size:15px; }
 .comment2 .title{ display:inline-block; width: calc(100% - 170px); text-align:left; font-size:18px; color:#ff4800; margin-bottom:8px; }

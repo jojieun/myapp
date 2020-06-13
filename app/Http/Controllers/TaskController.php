@@ -90,7 +90,7 @@ class TaskController extends Controller
         'sndnm' => '리뷰의힘',			// 발신자명
         'rcv' => $tel,			// 수신번호
         'rcvnm' => $name,		  // 수신자 성명
-        'msg'	=> '[리뷰의힘]'.$cam_name.' 리뷰어로 선정되었습니다. 리뷰제출 마감일은 '.$end_submit.'입니다. '.$cam_link,	 // 개별 메시지 내용. 장문은 2000byte로 길이가 조정되어 전송됨.
+        'msg'	=> '[리뷰의힘]  '.$cam_name.' 리뷰어로 선정되었습니다. 리뷰제출 마감일은 '.$end_submit.'입니다. 선정캠페인링크:'.$cam_link,	 // 개별 메시지 내용. 장문은 2000byte로 길이가 조정되어 전송됨.
         'sjt'	=> '[리뷰의힘]리뷰어선정알림'	 // 개별 메시지 내용
     );
 

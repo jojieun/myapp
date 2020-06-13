@@ -24,7 +24,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.admin', ['except' => ['login','store']]);
+        $this->middleware('auth.admin', ['except' => ['login','destory','store']]);
     }
     //관리자첫페이지
      public function index()

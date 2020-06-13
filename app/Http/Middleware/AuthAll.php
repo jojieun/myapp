@@ -6,7 +6,7 @@ use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Auth;
 use Closure;
 
-class AuthAdmin extends Middleware
+class AuthAll extends Middleware
 {
     /**
      * Handle an incoming request.
@@ -17,19 +17,15 @@ class AuthAdmin extends Middleware
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        if (!Auth::guard('admin')->check()) {
-        return redirect()->guest(route('admin.login'));
+        if (Auth::guard('advertiser')->check()||Auth::guard('web')->check()||Auth::guard('admin')->check()) {
+            return $next($request);
         }
-        if (Auth::guard('admin')->user()->authority < 1) {
-        return redirect()->route('admin.no_permission');
-        }
-
-        return $next($request);
+                return redirect()->route('sessions.create');
     }
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('admin.login');
+            return route('sessions.create');
         }
     }
 }

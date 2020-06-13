@@ -6,7 +6,7 @@
 <div class="right-content">
 				<h2 class="mb70 m-text-left">회원정보수정</h2>		
 
-				<form method="post" action="{{ route('advertisers.update', $user->id) }}">
+				<form method="post" action="{{ route('advertisers.update_self', $user->id) }}">
                     {!! csrf_field() !!}
             {!! method_field('PUT') !!}
 				<!-- 기본정보 입력 -->

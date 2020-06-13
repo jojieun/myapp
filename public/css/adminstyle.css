@@ -140,8 +140,11 @@ td{
 
 
 /*로그인 화면 관련*/
+.login_wrap{
+    margin-bottom: 30px;
+}
 .login-group{
-    padding-top:20px;
+/*    padding-top:20px;*/
 }
 .login-group p {
     margin-bottom:10px;

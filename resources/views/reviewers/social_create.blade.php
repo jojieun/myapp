@@ -158,7 +158,7 @@
 						<tr>
 							<th>휴대폰번호</th>
 							<td class="{{ $errors->has('mobile_num') ? 'has-error' : '' }}">
-                <input type="tel" name="mobile_num" placeholder="'-'없이 숫자만 입력해주세요!" value="{{old('mobile_num')}}" class="w150"><button type="button" name="button" class="btn btn-check">인증번호 발송</button>
+                <input type="tel" name="mobile_num" placeholder="'-'없이 숫자만 입력해주세요!" value="{{old('mobile_num')}}">
                 {!! $errors->first('mobile_num','<span class="red">:message</span>')!!}</td>				
 						</tr>
 						<tr>						

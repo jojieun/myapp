@@ -84,7 +84,8 @@
     //리뷰제출 창에서 제출 클릭시
     $('#submission').on('click', function(e){
        e.preventDefault();
-        $.ajax({
+        if($('input[name=url]').val().startsWith('http')){
+           $.ajax({
            type:"POST",
            url:"{{route('reviewers.create_review')}}",
             data:{
@@ -97,6 +98,9 @@
             window.location.reload();
             }
         });
+           } else {
+           alert('리뷰 URL은 http:// 또는 https:// 로 시작하는 전체 URL로 입력해주세요!')
+           }
         
     });
     

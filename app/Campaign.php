@@ -29,6 +29,10 @@ class Campaign extends Model
     {
         return $this->hasOneThrough('App\Category', 'App\Brand', 'id', 'id', 'brand_id', 'category_id');
     }
+    public function region() //큰지역구하기
+    {
+        return $this->hasOneThrough('App\Region', 'App\Area', 'id', 'id', 'area_id', 'region_id');
+    }
     public function campaignReviewers() //신청인원 구하기
     {
         return $this->hasMany(CampaignReviewer::class);

@@ -15,7 +15,7 @@ class CommunitiesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.both', ['except' => ['index', 'show', 'search']]);
+        $this->middleware('auth.all', ['except' => ['index', 'show', 'search']]);
     }
     
     public function index()
@@ -88,6 +88,15 @@ class CommunitiesController extends Controller
         if(auth()->guard('advertiser')->check()){
             $comment = auth()->guard('advertiser')->user()->comments()->create($request->all());
         }
+        $comments = \App\Comment::where('community_id', $request->community_id)->latest()->get();
+        return \Response::json([
+            'finhtml' => \View::make('communities.comments', array('comments' => $comments))->render(),
+            ]);
+    }
+    //댓글삭제
+    public function delcomment(Request $request, \App\Comment $comment)
+    {
+        $comment->delete();
         $comments = \App\Comment::where('community_id', $request->community_id)->latest()->get();
         return \Response::json([
             'finhtml' => \View::make('communities.comments', array('comments' => $comments))->render(),

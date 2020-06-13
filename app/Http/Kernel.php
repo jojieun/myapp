@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'auth.reviewer' => \App\Http\Middleware\AuthReviewer::class,
         'auth.advertiser' => \App\Http\Middleware\AuthAdvertiser::class,
         'auth.both' => \App\Http\Middleware\AuthBoth::class,
+        'auth.all' => \App\Http\Middleware\AuthAll::class,
         'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

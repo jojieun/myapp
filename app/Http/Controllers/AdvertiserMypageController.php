@@ -194,7 +194,7 @@ class AdvertiserMypageController extends Controller
             'user'=>$nowuser
         ]);
     }
-    public function update(Request $request, Advertiser $advertiser)
+    public function update_self(Request $request, Advertiser $advertiser)
     {
         $this->validate($request,[
             'origin_pw' => ['required',
@@ -205,7 +205,7 @@ class AdvertiserMypageController extends Controller
                                 },
                             ],
             'name' => 'required|max:30',
-            'password' => 'required|confirmed|min:8',
+            'password' => 'nullable|confirmed|min:8|regex:/^.*(?=.{2,})(?=.*[a-zA-Z])(?=.*[0-9]).*$/',
             'mobile_num' => 'required|digits:11',
         ]);
         $advertiser->update([

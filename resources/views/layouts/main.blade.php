@@ -87,6 +87,9 @@
                                 @elseif(Auth::guard('advertiser')->check())
                                 <span class="my"><a href="{{route('advertisers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a></span>
 								<span class="logout"><a href="{{route('advertiser_sessions.destory')}}">로그아웃</a></span>
+                                @elseif(Auth::guard('admin')->check())
+                                <span class="my"><a href="{{route('admin')}}">{{ auth()->guard('admin')->user()->name }}님</a></span>
+								<span class="logout"><a href="{{route('admin.logout')}}">로그아웃</a></span>
 								@else
 								<span><a href="{{route('sessions.create')}}">로그인</a></span>
 								<span><a href="{{route('register.select')}}">회원가입</a></span>
@@ -132,6 +135,14 @@
 				<ul class="my_list" style="display:none">
 					<li><a href="{{route('advertisers.mypage')}}"><span>마이페이지</span></a></li>
 					<li><a href="{{route('advertiser_sessions.destory')}}"><span>로그아웃</span></a></li>
+				</ul>
+			</li>
+            @elseif(Auth::guard('admin')->check())
+            <li class="my">
+				<a href="{{route('admin')}}">{{ auth()->guard('admin')->user()->name }}님</a>
+				<ul class="my_list" style="display:none">
+					<li><a href="{{route('admin')}}"><span>관리자페이지</span></a></li>
+					<li><a href="{{route('admin.logout')}}"><span>로그아웃</span></a></li>
 				</ul>
 			</li>
             @else

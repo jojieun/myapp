@@ -66,6 +66,8 @@ Route::resource('notices', 'NoticeController');
 //공지사항 검색
 Route::get('communities/search', 'CommunitiesController@search')->name('communities.search');
 Route::post('makecomment','CommunitiesController@makecomment')->name('makecomment');
+//댓글삭제
+Route::post('delcomment/{comment}','CommunitiesController@delcomment')->name('delcomment');
 Route::resource('communities', 'CommunitiesController');
 
 
@@ -419,9 +421,9 @@ Route::get('advertiser/edit_info',[
     'uses' => 'AdvertiserMypageController@edit_info'
 ]);
 //회원정보수정 입력
-Route::put('advertiser/update/{advertiser}',[
-    'as'=>'advertisers.update',
-    'uses' => 'AdvertiserMypageController@update'
+Route::put('advertiser/update_self/{advertiser}',[
+    'as'=>'advertisers.update_self',
+    'uses' => 'AdvertiserMypageController@update_self'
 ]);
 
 
@@ -473,7 +475,7 @@ Route::post('reviewer/register',[
     'as'=>'reviewers.store',
     'uses' => 'ReviewersController@store'
 ]);
-//reviewer 리소스
+//reviewers 리소스
 Route::resource('reviewers', 'ReviewersController')->except([
     'show'
 ]);
@@ -501,7 +503,7 @@ Route::post('advertiser/register',[
     'as'=>'advertisers.store',
     'uses' => 'AdvertisersController@store'
 ]);
-//reviewer 리소스
+//advertisers 리소스
 Route::resource('advertisers', 'AdvertisersController')->except([
     'show'
 ]);
@@ -551,6 +553,15 @@ Route::post('reset', [
     'uses' => 'PasswordsController@postReset',
 ]);
 
+//권한없음 화면
+Route::get('admin/no_permission', 'AdminsController@no_permission')->name('admin.no_permission');
+//관리자 권한 입력
+Route::put('admins/update_authority/{admin}', [
+    'as' => 'admins.update_authority',
+    'uses' => 'AdminsController@update_authority',
+]);
+//관리자 리소스
+Route::resource('admins', 'AdminsController');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 

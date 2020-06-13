@@ -33,7 +33,7 @@
 			</div>
 			
 			<div class="board_navi_box view">
-                @if((Auth::guard('advertiser')->check() && (auth()->guard('advertiser')->user()->id==$community->advertiser_id)) || (Auth::guard('web')->check() && (auth()->guard('web')->user()->id==$community->reviewer_id)) )
+                @if((Auth::guard('advertiser')->check() && (auth()->guard('advertiser')->user()->id==$community->advertiser_id)) || (Auth::guard('web')->check() && (auth()->guard('web')->user()->id==$community->reviewer_id)) || Auth::guard('admin')->check() )
 
 				<a href="{{ route('communities.edit', $community->id) }}" class="btn_type btn_border">수정</a>
 				<a class="btn_type btn_border button__delete">삭제</a>
@@ -98,6 +98,23 @@
           url: '/communities/' + communityId,
         }).then(function () {
           window.location.href = '/communities';
+        });
+      }
+    });
+    //댓글 삭제
+    $('.comment_del').on('click', function(e){
+       var commentId = $(this).data('id');
+var communityId = $('#has_id').data('id');
+      if (confirm('댓글을 삭제합니다.')) {
+        $.ajax({
+          type: 'POST',
+          url: '/delcomment/' + commentId,
+            data:{
+            'community_id':communityId
+            },
+            success: function(data){
+                $('.comment-list').html(data.finhtml);
+            }
         });
       }
     });
