@@ -15,7 +15,7 @@
 				<h2 class="mb70">1:1 문의하기</h2>
 
 				<!-- 여기부터 게시판 글쓰기 테이블폼입니다. -->
-				<form action="{{ route('onetoones.store') }}" method="post">
+				<form action="{{ route('onetoones.store') }}" method="post" enctype="multipart/form-data">
                     {!! csrf_field() !!}
 					<div class="table_default write">
 						<div class="table_td">
@@ -37,6 +37,10 @@
 							<div class="table_td_line {{ $errors->has('content') ? 'has-error' : '' }}">						
 								<textarea name="content" rows="7" id="" placeholder="내용을 입력해주세요." class="full_width" >{{ old('content', $onetoone->content) }}</textarea>
                         {!! $errors->first('content','<span class="red">:message</span>')!!}
+							</div>
+                            <div class="table_td_line  {{ $errors->has('image') ? 'has-error' : '' }}">
+								<input name="image" type="file">
+                                {!! $errors->first('image','<span class="red">:message</span>')!!}
 							</div>
 						</div>
 					</div>

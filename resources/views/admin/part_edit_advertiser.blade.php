@@ -20,6 +20,12 @@
             <input name="mobile_num" value="{{ old('mobile_num', $advertiser->mobile_num) }}" type="tel">
             </td>
         </tr>
+            <tr>
+            <th>포인트</th>
+            <td>
+            <input name="point" value="{{ old('point', $advertiser->point) }}" type="tel">
+            </td>
+        </tr>
     </table>
         <button type="submit">수정입력</button>
     </form>

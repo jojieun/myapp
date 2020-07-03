@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Onetoone;
 use Illuminate\Http\Request;
+use Image;
 
 class OnetooneController extends Controller
 {
@@ -50,6 +51,7 @@ class OnetooneController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate($request,[
             'title' => 'required|max:255',
             'content' => 'required',
@@ -64,6 +66,15 @@ class OnetooneController extends Controller
         if(! $onetoone){
             return back()->withInput();
         }
+        if($request->hasfile('image')){
+            $file = $request->file('image');
+            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/onetoone/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $onetoone->image = $filename;
+            $onetoone->save();
+        };
         return redirect(route('onetoones.index'));
     }
 

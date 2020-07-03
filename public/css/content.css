@@ -724,9 +724,10 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 /* 게시판 보기 페이지 */
 .table_default.view .table_td{ padding:0 0 30px;  border-bottom: 1px solid #ddd;}
 .table_default.view .table_td_line{ border-bottom: 1px solid #ddd; padding:22px 0; }
-.table_default.view .table_td .subject{  display:inline-block; width: calc(100% - 220px); text-align:left; font-size:19px; color:#222;}
+.table_default.view .table_td .subject{  display:inline-block; width: calc(100% - 360px); text-align:left; font-size:19px; color:#222;}
 .table_default.view .table_td .date{ display:inline-block; width: 100px; float:right; margin-top:5px; text-align:right; font-size:15px;}
 .table_default.view .table_td .w200{width: 220px; }
+.table_default.view .table_td .w360{width: 360px; }
 .table_default.view .table_td, .table_default.view td { text-align:left;}
 .table_default.view .table_td .txt_view{ width:96%; padding:50px 0 80px; vertical-align:top;}
 .table_default.view .table_td .txt_view_con{ min-height:200px; line-height:200%; font-size:16px; color:#222; width:100%; font-weight:300; }
@@ -873,8 +874,10 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .login-wrap form{ overflow:hidden; clear:both; }
 .login-wrap .login-group p label{ display:none; }
 .login-wrap .login-group p input[type=text],
-.login-wrap .login-group p input[type=password], .login-wrap .login-group p input[type=email]{ height: 60px; line-height:62px; margin-bottom:10px; border:1px solid #ddd; font-size:18px; border-radius:0; }
-.login-wrap .login-group p input[type=text].w200 { width: calc( 100% - 200px); }
+.login-wrap .login-group p input[type=tel],
+.login-wrap .login-group p input[type=password],
+.login-wrap .login-group p input[type=email]{ height: 60px; line-height:62px; margin-bottom:10px; border:1px solid #ddd; font-size:18px; border-radius:0; }
+.login-wrap .login-group p input[type=text].w200, .login-wrap .login-group p input[type=tel].w200 { width: calc( 100% - 200px); }
 .login-wrap .login-group .btn{ height: 70px; font-size: 26px; margin-bottom:18px; }
 .login-wrap .login-group .w200 { width: 200px; height: 60px; font-size:18px; }
 .login-wrap .login-group .id-save{ float:left; }
@@ -883,6 +886,15 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .login-wrap .link li a{ color:#222; font-size:15px; }
 .login-wrap .link li:first-child{ margin:0 6px; }
 .login-wrap .link li:first-child:after{content:"｜"; display:inline-block; color: #222; margin:3px 0 0 6px; }
+
+.login-wrap .login-group p.cert{
+        text-align: center;
+        margin-bottom: 20px;
+    color:#000;
+    }
+.login-wrap .login-group p.hide{
+        display: none;
+    }
 
 .btn-join{  clear:both; padding:20px; line-height: 40px; overflow:hidden; border-top:1px solid #ddd; border-bottom:1px solid #ddd; font-size:19px; color:#222; margin:30px 0;}
 .btn-join span{ float:left; width: calc(100% - 155px); }
@@ -1755,8 +1767,10 @@ ul.pagination li a[aria-label="Next »"]{
 
 	/* 로그인 */
 	.login-wrap .login-group p input[type=text],
-	.login-wrap .login-group p input[type=password]{ height: 50px; line-height:52px; font-size:16px; }	
-	.login-wrap .login-group p input[type=text].w200 { width: calc( 100% - 110px); }
+	.login-wrap .login-group p input[type=password],
+    .login-wrap .login-group p input[type=tel],
+    .login-wrap .login-group p input[type=email]{ height: 50px; line-height:52px; font-size:16px; }	
+	.login-wrap .login-group p input[type=text].w200, .login-wrap .login-group p input[type=tel].w200 { width: calc( 100% - 110px); }
 	.login-wrap .login-group .btn{ height: 50px; font-size: 18px;}
 	.login-wrap .login-group .w200 { min-width: 110px; width: 110px; height: 50px; font-size:14px; padding: 0 10px;}
 

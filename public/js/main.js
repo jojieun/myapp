@@ -76,6 +76,14 @@ function submenu_chk(id_view, url){
 	location.href=url;
 	}
 }
+//팝업 닫기관련
+var baseUrl = window.location.href.split('#')[0];
+$(function(){
+    $('a.close, .button_close').click(function(e){
+        e.preventDefault();
+        window.location.replace( baseUrl + '#close' );
+    });
+});
 
 //캠페인 보기
 $(document).ready(function () {

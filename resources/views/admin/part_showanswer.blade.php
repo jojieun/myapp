@@ -21,7 +21,12 @@
         </tr>
         <tr>
             <th>문의내용</th>
-        <td>{!! nl2br($onetoone->content) !!}</td>
+        <td>{!! nl2br($onetoone->content) !!}
+            @if($onetoone->image)
+                                <br>
+                                <img src="{{route('main')}}/files/onetoone/{{$onetoone->image}}">
+                                @endif
+            </td>
         </tr>
     </table>
     <form id="answer" type="post">

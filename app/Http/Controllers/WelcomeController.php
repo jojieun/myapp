@@ -122,6 +122,7 @@ class WelcomeController extends Controller
         
         //        일반캠페인(파워캠페인)
         $nCampaigns = \App\Campaign::where('confirm',1)
+                ->doesntHave('campaignexposure')
             ->whereDate('end_recruit','>=',$nowdate)
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')

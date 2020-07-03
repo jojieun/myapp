@@ -38,9 +38,8 @@
 							<span class="input-button"><input type="checkbox"  name="remember" value="{{ old('remember', 1) }}" checked><label for="">자동로그인</label></span>
 						</div>
 						<ul class="link">
-							<li><a href="#" onclick="alert('고객센터로 문의주세요');">가입이메일 찾기</a></li>
-<!--							<li><a href="{{ route('remind.create') }}">비밀번호 찾기</a></li>-->
-                            <li><a href="#" onclick="alert('고객센터로 문의주세요');">비밀번호 찾기</a></li>
+							<li><a  href="{{ route('remind_email.create') }}">가입이메일 찾기</a></li>
+							<li><a href="{{ route('remind.create') }}">비밀번호 찾기</a></li>
 						</ul>
 					</div>
 				</form>

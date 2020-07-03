@@ -28,7 +28,7 @@ class Advertiser extends Authenticatable
 
     protected $fillable = [
 
-        'name', 'email', 'password', 'mobile_num', 'receive_agreement'
+        'name', 'email', 'password', 'mobile_num', 'receive_agreement', 'point'
 
     ];
 

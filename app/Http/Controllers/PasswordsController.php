@@ -31,22 +31,45 @@ class PasswordsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return $this|\Illuminate\Http\RedirectResponse
      */
+    
+    public function certification(Request $request){
+        include(app_path() . '/Http/Controllers/iamport.php');
+        date_default_timezone_set('Asia/Seoul');
+        $iamport = new Iamport('7637754882413623', 'jcpbcXwUyUEht95jovvJbI44Vw0IuvvNIVYUSuPqptITDOc1kILvqPzmmA5Q6AEOwDJo8zPx3xqGlDIF');
+        #1. imp_uid 로 주문정보 찾기(아임포트에서 생성된 거래고유번호)
+$result = $iamport->findCertificationByImpUID($request->imp_uid); //IamportResult 를 반환(success, data, error)
+        if ( $result->success ) {
+	/**
+	*	IamportPayment 를 가리킵니다. __get을 통해 API의 Payment Model의 값들을 모두 property처럼 접근할 수 있습니다.
+	*	참고 : https://api.iamport.kr/#!/payments/getPaymentByImpUid 의 Response Model
+	*/
+	$certification = $result->data;
+
+	# certified 필드를 통해 인증여부를 판단합니다.
+	if ( $certification->certified ) {
+        $cert_mobile_num = $certification->phone;
+            return response()->json(['cert_mobile_num'=>$cert_mobile_num]);
+	}
+        }else {
+            return response()->json(['name'=>'error']);
+        }
+        
+    }
+    
+    
     public function postRemind(Request $request)
     {
         $email = $request->get('email');
+        $mobile_num = $request->get('cert_mobile_num');
         
-        if(App\Reviewer::where('email', $email)->first()){
-            $this->validate($request, [
-            'email' => 'required|email|exists:reviewers',
-            ]);
+        if(App\Reviewer::where('email', $email)->where('mobile_num', $mobile_num)->first()){
             $who='Reviewer';
-        } else{
-            $this->validate($request, [
-            'email' => 'required|email|exists:advertisers',
-            ]);
+        } elseif(App\Advertiser::where('email', $email)->where('mobile_num', $mobile_num)->first()){
             $who='Advertiser';
+        } else {
+            flash('일치하는 회원이 없습니다.')->warning();
+            return back()->withInput();
         }
-        
         return redirect(route('reset.create'))->with([
             'email'=>$email,
             'who'=>$who,

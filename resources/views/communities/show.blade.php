@@ -17,11 +17,11 @@
 					
 					<div class="table_td_line">
 						<span class="subject">{{$community->title}}</span>
-						<span class="date w200"> @if($community->reviewer)
+						<span class="date w360"> @if($community->reviewer)
                                 {{$community->reviewer->nickname}}
                                 @else
                                 {{$community->advertiser->name}}
-                                @endif  ｜  {{$community->updated_at}}  ｜  {{$community->view_count}}</span>
+                                @endif  ｜  {{$community->created_at}}  ｜  {{$community->view_count}}</span>
 					</div>
 					<div class="txt_view">
 						<div class="txt_view_con">

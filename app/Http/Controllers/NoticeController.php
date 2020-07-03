@@ -8,6 +8,10 @@ use Image;
 
 class NoticeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.admin', ['only' => ['create','store','edit','update','destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

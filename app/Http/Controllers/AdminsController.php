@@ -14,7 +14,7 @@ class AdminsController extends Controller
      */
     public function index()
     {
-        return view('admin.admins')->with('admins',\App\admin::get());
+        return view('admin.admins')->with('admins',\App\Admin::get());
     }
 
     /**

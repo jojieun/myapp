@@ -41,12 +41,14 @@ class CampaignReviewerExport implements FromQuery, WithMapping, WithHeadings
             $campaign_reviewer->reviewer->name,
             $campaign_reviewer->reviewer->nickname,
             $sns->name,
+            $campaign_reviewer->reviewer->mobile_num,
             ];
         } else {
             return [
             $campaign_reviewer->reviewer->name,
             $campaign_reviewer->reviewer->nickname,
             $sns->name,
+            $campaign_reviewer->reviewer->mobile_num,
             $campaign_reviewer->reviewer->zipcode,
             $campaign_reviewer->reviewer->address,
             $campaign_reviewer->reviewer->detail_address, 
@@ -61,12 +63,14 @@ class CampaignReviewerExport implements FromQuery, WithMapping, WithHeadings
                 '이름',
                 '닉네임',
                 $this->channel_name,
+                '전화번호',
             ];
         } else{
             $head = [
                 '이름',
                 '닉네임',
                 $this->channel_name,
+                '전화번호',
                 '우편번호',
                 '주소',
                 '상세주소',

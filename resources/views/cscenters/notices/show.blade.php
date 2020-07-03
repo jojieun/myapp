@@ -22,7 +22,7 @@
 					<div class="table_td">
 						<div class="table_td_line">
 							<span class="subject">{{$notice->title}}</span>
-							<span class="date w200">{{$notice->updated_at}}  ｜  {{$notice->view_count}}</span>
+							<span class="date w360">{{$notice->created_at}}  ｜  {{$notice->view_count}}</span>
 						</div>
 						<div class="txt_view">
 							<div class="txt_view_con">

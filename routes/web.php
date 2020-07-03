@@ -535,10 +535,24 @@ Route::post('reviewer/social_store',[
     'uses' => 'ReviewersController@social_store'
 ]);
 
+/* 가입이메일 찾기 */
+Route::get('remind_email', [
+    'as' => 'remind_email.create',
+    'uses' => 'EmailsController@getRemind',
+]);
+Route::post('remind_email', [
+    'as' => 'remind_email.store',
+    'uses' => 'EmailsController@postRemind',
+]);
+
 /* 비밀번호 초기화 */
 Route::get('remind', [
     'as' => 'remind.create',
     'uses' => 'PasswordsController@getRemind',
+]);
+Route::post('remind/certification',[    
+    'as'=>'remind.certification',
+    'uses' => 'PasswordsController@certification'
 ]);
 Route::post('remind', [
     'as' => 'remind.store',

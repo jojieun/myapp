@@ -75,7 +75,7 @@ class AdminController extends Controller
             'showhtml' => \View::make('admin.part_sns', array('snss' => $snss))->render(),
             ]);
    }
-    //관리자 리뷰어 목록 다운로드
+    //리뷰어 목록 다운로드
     public static function down_reviewer(){
         return Excel::download(new ReviewerExport, date('YndHis').'rivewers.xlsx');
    }
@@ -86,7 +86,7 @@ class AdminController extends Controller
             'advertisers'=>$advertisers,
         ]);
    }
-    //관리자 광고주 목록 다운로드
+    //광고주 목록 다운로드
     public static function down_advertiser(){
         return Excel::download(new AdvertiserExport, date('YndHis').'advertisers.xlsx');
    }
@@ -261,7 +261,7 @@ class AdminController extends Controller
                 $query->whereDate('end_submit', '<', Carbon::now()->toDateString());
             })
             ->doesntHave('new_review')
-            ->with(['reviewer:id,name,email','campaign:id,name,end_submit'])
+            ->with(['reviewer:id,name,email,mobile_num','campaign:id,name,end_submit'])
             ->latest()
             ->get();
 

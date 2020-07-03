@@ -130,7 +130,7 @@
                         본 리뷰는 <strong>{{$campaign->brand->name}}</strong>에게 대가를 제공받았으나,<br>
                         주관적인 생각으로 작성하였습니다.<br>
                         <hr>
-                        <small>리뷰의힘</small>
+                        <img src="{{route('main')}}/img/common/logo.gif" width="60">
                         </div>
                         <div id="spon_desc">
                             리뷰작성시 위 배너 이미지 삽입 부탁드립니다. <button class="btn">이미지 저장</button>
@@ -305,7 +305,7 @@ geocoder.addressSearch('{{$campaign->address}}', function(result, status) {
     //클립보드에 주소 복사
 var clipboard =  new ClipboardJS( '.share' );   // 클래스의 값이 btn인 요소를 복사
 clipboard.on( 'success', function() {       // 복사에 성공했을 때
- window.location.hash = '#copy_ok';
+ window.location.replace( baseUrl + '#copy_ok' );
 } );
     
      $('.apply_check').on('click', function(e){
@@ -314,20 +314,20 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
             @if(isset(auth()->user()->plan))
                 @forelse (auth()->user()->channelreviewers as $channelreviewer)
                     @if($campaign->channel_id==$channelreviewer->channel_id)
-                    window.location.hash = '#popup_term';
+         window.location.replace( baseUrl + '#popup_term' );
                     @break
                     @endif
                     @if($loop->last)
-                    window.location.hash = '#popup_sns';
+         window.location.replace( baseUrl + '#popup_sns' );
                     @endif
                 @empty
-                    window.location.hash = '#popup_sns';
+         window.location.replace( baseUrl + '#popup_sns' );
                 @endforelse
             @else
-            window.location.hash = '#pop_plan';
+         window.location.replace( baseUrl + '#pop_plan' );
             @endif
          @else
-         window.location.hash = '#pop_review';
+         window.location.replace( baseUrl + '#pop_review' );
          @endif
          
      });
@@ -342,14 +342,14 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            data:{camid:camid},
            success:function(data){
                if(data.pre_apply){
-                   window.location.hash = '#pre_apply';
+                   window.location.replace( baseUrl + '#pre_apply' );
                } else {
-                window.location.hash = '#popup_ok';
+                   window.location.replace( baseUrl + '#popup_ok' );
                    }
             },
             error: function(data) {
                 if(data.status==401){
-                    window.location.hash = '#pop_review';
+                    window.location.replace( baseUrl + '#pop_review' );
                 }
             },
         });
@@ -368,11 +368,11 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            data:{camid:camid},
             success:function(data){
                 if(data.pre=='pre_apply'){
-                   window.location.hash = '#pre_apply';
+                   window.location.replace( baseUrl + '#pre_apply' );
                 }else if(data.pre==true){
-                   window.location.hash = '#bookmark_pre';
+                    window.location.replace( baseUrl + '#bookmark_pre' );
                 } else {
-                    window.location.hash = '#bookmark_ok';
+                    window.location.replace( baseUrl + '#bookmark_ok' );
                 }
                 
             },
@@ -381,14 +381,14 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
             },
         });
      @else
-         window.location.hash = '#pop_login';
+        window.location.replace( baseUrl + '#pop_login' );
      @endif
     });
         //메뉴선택 클래스 지정
         $('.campaign_menu li').click(function(){
             $('.campaign_menu li').removeClass('on');
             $(this).addClass('on');
-            var baseUrl = window.location.href.split('#')[0];
+            
             window.location.replace( baseUrl + '#' + $(this).data('l') );
         })
 </script>

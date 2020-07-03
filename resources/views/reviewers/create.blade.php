@@ -261,14 +261,14 @@ $(function(){
                 }
 		 });
         	
-    } else {
+        } else {
     	 // 인증취소 또는 인증실패
         var msg = '인증에 실패하였습니다.';
         msg += '에러내용 : ' + rsp.error_msg;
 
         alert(msg);
-    }
-});
+        }
+        });
     }//---sms 인증함수
     
     $('#call_cert').click(function(){

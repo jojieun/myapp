@@ -27,6 +27,10 @@
 						<div class="txt_view">
 							<div class="txt_view_con">
 								{!! nl2br($onetoone->content) !!}
+                                @if($onetoone->image)
+                                <br>
+                                <img src="{{route('main')}}/files/onetoone/{{$onetoone->image}}">
+                                @endif
 							</div>
 						</div>					
 					</div>				

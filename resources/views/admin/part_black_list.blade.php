@@ -4,6 +4,7 @@
             <td>{{ $loop->iteration }}</td>
             <td>{{$black_list->reviewer->email}}</td>
             <td>{{$black_list->reviewer->name}}</td>
+            <td>{{$black_list->reviewer->mobile_num}}</td>
             <td>{{$black_list->campaign->name}}</td>
             <td>{{$black_list->campaign->end_submit}}</td>
         </tr>

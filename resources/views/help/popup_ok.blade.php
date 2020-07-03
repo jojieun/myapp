@@ -3,7 +3,7 @@
         <div class="popup">
 			<div class="text">
 				<p>{{$slot}}</p>
-				<a class="btn black h46 w125" href="#close">확인</a>
+				<a class="btn black h46 w125 button_close" href="#close">확인</a>
 			</div>
             <a class="close" href="#close"></a>
         </div>

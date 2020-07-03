@@ -17,12 +17,12 @@
 					<div class="login-group">
 						<p class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
 							<label for="">새비밀번호</label>
-							<input type="password" name="password" placeholder="비밀번호(영문과 숫자를 혼합해서 8자 이상)" />
+							<input type="password" name="password" placeholder="비밀번호(영문과 숫자를 혼합해서 8자 이상)" class="full_width" />
                             {!! $errors->first('password','<span class="red">:message</span>')!!}
 						</p>
 						<p class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
                             <label for="">비밀번호확인</label>
-               <input type="password" name="password_confirmation" placeholder="비밀번호 확인" />
+               <input type="password" name="password_confirmation" placeholder="비밀번호 확인"  class="full_width"/>
                             {!! $errors->first('password_confirmation','<span class="red">:message</span>')!!}
 						</p>
 						<div class="login-group">

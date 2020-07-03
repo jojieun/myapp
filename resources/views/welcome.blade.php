@@ -4,7 +4,7 @@
 <!-- 메인배너 -->
 	<div class="main-banner m-t60" align="center">
         @foreach($main_banners as $main_banner)
-        <a href="{{$main_banner->url}}"><img src="/files/banner/{{$main_banner->name}}" alt=""></a>
+        <a href="{{$main_banner->url}}" target="_blank"><img src="/files/banner/{{$main_banner->name}}" alt=""></a>
         @endforeach
 	</div>
 	<!-- //메인배너 -->
