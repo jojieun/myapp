@@ -87,9 +87,13 @@
                     <img src="/files/{{$campaign->sub_image1}}" alt="상세이미지영역">
                     @endif
                     @if($campaign->sub_image2)
+                    <br/>
+                    <br/>
                     <img src="/files/{{$campaign->sub_image2}}" alt="상세이미지영역">
                     @endif
                     @if($campaign->sub_image3)
+                    <br/>
+                    <br/>
                     <img src="/files/{{$campaign->sub_image3}}" alt="상세이미지영역">
                     @endif
 
@@ -97,7 +101,11 @@
 				<dl id="campaign02" class="detail-txt">
 					<dt>리뷰미션</dt>
 					<dd>
-						{!! nl2br($campaign->mission) !!}
+                        @php
+                        $url = '~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i'; 
+$string = preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $campaign->mission);
+                        @endphp
+						{!! nl2br($string) !!}
 					</dd>
 				</dl>
 				<dl id="campaign03" class="detail-txt">
@@ -122,7 +130,13 @@
                 @endif
 				<dl id="campaign05" class="detail-txt">
 					<dt>기타사항</dt>
-					<dd>{!! nl2br($campaign->etc) !!}</dd>
+					<dd>
+                    @php
+$string2 = preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $campaign->etc);
+                        @endphp
+                        {!! nl2br($string2) !!}
+                    
+                    </dd>
 				</dl>
                 <dl id="" class="detail-txt">
 					<dt>스폰서배너<br><strong>필수</strong></dt>

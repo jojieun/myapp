@@ -13,7 +13,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="robots" content="INDEX, FOLLOW"/>
-	<meta name="Description" content="">
+	<meta name="Description" content="리뷰의힘입니다.">
 	<meta name="Author" content="">
 	<meta name="Keywords" content="">
 	<meta name="format-detection" content="telephone=no">
@@ -46,7 +46,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=1.9') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=2.0') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css?ver=0.2') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css?ver=0.2') }}" rel="stylesheet">
@@ -58,7 +58,9 @@
     <script src="{{ asset('js/main.js') }}" defer></script>
     <title>{{ config('app.name') }}</title>
     <meta name="title" content="{{ config('app.name') }}"/>
-    <meta property="og:title" content="{{ config('app.name') }}">  	
+    <meta property="og:title" content="{{ config('app.name') }}">
+    <meta property="og:image" content="https://review-power.com/img/common/og_image.png"> 
+    <meta property="og:description" content="리뷰의힘입니다.">
 </head>
 
 <body>

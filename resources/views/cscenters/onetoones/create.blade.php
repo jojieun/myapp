@@ -38,9 +38,18 @@
 								<textarea name="content" rows="7" id="" placeholder="내용을 입력해주세요." class="full_width" >{{ old('content', $onetoone->content) }}</textarea>
                         {!! $errors->first('content','<span class="red">:message</span>')!!}
 							</div>
-                            <div class="table_td_line  {{ $errors->has('image') ? 'has-error' : '' }}">
+                            <div class="table_td_line onetoone_image {{ $errors->has('image') ? 'has-error' : '' }} {{ $errors->has('image2') ? 'has-error' : '' }} {{ $errors->has('image3') ? 'has-error' : '' }}">
+                                <div class="table_td_title">
+                                    첨부<br/>이미지
+                                </div>
+                                <div class="table_td_in">
 								<input name="image" type="file">
                                 {!! $errors->first('image','<span class="red">:message</span>')!!}
+								<input name="image2" type="file">
+                                {!! $errors->first('image2','<span class="red">:message</span>')!!}
+								<input name="image3" type="file">
+                                {!! $errors->first('image3','<span class="red">:message</span>')!!}
+                                </div>
 							</div>
 						</div>
 					</div>

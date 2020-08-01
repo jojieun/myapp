@@ -427,7 +427,7 @@ foreach ($campaigns as $key => $loop)
         
         if($request->hasfile('main_image')){
             $file = $request->file('main_image');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'1'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             $img = Image::make($file);
             $img->orientate();
@@ -437,21 +437,21 @@ foreach ($campaigns as $key => $loop)
         }
         if($request->hasfile('sub_image1')){
             $file = $request->file('sub_image1');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'2'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image1 = $filename;
         }
         if($request->hasfile('sub_image2')){
             $file = $request->file('sub_image2');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'3'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image2 = $filename;
         }
         if($request->hasfile('sub_image3')){
             $file = $request->file('sub_image3');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'4'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image3 = $filename;
@@ -733,11 +733,19 @@ foreach ($campaigns as $key => $loop)
         $campaign->sub_image1 = $oldCam->sub_image1;
         $campaign->sub_image2 = $oldCam->sub_image2;
         $campaign->sub_image3 = $oldCam->sub_image3;
+        if($request->del_image1){
+            $campaign->sub_image1 = null;
+        }
+        if($request->del_image2){
+            $campaign->sub_image2 = null;
+        }
+        if($request->del_image3){
+            $campaign->sub_image3 = null;
+        }
         
         if($request->hasfile('main_image')){
-            \File::delete('files/'.$campaign->main_image);
             $file = $request->file('main_image');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'11'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             $img = Image::make($file);
             $img->fit(530,530);
@@ -745,25 +753,22 @@ foreach ($campaigns as $key => $loop)
             $campaign->main_image = $filename;
         }
         if($request->hasfile('sub_image1')){
-            \File::delete('files/'.$campaign->sub_image1);
             $file = $request->file('sub_image1');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'22'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image1 = $filename;
         }
         if($request->hasfile('sub_image2')){
-            \File::delete('files/'.$campaign->sub_image2);
             $file = $request->file('sub_image2');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'33'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image2 = $filename;
         }
         if($request->hasfile('sub_image3')){
-            \File::delete('files/'.$campaign->sub_image3);
             $file = $request->file('sub_image3');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'44'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/'.$filename;
             Image::make($file)->save($location);
             $campaign->sub_image3 = $filename;

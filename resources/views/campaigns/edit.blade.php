@@ -176,29 +176,34 @@
 						<dd class="">
 							<div class="file-area">
 								<span class="upload2 {{ $errors->has('sub_image1') ? 'has-error' : '' }}">
-                                    
-									<label for="file1">
-                                        @if(old('sub_image1', $campaign->sub_image1))
+                                    @if(old('sub_image1', $campaign->sub_image1))
                                     <img src="/files/{{old('sub_image1', $campaign->sub_image1)}}" width="100">
+                                    <input type="checkbox" name="del_image1" id="del_image1" class="del_image">
+                                    <label for="del_image1" class="del_image">기존 이미지 삭제</label>
                                     @endif
+									<label for="file1" class="sub_image">
                                         <input name="sub_image1" type="file" id="file1" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image1','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image1"></span>
 								<span class="upload2 {{ $errors->has('sub_image2') ? 'has-error' : '' }}">
-									<label for="file2">
-                                        @if(old('sub_image2', $campaign->sub_image2))
+                                    @if(old('sub_image2', $campaign->sub_image2))
                                     <img src="/files/{{old('sub_image2', $campaign->sub_image2)}}" width="100">
+                                    <input type="checkbox" name="del_image2" id="del_image2" class="del_image">
+                                    <label for="del_image2" class="del_image">기존 이미지 삭제</label>
                                     @endif
+									<label for="file2" class="sub_image">
                                         <input name="sub_image2" type="file" id="file2" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image2','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image2"></span>
 								<span class="upload2 {{ $errors->has('sub_image3') ? 'has-error' : '' }}">
-									<label for="file3">
-                                        @if(old('sub_image3', $campaign->sub_image3))
-                                    <img src="/files/{{old('sub_image1', $campaign->sub_image1)}}" width="100">
+                                    @if(old('sub_image3', $campaign->sub_image3))
+                                    <img src="/files/{{old('sub_image3', $campaign->sub_image3)}}" width="100">
+                                    <input type="checkbox" name="del_image3" id="del_image3" class="del_image">
+                                    <label for="del_image3" class="del_image">기존 이미지 삭제</label>
                                     @endif
+									<label for="file3" class="sub_image">
                                         <input name="sub_image3" type="file" id="file3" value="" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image3','<span class="red">:message</span>')!!}
 								</span>

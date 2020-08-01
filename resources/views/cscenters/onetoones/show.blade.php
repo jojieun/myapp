@@ -31,6 +31,14 @@
                                 <br>
                                 <img src="{{route('main')}}/files/onetoone/{{$onetoone->image}}">
                                 @endif
+                                @if($onetoone->image2)
+                                <br>
+                                <img src="{{route('main')}}/files/onetoone/{{$onetoone->image2}}">
+                                @endif
+                                @if($onetoone->image3)
+                                <br>
+                                <img src="{{route('main')}}/files/onetoone/{{$onetoone->image3}}">
+                                @endif
 							</div>
 						</div>					
 					</div>				

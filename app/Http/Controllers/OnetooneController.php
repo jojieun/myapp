@@ -68,13 +68,29 @@ class OnetooneController extends Controller
         }
         if($request->hasfile('image')){
             $file = $request->file('image');
-            $filename = time().filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $filename = time().'1'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
             $location = 'files/onetoone/'.$filename;
             $img = Image::make($file);
             $img->save($location);
             $onetoone->image = $filename;
-            $onetoone->save();
         };
+        if($request->hasfile('image2')){
+            $file = $request->file('image2');
+            $filename = time().'2'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/onetoone/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $onetoone->image2 = $filename;
+        };
+        if($request->hasfile('image3')){
+            $file = $request->file('image3');
+            $filename = time().'3'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/onetoone/'.$filename;
+            $img = Image::make($file);
+            $img->save($location);
+            $onetoone->image3 = $filename;
+        };
+        $onetoone->save();
         return redirect(route('onetoones.index'));
     }
 
