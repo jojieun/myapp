@@ -72,8 +72,10 @@ class ReviewerMypageController extends Controller
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
+            'campaign_reviewers.id as campaign_reviewers_id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
             'campaigns.id',
             'campaigns.name',
              'campaigns.form',
@@ -167,6 +169,11 @@ class ReviewerMypageController extends Controller
             'suggestions'=>$suggestions,
             'bookmarks'=>$bookmarks
         ]);
+    }
+    //방문 수취 확인
+    public function take_visit(Request $request){
+        \App\CampaignReviewer::whereId($request->id)->update(['take_visit_check'=>1]);
+        return;
     }
     //리뷰 제출
     public function create_review(Request $request){
@@ -266,8 +273,10 @@ class ReviewerMypageController extends Controller
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
+            'campaign_reviewers.id as campaign_reviewers_id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
             'campaigns.id',
             'campaigns.name',
              'campaigns.form',
@@ -329,6 +338,10 @@ class ReviewerMypageController extends Controller
             'endCampaigns'=>$endCampaigns,
             'chls'=>$chls,
         ]);
+    }
+    //광고주와 채팅
+    public function chat(){
+        return view('reviewers.chat');
     }
     //미제출리뷰
     public function not_submit(){

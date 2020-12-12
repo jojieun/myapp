@@ -1,7 +1,7 @@
 <span class="m-bar2"></span>
 	<!-- 모바일 마이페이지 -->
 	<p class="m-top-title">
-		<b class="name">{{$user->name}}님</b>
+		<b class="name">{{$user->nickname}}님</b>
 		<span>{{$user->email}}</span>
 	</p>
 	<!-- //모바일 마이페이지 -->

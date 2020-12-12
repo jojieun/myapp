@@ -676,5 +676,11 @@ class AdminController extends Controller
         $bottom_banner -> save();
         return redirect(route('admin.bottom_banner_edit'));
     }
+    
+    //관리자-AI빅데이터 관리
+    public static function ai_bigdata(){
+        $reviewers = \App\Reviewer::with(['plan:id,reviewer_id', 'channelreviewers:id,reviewer_id'])->orderBy('reviewers.created_at','desc')->paginate(50);
+        return view('admin.reviewer')->with('reviewers',$reviewers);
+   }
 
 }

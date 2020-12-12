@@ -90,6 +90,7 @@ a.btn.w50, button.btn.w50{ width: 49.5%;}
 a.btn.btn-check, button.btn.btn-check{ min-width: 150px; height: 40px; line-height:38px; font-size: 15px;  }
 a.btn.h46, button.btn.h46{ min-width: 155px; height: 46px; line-height:44px; font-size: 15px;  }
 a.btn.w125, button.btn.w125{ min-width: 125px; }
+a.btn.w80, button.btn.w80{ min-width: 125px; margin-bottom: 3px; }
 .resv_btn_wrap {text-align:center; margin-top:40px;}
 .resv_btn_wrap button.btn{ padding: 0 120px; height: 60px; line-height: 58px; font-size:20px; font-weight:600; background: #ff804d; border:none; }
 
@@ -1140,6 +1141,10 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .reviewer-th li:nth-child(11),
 .reviewer-td li span:nth-child(11){width: 10%;}
 .reviewer-th li:nth-child(10){ padding: 12px 0 8px;}
+
+.reviewer-th.take_visit li,
+.reviewer-td.take_visit li span {width: 11%;}
+
 .reviewer-td { padding:20px 0 5px; border-bottom:1px solid #ddd; overflow:hidden; }
 .reviewer-td li{ clear:both; padding:10px 0 20px; overflow:hidden;  }
 .reviewer-td li span{ display:block; float:left; text-align:center;  line-height:100%;  }
@@ -1147,6 +1152,8 @@ table.tbl_terms tbody td.center{ text-align:center;}
 .reviewer-td2 li span em{ display:none; }
 .reviewer-td li span.td-btn em{ display:inline-block; color:#222}
 .reviewer-td li span a.btn{ margin-top:-8px; }
+.reviewer-td li span a.take_visit{ cursor: default; background-color: #222; color:white;}
+.reviewer-td li span a.take_visit.off{ background-color: #ddd; border-color:#ddd; }
 .reviewer-td li span.input-button { width: 100%; margin:0;}
 .reviewer-td li span.input-button input[type=checkbox]+label:before {top:-4px; left:50%; margin-left:-15px;}
 .reviewer-td li span.sns .blog,

@@ -1,5 +1,5 @@
 
-<a href="#close" class="overlay" id="edit_review"></a>
+<a href="#select" class="overlay" id="edit_review"></a>
 <div class="popup term" id="edit_r">  
 </div>
 <script>

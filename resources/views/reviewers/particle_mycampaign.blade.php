@@ -49,14 +49,19 @@
             @if($option=='apply')
             <a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w125">캠페인보기</a>
             @elseif($option=='select')
-            <a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w125">캠페인보기</a>
-                @if($campaign->review==null)
-                                            <a href="#popup_reviewer" class="btn btn-check w125 black submission" data-c="{{$campaign->id}}">리뷰제출</a>
+            <a href="{{route('reviewers.chat')}}" class="btn btn-check w80 chat">광고주채팅</a>
+            <a href="{{ route('campaigns.show', [$campaign->id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w80">캠페인보기</a>
+                @if($campaign->take_visit_check==0)
+                <a href="#" class="btn btn-check w80 black take_visit" data-cri="{{$campaign->campaign_reviewers_id}}" data-type="{{$campaign->form}}">@if($campaign->form=='v')방문@else수취@endif확인</a>
                 @else
-                <a class="btn btn-check w125 edit_review" data-r="{{$campaign->review->id}}">리뷰수정</a>
+                    @if($campaign->review==null)
+                    <a href="#popup_reviewer" class="btn btn-check w80 black submission" data-c="{{$campaign->id}}">리뷰제출</a>
+                    @else
+                    <a class="btn btn-check w80 edit_review" data-r="{{$campaign->review->id}}">리뷰수정</a>
+                    @endif
                 @endif
         @else
-<!--            <a href="#" class="btn btn-check w125">리뷰보기</a>-->
+            <a href="#" class="btn btn-check w125">마감후 리뷰제출</a>
         @endif
     </div>
 </div>

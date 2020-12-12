@@ -1,0 +1,118 @@
+#chat_header{
+    height: 50px;
+    line-height: 50px;
+    background-color: white;
+    box-shadow: 0 -3px 5px black;
+    padding:0 10px;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    font-size: 14px;
+}
+#chat_header button {
+    padding:5px;
+    border:2px solid #ccc;
+    color:#bbb;
+    font-weight: 900;
+    position: absolute;
+    line-height: 16px;
+    top:10px;
+    right:10px;
+    font-size: 12px;
+}
+#chat_area{
+    padding:50px 10px;
+    padding-bottom:61px;
+}
+#chat_area .day{
+    font-size: 12px;
+    text-align: center;
+    padding:10px 0;
+    letter-spacing: 0;
+}
+#chat_area .chat{
+    padding-bottom:10px;
+    position: relative;
+}
+#chat_area .chat::after{
+    display: block;
+    content: '';
+    clear: both;
+}
+#chat_area .name{
+    width:40px;
+    padding-right:5px;
+    text-align: center;
+    height: 40px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.chat .message{
+    padding:6px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative;
+}
+.message .time{
+    position: absolute;
+    right:-35px;
+    width:30px;
+    font-size: 11px;
+    bottom:0;
+    color:#999;
+}
+.my .message .time{
+    left:-35px;
+    text-align: right;
+}
+.yours .message{
+    background-color:#eee;
+    margin-right:50px;
+    margin-left:40px;
+    float: left;
+}
+.my .message{
+    float: right;
+    margin-left:50;
+    border:1px solid #555;
+}
+#chat_area .name img{
+    width:40px;
+    border-radius: 20px;
+}
+#chat_area .name span{
+    font-size: 11px;
+}
+#input_chat{
+    position:fixed;
+    width:100%;
+    height: 61px;
+    bottom:0;
+    left:0;
+    background-color:#eee;
+    border-top:1px solid #ddd;
+    padding:10px;
+    box-sizing: border-box;
+}
+#input_message{
+    height: 40px;
+    border-radius: 15px;
+    padding:5px 10px;
+    border:1px solid #ddd;
+    width:calc(100% - 45px);
+}
+#input_message:focus{
+    outline: none;
+}
+#send_message{
+    width:40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color:#fd0;
+    line-height:40px;
+    font-size: 20px;
+    text-align: center;
+    color:black;
+}

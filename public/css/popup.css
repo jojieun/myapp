@@ -83,6 +83,24 @@
 	font-weight:100;
 }
 
+.close2 {
+    background-color: rgba(0, 0, 0, 1);
+    height: 28px;
+    line-height: 28px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-decoration: none;
+    top: 0;
+    width: 28px;
+}
+.close2:before {
+    color: rgba(255, 255, 255, 1);
+    content: "×";
+    font-size: 40px;
+	font-weight:100;
+}
+
 #pop_plan_view{
     width:90%;
     max-width:1600px;

@@ -110,6 +110,9 @@
                     <li><a href="{{route('admin.bottom_banner_edit')}}">하단배너관리</a></li>
                 </ul>
             </li>
+            <li class="main">
+                <a href="#" class="main_a">AI빅데이터 관리</a>
+            </li>
         </ul>
     </nav>
     </header>

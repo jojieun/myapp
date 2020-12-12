@@ -34,7 +34,7 @@
 					<div class="campaign-list-info-right">
 						<p class="num">
 							<span class="title">리뷰제출인원</span>
-							<span class="txt"><b>{{$reviews->count()}}</b> / {{$campaign->recruit_number}}</span>
+							<span class="txt"><b>{{$reviews->count()}}</b> / {{$campaign->campaignReviewers->count()}}</span>
 						</p>
 					</div>
 				</div>
@@ -97,9 +97,19 @@
 					<ul class="reviewer-td2">
                     @include('advertisers.part_submit_campaign')
                         </ul>
-                    <a  href="{{route('down_reviewer_info',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
+<!--                    <a  href="{{route('down_reviewer_info',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>-->
 				</div>
-				<!-- //신청 리뷰어 -->
+				<!-- //리뷰제출 리뷰어 -->
+<!--                선정된 리뷰어(배송방문현황)-->
+                <div class="reviewer" id="reviewer2">
+                    <form method="post" action="">
+                        {!! csrf_field() !!}
+					<h3>선정된 리뷰어 (진행 현황)</h3>
+                    @include('advertisers.part_take_visit')
+                        <a href="{{route('down_reviewer_info',$campaign->id)}}" class="btn-down">리뷰어 정보 다운로드</a>
+                    </form>
+				</div>
+<!--                //선정된 리뷰어(배송방문현황)-->
 			</div>
 			<!-- //오른쪽 컨텐츠 -->
 <!--리뷰전략보기-->

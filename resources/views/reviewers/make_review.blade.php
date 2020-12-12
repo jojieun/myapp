@@ -1,4 +1,4 @@
-<a href="#" class="overlay" id="popup_reviewer"></a>
+<a href="#select" class="overlay" id="popup_reviewer"></a>
         <div class="popup term" id="make_review">
 			<div class="text3">
 				<h3>리뷰 URL</h3>
@@ -7,7 +7,7 @@
 				<p><textarea name="after" id="" cols="1" rows="5" placeholder="광고주에게 전달할 캠페인 참여후기를 입력해주세요." class="border2"></textarea></p>
 				<a class="btn black h46" id="submission">제출</a>
 			</div>
-            <a class="close" href="#select"></a>
+            <a class="close2" href="#select"></a>
         </div>
 <script>
     $.ajaxSetup({

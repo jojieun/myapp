@@ -246,6 +246,8 @@ Route::get('admin/bottom_banner_del/{bottom_banner}','AdminController@bottom_ban
 //관리자-하단배너관리-추가
 Route::post('admin/bottom_banner_add','AdminController@bottom_banner_add')->name('admin.bottom_banner_add');
 
+//관리자-AI빅데이터 관리
+Route::get('admin/ai_bigdata','AdminController@ai_bigdata')->name('admin.ai_bigdata');
 
 
 
@@ -254,6 +256,11 @@ Route::post('admin/bottom_banner_add','AdminController@bottom_banner_add')->name
 Route::get('reviewer/mypage',[
     'as'=>'reviewers.mypage',
     'uses' => 'ReviewerMypageController@home'
+]);
+//방문 수취 확인(ajax)
+Route::post('reviewer/take_visit',[
+    'as'=>'reviewers.take_visit',
+    'uses' => 'ReviewerMypageController@take_visit'
 ]);
 //리뷰제출(ajax리뷰만들기)
 Route::post('reviewer/create_review',[
@@ -273,6 +280,11 @@ Route::get('reviewer/my_campaign',[
     'as'=>'reviewers.my_campaign',
     'uses' => 'ReviewerMypageController@my_campaign'
 ]);
+//광고주와 채팅
+Route::get('reviewer/chat',[
+    'as'=>'reviewers.chat',
+    'uses' => 'ReviewerMypageController@chat'
+    ]);
 //미제출리뷰
 Route::get('reviewer/not_submit',[
     'as'=>'reviewers.not_submit',

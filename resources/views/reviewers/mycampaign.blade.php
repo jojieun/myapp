@@ -59,23 +59,5 @@
 @include('reviewers.make_review')
 <!--리뷰수정-->
 @include('reviewers.edit_review')
-<script>
-//                    캠페인 탭 바꾸기
-    window.location.hash='#apply';
-    changeTab();
-    $(window).on('hashchange', function(e){
-        changeTab();
-    });
-    function changeTab(){
-        var nowHash = window.location.hash;
-        $('.mypage-tab li a').removeClass('on');
-        if(nowHash=='#apply'){
-            $('.mypage-tab li a').eq(0).addClass('on');
-        }else if(nowHash=='#select'){
-            $('.mypage-tab li a').eq(1).addClass('on');
-        }else if(nowHash=='#end'){
-            $('.mypage-tab li a').eq(2).addClass('on');
-        }
-    }
-</script>
+@include('reviewers.mycampaign_script')
 @endsection
