@@ -152,6 +152,11 @@ Route::get('admin/end_cam', 'AdminController@end_cam')->name('admin.end_cam');
 // 미제출 리뷰어(블랙리스트)
 Route::get('admin/black_list', 'AdminController@black_list')->name('admin.black_list');
 
+//관리자- 패널티 저장 ajax
+Route::post('storePenalty','PenaltyController@store')->name('storePenalty');
+//관리자- 패널티 삭제
+Route::delete('delPenalty/{penalty}','PenaltyController@delete');
+
 
 /**** 관리자admin **********옵션 ****/
 //캠페인 노출옵션 구매내역
@@ -280,11 +285,7 @@ Route::get('reviewer/my_campaign',[
     'as'=>'reviewers.my_campaign',
     'uses' => 'ReviewerMypageController@my_campaign'
 ]);
-//광고주와 채팅
-Route::get('reviewer/chat',[
-    'as'=>'reviewers.chat',
-    'uses' => 'ReviewerMypageController@chat'
-    ]);
+
 //미제출리뷰
 Route::get('reviewer/not_submit',[
     'as'=>'reviewers.not_submit',

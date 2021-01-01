@@ -85,6 +85,7 @@ class ReviewerMypageController extends Controller
             'campaigns.offer_goods',
             'campaigns.end_recruit',
             'campaigns.end_submit',
+            'campaigns.advertiser_id',
             'areas.name as area_name',
             'regions.name as region_name',
             'channels.name as channel_name',
@@ -110,7 +111,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select('campaigns.id',
+            ->select('campaign_reviewers.id as campaign_reviewers_id',
+            'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
+            'campaigns.id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -135,8 +140,8 @@ class ReviewerMypageController extends Controller
         $notreview = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)->doesntHave('review')->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
-                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString());
+//                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })->count();
         //리뷰(어)제안 개수반환
         $suggestions = \App\ReviewerSuggestion::where('reviewer_id',$nowUser->id)->where('accept','null')->join('campaigns', function($join) {
@@ -286,6 +291,7 @@ class ReviewerMypageController extends Controller
             'campaigns.offer_goods',
             'campaigns.end_recruit',
             'campaigns.end_submit',
+            'campaigns.advertiser_id',
             'areas.name as area_name',
             'regions.name as region_name',
             'channels.name as channel_name',
@@ -310,7 +316,12 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select('campaigns.id',
+            ->select(
+            'campaign_reviewers.id as campaign_reviewers_id',
+            'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
+            'campaigns.id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -339,10 +350,6 @@ class ReviewerMypageController extends Controller
             'chls'=>$chls,
         ]);
     }
-    //광고주와 채팅
-    public function chat(){
-        return view('reviewers.chat');
-    }
     //미제출리뷰
     public function not_submit(){
         $nowUser = auth()->user()->id;
@@ -354,8 +361,8 @@ class ReviewerMypageController extends Controller
             ->doesntHave('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
-                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString());
+//                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -363,7 +370,10 @@ class ReviewerMypageController extends Controller
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
+            'campaign_reviewers.id as campaign_reviewers_id',
             'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
             'campaigns.id',
             'campaigns.name',
              'campaigns.form',
@@ -373,6 +383,7 @@ class ReviewerMypageController extends Controller
             'campaigns.offer_goods',
             'campaigns.end_recruit',
             'campaigns.end_submit',
+            'campaigns.advertiser_id',
             'areas.name as area_name',
             'regions.name as region_name',
             'channels.name as channel_name',
@@ -395,8 +406,20 @@ class ReviewerMypageController extends Controller
     }
     //캠페인신청
      public function apply(Request $request){
-        $pre = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id',auth()->guard('web')->user()->id)->first();
-         if($pre==null){
+         $now_reviewer = auth()->guard('web')->user()->id;
+         //이미신청여부
+         $pre = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id', $now_reviewer)->first();
+         //패널티여부
+         $penalty = \App\Penalty::where('reviewer_id', $now_reviewer)->whereDate('fixed_date', '>=', Carbon::now()->toDateString())->orderBy('fixed_date', 'desc')->first();
+         if($pre){
+             return \Response::json(array(
+                    'pre_apply' => true,
+                ));
+         } elseif($penalty){
+             return \Response::json(array(
+                    'penalty' => $penalty->fixed_date,
+                ));
+         } else {
              $CampaignReviewer = \App\CampaignReviewer::create([
                  'campaign_id'=>$request->camid,
                  'reviewer_id'=>auth()->guard('web')->user()->id,
@@ -479,10 +502,6 @@ class ReviewerMypageController extends Controller
                     'pre_apply' => false,
                 )); 
              }
-         } else {
-             return \Response::json(array(
-                    'pre_apply' => true,
-                ));
          }
     }
     //북마크등록

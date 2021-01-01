@@ -238,3 +238,9 @@ input[type=radio], input[type=checkbox], input[name=zipcode]{
     float: left;
     margin-right:20px;
 }
+
+/*블랙리스트*/
+input.penalty{
+    width:50px;
+    min-width: 50px;
+}

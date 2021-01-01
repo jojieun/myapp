@@ -256,14 +256,24 @@ class AdminController extends Controller
     // 미제출 리뷰어(블랙리스트)
     public function black_list()
     {
+        //미제출 리뷰어 리스트 - 현재 미제출 리뷰어만 뜨도록 되어있음 지각제출 리뷰어 리스트는 따로 만들어야 함
         $black_lists = \App\CampaignReviewer::where('selected', 1)
             ->whereHas('campaign',function ($query) {
                 $query->whereDate('end_submit', '<', Carbon::now()->toDateString());
             })
             ->doesntHave('new_review')
-            ->with(['reviewer:id,name,email,mobile_num','campaign:id,name,end_submit'])
+            ->with(['reviewer:id,name,email,mobile_num','campaign:id,name,end_submit','penalty'=>function($query){
+                $query->whereDate('fixed_date', '>', Carbon::now()->toDateString());
+            }])
             ->latest()
             ->get();
+        $nowdate = Carbon::now();//오늘날짜 
+        foreach ($black_lists as $key => $loop)
+		{
+            $er = new Carbon($loop->campaign->end_submit);//제출마감일
+            $dif = $er->diff($nowdate)->days;//날짜차이
+            $loop->delay = $dif;
+		}
 
         return view('admin.black_list',[
             'black_lists' => $black_lists,

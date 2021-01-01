@@ -86,9 +86,5 @@
 		<!-- //상세 컨텐츠내용 -->	
 	</div>
 @include('reviewers.reviewer_bottommenu')
-<!--리뷰작성-->
-@include('reviewers.make_review')
-<!--리뷰수정-->
-@include('reviewers.edit_review')
 @include('reviewers.mycampaign_script')
 @endsection

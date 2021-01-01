@@ -746,11 +746,10 @@ var $data = new FormData();
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('campaigns.complate') }}",
-                    headers: { "Content-Type": "application/json" },
                     data: {
                         imp_uid: rsp.imp_uid,
                         m_uid: m_uid
-                    },
+                    }
                 }).done(function(data) {
                     if(data.now){
                     window.location.href = "{{ route('campaigns.storeend') }}";

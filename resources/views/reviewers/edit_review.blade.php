@@ -3,8 +3,8 @@
 <div class="popup term" id="edit_r">  
 </div>
 <script>
-        //리뷰수정 클릭시
-$('.edit_review').on('click', function(e){
+    //리뷰수정 클릭시
+    $('.edit_review').on('click', function(e){
     var nowId = $(this).data('r');
         $.ajax({
            type:"get",

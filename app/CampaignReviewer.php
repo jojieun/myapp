@@ -17,7 +17,7 @@ class CampaignReviewer extends Model
     {
         return $this->hasOne('App\Plan', 'reviewer_id', 'reviewer_id');
     }
-    public function review()//없애도 되는지 확인하고 new_review와 교체
+    public function review()//리뷰어 기준으로 리뷰 작성 찾을 때
     {
         return $this->hasOne('App\Review', 'campaign_id', 'campaign_id');
     }
@@ -28,5 +28,9 @@ class CampaignReviewer extends Model
     public function channel_reviewer()
     {
         return $this->hasMany('App\ChannelReviewer', 'reviewer_id', 'reviewer_id');
+    }
+    public function penalty()
+    {
+        return $this->hasOne('App\Penalty', 'reviewer_id', 'reviewer_id')->orderBy('fixed_date', 'desc');
     }
 }

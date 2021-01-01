@@ -492,7 +492,8 @@ foreach ($campaigns as $key => $loop)
     
     public function complate(Request $request)
     {
-        \App\Campaign::where('merchant_uid',$request->m_uid)->update(['check_payment'=>true]);
+        Campaign::where('merchant_uid',$request->m_uid)->update(['check_payment'=>true]);
+
         return response()->json(['now'=>true]);
         
 //        include(app_path() . '/Http/Controllers/iamport.php');

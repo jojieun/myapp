@@ -357,7 +357,9 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
            success:function(data){
                if(data.pre_apply){
                    window.location.replace( baseUrl + '#pre_apply' );
-               } else {
+               } else if(data.penalty){
+                         alert('이전 캠페인 리뷰 제출지연으로 ' +data.penalty+'까지 캠페인 신청이 금지되었습니다.');
+                         } else {
                    window.location.replace( baseUrl + '#popup_ok' );
                    }
             },
