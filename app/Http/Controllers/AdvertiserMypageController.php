@@ -175,6 +175,9 @@ class AdvertiserMypageController extends Controller
             'categories.name as category_name'
         )
             ->withCount('reviews')
+            ->with(['campaignReviewers'=>function($q){
+                $q->where('selected',1);
+            }])
             ->with('refund')
             ->get();
         
@@ -272,9 +275,10 @@ class AdvertiserMypageController extends Controller
             }
             //리뷰어만족도
             
-            $sati = \App\Review::where('reviewer_id',$loop->reviewer->id)->avg('satisfaction');
+            $sati = \App\Review::whereHas('reviewer', function ($query) use ($loop) {
+    $query->where('reviewers.id', $loop->reviewer->id);
+})->avg('satisfaction');
             $sati = (int) $sati;
-//            dd($sati);
             if($sati){
                 $loop->sati = $sati.'%';
             } else {
@@ -340,7 +344,9 @@ class AdvertiserMypageController extends Controller
         $nowuser = auth()->guard('advertiser')->user();
         $campaignreviewers = \App\CampaignReviewer::where('campaign_id',$campaign->id)->where('selected',1)->with('reviewer')->get();
         //리뷰구하기
-        $reviews = \App\Review::where('campaign_id',$campaign->id)->with('reviewer')->get();
+        $reviews = \App\Review::whereHas('campaign', function ($query) use ($campaign) {
+    $query->where('campaigns.id', $campaign->id);
+})->with('reviewer')->get();
         
         //리뷰제출완료 디데이 구하기
         $nowdate = Carbon::now();

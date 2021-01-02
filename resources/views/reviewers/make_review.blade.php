@@ -15,11 +15,13 @@
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
-    var nowCam;
+    var nowCam;//캠페인아이디
+    var nowCamRe;//캠페인리뷰어아이디
     $('.my-reviewer').on('click','.submission', function(e){
         e.preventDefault();
         window.location.replace( baseUrl + '#popup_reviewer' );
-       nowCam = $(this).data('c');
+       nowCam = $(this).data('c');//캠페인아이디
+        nowCamRe = $(this).data('cr');//캠페인리뷰어아이디
     });
     //리뷰제출 창에서 제출 클릭시
     $('#submission').on('click', function(e){
@@ -34,7 +36,8 @@
            type:"POST",
            url:"{{route('reviewers.create_review')}}",
             data:{
-            'campaign_id':nowCam,
+                'campaign_id':nowCam,
+                'campaign_reviewer_id':nowCamRe,
                 'url':inputUrl,
                 'after':$('#make_review textarea[name=after]').val(),
             },

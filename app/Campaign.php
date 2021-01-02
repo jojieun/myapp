@@ -39,7 +39,7 @@ class Campaign extends Model
     }
     public function reviews() //리뷰제출 인원 구하기
     {
-        return $this->hasMany(Review::class);
+        return $this->hasManyThrough('App\Review', 'App\CampaignReviewer');
     }
     public function refund() //포인트환불내역구하기
     {

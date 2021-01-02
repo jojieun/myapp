@@ -60,7 +60,7 @@
                 @elseif($type=='end')
                 <p class="num">
                     <span class="title">리뷰제출</span>
-                    <span class="txt"><b>{{$campaign->reviews_count}}</b> / {{$campaign->recruit_number}}</span>
+                    <span class="txt"><b>{{$campaign->reviews_count}}</b> / {{$campaign->campaignReviewers->count()}}</span>
                 </p>
                 @if($campaign->reviews_count>0)
                 <a href="{{route('advertisers.submit_campaign',$campaign->id)}}" class="btn btn-check w125">진행결과 보기</a>
@@ -68,9 +68,9 @@
                 
                 @if($campaign->reviews_count < $campaign->recruit_number)
                 @if($campaign->refund==null)
-                <a href="{{route('advertisers.refund', $campaign->id)}}" class="btn btn-check w125">포인트환불</a>
+<!--                <a href="{{route('advertisers.refund', $campaign->id)}}" class="btn btn-check w125">포인트환불</a>-->
                 @else
-                포인트환불완료
+<!--                포인트환불완료-->
                 @endif
                 @endif
                 @endif

@@ -13,7 +13,7 @@ class PenaltyController extends Controller
             ->whereHas('campaign',function ($query) {
                 $query->whereDate('end_submit', '<', Carbon::now()->toDateString());
             })
-            ->doesntHave('new_review')
+            ->doesntHave('review')
             ->with(['reviewer:id,name,email,mobile_num','campaign:id,name,end_submit','penalty'=>function($query){
                 $query->whereDate('fixed_date', '>', Carbon::now()->toDateString());
             }])

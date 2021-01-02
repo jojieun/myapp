@@ -36,7 +36,7 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select('campaigns.id',
+            ->select('campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -56,7 +56,7 @@ class ReviewerMypageController extends Controller
             $er = $er->addDay();
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif; 
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //        선정**캠페인
         $selectCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
@@ -71,12 +71,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select(
-            'campaign_reviewers.id as campaign_reviewers_id',
+            ->select('campaign_reviewers.id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
             'campaign_reviewers.take_visit_check',
-            'campaigns.id',
+            'campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -97,7 +96,7 @@ class ReviewerMypageController extends Controller
         foreach ($selectCampaigns as $key => $loop)
 		{
              $loop->rightNow = '모집마감';
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //        종료**캠페인
         $endCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
@@ -111,11 +110,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select('campaign_reviewers.id as campaign_reviewers_id',
+            ->select('campaign_reviewers.id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
             'campaign_reviewers.take_visit_check',
-            'campaigns.id',
+            'campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -132,7 +131,7 @@ class ReviewerMypageController extends Controller
         foreach ($endCampaigns as $key => $loop)
 		{
             
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //채널
         $chls = \App\Channel::select('id','url')->get();
@@ -188,8 +187,7 @@ class ReviewerMypageController extends Controller
         ]);
         $nowUser = auth()->user()->id;
         \App\Review::create([
-            'campaign_id'=>$request->campaign_id,
-            'reviewer_id'=>$nowUser,
+            'campaign_reviewer_id'=>$request->campaign_reviewer_id,
             'url'=>$request->url,
             'after'=>$request->after,
         ]);
@@ -237,7 +235,7 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select('campaigns.id',
+            ->select('campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -260,7 +258,7 @@ class ReviewerMypageController extends Controller
             $dif = $er->diff($nowdate)->days;//날짜차이
             $loop->rightNow = $dif; 
             //        신청인원 구하기 
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //        선정**캠페인
         $selectCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
@@ -277,12 +275,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('channels','channels.id','=','campaigns.channel_id')
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
-            ->select(
-            'campaign_reviewers.id as campaign_reviewers_id',
+            ->select('campaign_reviewers.id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
             'campaign_reviewers.take_visit_check',
-            'campaigns.id',
+            'campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -302,7 +299,7 @@ class ReviewerMypageController extends Controller
 		{
             $loop->rightNow = '모집마감'; 
             //        신청인원 구하기 
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //        종료**캠페인
         $endCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
@@ -317,11 +314,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
-            'campaign_reviewers.id as campaign_reviewers_id',
+            'campaign_reviewers.id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
             'campaign_reviewers.take_visit_check',
-            'campaigns.id',
+            'campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -338,7 +335,7 @@ class ReviewerMypageController extends Controller
         foreach ($endCampaigns as $key => $loop)
 		{
             //        신청인원 구하기 
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
         //채널
         $chls = \App\Channel::select('id','url')->get();
@@ -361,8 +358,8 @@ class ReviewerMypageController extends Controller
             ->doesntHave('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString());
-//                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
+                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -370,11 +367,11 @@ class ReviewerMypageController extends Controller
             ->leftjoin('brands','campaigns.brand_id','=','brands.id')
             ->leftjoin('categories','categories.id','=','brands.category_id')
             ->select(
-            'campaign_reviewers.id as campaign_reviewers_id',
+            'campaign_reviewers.id',
             'campaign_reviewers.reviewer_id as reviewer_id',
             'campaign_reviewers.campaign_id',
             'campaign_reviewers.take_visit_check',
-            'campaigns.id',
+            'campaigns.id as campaign_id',
             'campaigns.name',
              'campaigns.form',
             'campaigns.main_image',
@@ -394,12 +391,54 @@ class ReviewerMypageController extends Controller
 		{
             $loop->rightNow = '모집마감'; 
             //        신청인원 구하기 
-            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->id)->count();
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
 		}
+        //        캠페인 마감된 미제출**캠페인
+        $end_notSubmitCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
+            ->where('selected',1)
+            ->doesntHave('review')
+            ->join('campaigns', function($join) {
+                $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
+                    ->whereDate('end_submit', '<', Carbon::now()->toDateString());
+            })
+            ->leftjoin('areas','campaigns.area_id','=','areas.id')
+            ->leftjoin('regions','areas.region_id','=','regions.id')
+            ->leftjoin('channels','channels.id','=','campaigns.channel_id')
+            ->leftjoin('brands','campaigns.brand_id','=','brands.id')
+            ->leftjoin('categories','categories.id','=','brands.category_id')
+            ->select(
+            'campaign_reviewers.id',
+            'campaign_reviewers.reviewer_id as reviewer_id',
+            'campaign_reviewers.campaign_id',
+            'campaign_reviewers.take_visit_check',
+            'campaigns.id as campaign_id',
+            'campaigns.name',
+             'campaigns.form',
+            'campaigns.main_image',
+            'campaigns.recruit_number',
+            'campaigns.offer_point',
+            'campaigns.offer_goods',
+            'campaigns.end_recruit',
+            'campaigns.end_submit',
+            'campaigns.advertiser_id',
+            'areas.name as area_name',
+            'regions.name as region_name',
+            'channels.name as channel_name',
+            'channels.id as channel_id',
+             'categories.name as category_name')->get();
+        //        디데이-신청인원 구하기  
+        foreach ($end_notSubmitCampaigns as $key => $loop)
+		{
+            $loop->rightNow = '모집마감'; 
+            //        신청인원 구하기 
+            $loop->applyCount = \App\CampaignReviewer::where('campaign_id',$loop->campaign_id)->count();
+		}
+
         //채널
         $chls = \App\Channel::select('id','url')->get();
         return view('reviewers.not_submit',[
             'user'=>$nowUser,
+            'end_notSubmitCampaigns'=>$end_notSubmitCampaigns,
             'notSubmitCampaigns'=>$notSubmitCampaigns,
             'chls'=>$chls,
         ]);
@@ -411,11 +450,11 @@ class ReviewerMypageController extends Controller
          $pre = \App\CampaignReviewer::where('campaign_id',$request->camid)->where('reviewer_id', $now_reviewer)->first();
          //패널티여부
          $penalty = \App\Penalty::where('reviewer_id', $now_reviewer)->whereDate('fixed_date', '>=', Carbon::now()->toDateString())->orderBy('fixed_date', 'desc')->first();
-         if($pre){
+         if($pre){//이미 신청한 캠페인일때
              return \Response::json(array(
                     'pre_apply' => true,
                 ));
-         } elseif($penalty){
+         } elseif($penalty){//패널티가 걸려있어 신청 못할 때
              return \Response::json(array(
                     'penalty' => $penalty->fixed_date,
                 ));
