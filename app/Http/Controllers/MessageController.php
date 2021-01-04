@@ -10,7 +10,6 @@ use App\Message;
 
 class MessageController extends Controller
 {
-    
     public function index(Advertiser $advertiser)
     {
         return \Response::json([
