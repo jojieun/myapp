@@ -144,18 +144,21 @@
     });
     $('input.mystar').on('change', function(){
         $.ajax({
-           type:"POST",
-           url:"{{route('advertisers.satisfaction')}}",
+            type:"POST",
+            url:"{{route('advertisers.satisfaction')}}",
             data:{
-            'reviewId':$(this).data('r'),
-            'val':$(this).val(),
-        },
+                reviewId:$(this).data('r'),
+                val:$(this).val(),
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            },
             success: function(data){
             
             },
-               error:function(data){
-            },
+            error:function(data){
+            }
         });
     });
 </script>
+<!--광고주와 채팅-->
+@include('advertisers.popup_chat')
 @endsection

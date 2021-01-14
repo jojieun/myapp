@@ -1,25 +1,25 @@
-<div id="chat_header" data-adid="{{$advertiser->id}}" data-fromad="0">
-    광고주 {{$advertiser->name}}님과 대화중
+<div id="chat_header" data-reid="{{$reviewer->id}}" data-fromad="1">
+    리뷰어 {{$reviewer->name}}님과 대화중
     <a href="#select">채팅창 닫기</a>
 </div>
 <div id="chat_area_wrap">
 <div id="chat_area">
     @foreach ($messages as $day => $message_list)
     <div class="day">- {{ $day }} -</div>
-        <? $isFirst = 1; //광고주 네임 출력관련?>
+        <? $isFirst = 1; //리뷰어 네임 출력관련?>
         @foreach ($message_list as $message)
             @if($message->from_ad)
+            <? $isFirst = 1; ?>
+            <div class="my chat">
+            @else
             <div class="yours chat">
                 @if($isFirst)
                 <? $isFirst = 0; ?>
                 <div class="name">
                     <img src="/img/main/my.jpg"><br>
-                    <span>{{$advertiser->name}}</span>
+                    <span>{{$reviewer->name}}</span>
                 </div>
                 @endif
-            @else
-            <? $isFirst = 1; ?>
-            <div class="my chat">
             @endif
                 <div class="message">
                     <span class="text">{{$message->text}}</span>

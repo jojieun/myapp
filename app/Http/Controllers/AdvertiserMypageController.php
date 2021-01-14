@@ -352,7 +352,7 @@ class AdvertiserMypageController extends Controller
         $nowdate = Carbon::now();
         $er = new Carbon($campaign->end_submit);//리뷰제출마감일
         $er = $er->addDay();
-        $dif = $er->diff($nowdate)->days;//날짜차이
+        $dif = $nowdate->diffInDays($er,false);//날짜차이
         $campaign->rightNow = $dif;
         
         //선정리뷰어통계

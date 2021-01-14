@@ -2,6 +2,7 @@
 <div class="popup term" id="chat_wrap">     
 </div>
 <script>
+    
     var url;
     function makeChat(){
         $.ajax({
@@ -16,13 +17,15 @@
 $('.chat_button').on('click', function(e){
     var ad = $(this).data('ad');//광고주아이디
     var re = $(this).data('re');//리뷰어아이디
-    url = "{{ route('messages.index', [":ad", ":re"]) }}";
+    url = "{{ route('messages.index2', [":ad", ":re"]) }}";
     url = url.replace(':ad', ad);
     url = url.replace(':re', re);
     makeChat();
     window.location.replace( baseUrl + '#popup_chat' );
-//    window.Echo.channel('chats').listen('MessageSent', function (e) {
-    window.Echo.private('chats').listen('MessageSent', e => {
+//    window.Echo.private('chats').listen('MessageSent', e => {
+//        window.Laravel = {!! json_encode([ 'advertiser' => auth()->guard('advertiser')->user()])  !!};
+
+window.Echo.private('adchats').listen('MessageSent', e => {
         
         if (e.message.advertiser_id == ad && e.message.reviewer_id == re) {
             makeChat();
@@ -37,8 +40,8 @@ function save_message(){
             type:"POST",
             url:"{{ route('messages.store') }}",
             data:{
-                advertiser_id:$('#chat_header').data('adid'),
-                reviewer_id:"{{auth()->user()->id}}",
+                advertiser_id:"{{auth()->guard('advertiser')->user()->id}}",
+                reviewer_id:$('#chat_header').data('reid'),
                 from_ad:$('#chat_header').data('fromad'),
                 text:$('#input_message').val(),
             },

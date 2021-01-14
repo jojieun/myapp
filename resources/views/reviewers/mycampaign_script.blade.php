@@ -2,7 +2,7 @@
 @include('reviewers.make_review')
 <!--리뷰수정-->
 @include('reviewers.edit_review')
-<!--광고주채팅-->
+<!--광고주와 채팅-->
 @include('reviewers.popup_chat')
 <script>
     $.ajaxSetup({
@@ -52,13 +52,5 @@
             });
         }
     });
-    //채팅창 열기
-//    $('.chat').on('click', function(e){
-//        e.preventDefault();
-//        window.open(
-//            $(this).attr("href"),
-//            'chat',
-//            'width=320, height=400, top='+(screen.height/2-200)+', left='+(screen.width/2-160)
-//                   );
-//    });
+
 </script>
