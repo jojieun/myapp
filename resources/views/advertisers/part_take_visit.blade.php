@@ -39,7 +39,7 @@
             @endif
         </span>
         <span class="td-btn2">
-                           <a data-re="{{$campaignreviewer->reviewer->id}}" data-ad="{{auth()->guard('advertiser')->user()->id}}" class="btn small chat_button">채팅하기</a>
+                           <a data-re="{{$campaignreviewer->reviewer->id}}" data-ad="{{auth()->guard('advertiser')->user()->id}}" data-cam="{{$campaign->id}}" class="btn small chat_button">채팅하기</a>
         </span>
 	</li>
     @empty

@@ -116,6 +116,7 @@ class AdminController extends Controller
             'finhtml' => \View::make('admin.part_waitcam', array('waitCampaigns' => $waitCampaigns))->render(),
             ]);
    }
+    
     //수정요청 캠페인
     public function modify_campaign()
     {

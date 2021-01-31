@@ -11,7 +11,6 @@
        } 
     });
 // 캠페인 탭 바꾸기
-    
     changeTab();
     $(window).on('hashchange', function(e){
         changeTab();

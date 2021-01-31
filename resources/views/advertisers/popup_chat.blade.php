@@ -1,9 +1,16 @@
-<a href="#select" class="overlay" id="popup_chat"></a>
+<a href="#select" class="overlay close_button" id="popup_chat"></a>
 <div class="popup term" id="chat_wrap">     
 </div>
 <script>
     
     var url;
+    var ad;//광고주아이디
+    var re;//리뷰어아이디
+    var id_cam;//캠페인아이디
+    var nowOpen = false;//현재 채팅창을 보고있는지
+    $('body').on('click','.close_button',function(){
+        nowOpen = false;
+    });
     function makeChat(){
         $.ajax({
        type:"get",
@@ -15,23 +22,28 @@
         });
     }
 $('.chat_button').on('click', function(e){
-    var ad = $(this).data('ad');//광고주아이디
-    var re = $(this).data('re');//리뷰어아이디
-    url = "{{ route('messages.index2', [":ad", ":re"]) }}";
+    nowOpen = true;//채팅창을 보고 있음
+    ad = $(this).data('ad');//광고주아이디
+    re = $(this).data('re');//리뷰어아이디
+    id_cam = $(this).data('cam');//캠페인아이디
+    url = "{{ route('messages.index2', [":ad", ":re", ":id_cam"]) }}";
     url = url.replace(':ad', ad);
     url = url.replace(':re', re);
+    url = url.replace(':id_cam', id_cam);
     makeChat();
     window.location.replace( baseUrl + '#popup_chat' );
-//    window.Echo.private('chats').listen('MessageSent', e => {
-//        window.Laravel = {!! json_encode([ 'advertiser' => auth()->guard('advertiser')->user()])  !!};
 
-window.Echo.private('adchats').listen('MessageSent', e => {
-        
-        if (e.message.advertiser_id == ad && e.message.reviewer_id == re) {
-            makeChat();
-        }
-    });
-    
+//window.Echo.private('adchats').listen('MessageSent', e => {
+//        
+//        if (e.message.advertiser_id == ad && e.message.reviewer_id == re && nowOpen) {
+//            makeChat();
+//        }
+//    });
+    window.Echo.private('App.Advertiser.'+ad).listen('MessageSent', e => {
+          if (e.message.reviewer_id == re && e.message.campaign_id == id_cam && nowOpen) {
+              makeChat();
+          }
+      });
 });
 //message저장
 function save_message(){
@@ -40,9 +52,10 @@ function save_message(){
             type:"POST",
             url:"{{ route('messages.store') }}",
             data:{
-                advertiser_id:"{{auth()->guard('advertiser')->user()->id}}",
-                reviewer_id:$('#chat_header').data('reid'),
-                from_ad:$('#chat_header').data('fromad'),
+                advertiser_id:ad,
+                reviewer_id:re,
+                campaign_id:id_cam,
+                from_ad:1,
                 text:$('#input_message').val(),
             },
             success:function(data){

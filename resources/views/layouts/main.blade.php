@@ -84,7 +84,15 @@
 							</li>
 							<li class="pc-none m-login">
                                 @if(Auth::guard('web')->check())
-                                <span class="my"><a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a></span>
+                                <span class="my"><a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a>
+<!--
+                                    @if(session()->get('new_message_count'))
+                                    <a href="{{route('reviewers.my_campaign').session()->get('new_message_hash')}}" class="new_message">{{session()->get('new_message_count')}}</a>
+                                    @else
+                                    <a class="new_message" style="display:none;"></a>
+                                    @endif
+-->
+                                </span>
 								<span class="logout"><a href="{{route('sessions.destory')}}">로그아웃</a></span>
                                 @elseif(Auth::guard('advertiser')->check())
                                 <span class="my"><a href="{{route('advertisers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a></span>
@@ -126,11 +134,19 @@
 			@if(Auth::guard('web')->check())
             <li class="my">
 				<a href="{{route('reviewers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ Auth::user()->nickname }}님</a>
+                    
 				<ul class="my_list" style="display:none">
 					<li><a href="{{route('reviewers.mypage')}}"><span>마이페이지</span></a></li>
 					<li><a href="{{route('sessions.destory')}}"><span>로그아웃</span></a></li>
 				</ul>
 			</li>
+<!--
+                @if(session()->get('new_message_count'))
+                <a href="{{route('reviewers.my_campaign').session()->get('new_message_hash')}}" class="new_message">{{session()->get('new_message_count')}}</a>
+                @else
+                <a class="new_message" style="display:none;"></a>
+                @endif
+-->
             @elseif(Auth::guard('advertiser')->check())
             <li class="my">
 				<a href="{{route('advertisers.mypage')}}"><img src="/img/main/my.jpg" alt="">{{ auth()->guard('advertiser')->user()->name }}님</a>

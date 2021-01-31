@@ -87,7 +87,11 @@ a.btn.small.null {color:#999; border-color:#999; background-color:#eee;}
 a.btn.big, button.btn.big {  padding: 0 40px; height: 70px; line-height: 68px; font-size: 24px; }
 a.btn.big2, button.btn.big2 {  padding: 0 85px; height: 65px; line-height: 63px; font-size: 22px; }
 a.btn.w50, button.btn.w50{ width: 49.5%;}
-a.btn.btn-check, button.btn.btn-check{ min-width: 150px; height: 40px; line-height:38px; font-size: 15px;  }
+a.btn.btn-check, button.btn.btn-check{ min-width: 150px; height: 40px; line-height:38px; font-size: 15px; }
+a.btn.btn-check{
+    position: relative;
+}
+a.btn.btn-check.msg:after{ content:''; position:absolute; right:10px; top:10px; width: 10px; height:10px; background:#fd0; border-radius:50%;}
 a.btn.h46, button.btn.h46{ min-width: 155px; height: 46px; line-height:44px; font-size: 15px;  }
 a.btn.w125, button.btn.w125{ min-width: 125px; }
 a.btn.w80, button.btn.w80{ min-width: 125px; margin-bottom: 3px; }
@@ -432,8 +436,9 @@ select {
 .leftmenu-title span{ display:block; font-size:17px; margin-top:5px; color:#fff; }
 .leftmenu-title span{ display:block; font-size:17px; margin-top:5px; color:#fff; }
 .leftmenu ul{ padding-bottom:20px; }
-.leftmenu ul li a{ display:inline-block; padding: 35px 20px 0; font-size:18px; }
-.leftmenu ul li a span{ color:#222;}
+.leftmenu ul li a{ display:inline-block; padding: 35px 20px 0; font-size:18px;}
+.leftmenu ul li a span{ color:#222; position: relative;}
+.leftmenu ul li a.msg span:after{ content:''; position:absolute; right:-10px; top:-5px; width: 7px; height:7px; background:#fd0 ;border-radius:50%;}
 .leftmenu ul li a:hover span,
 .leftmenu ul li.on a span{ padding-bottom:5px; border-bottom:4px solid #ff4e4e; color:#ff4e4e; font-weight:700;}
 .leftmenu ul li ul{ margin:20px 0 0; padding: 0;}
@@ -878,7 +883,8 @@ ul.pagination li a.page{ display:block; width:36px; height:36px; line-height:35p
 .campaign-tab li:hover span.title{ color:#222; font-weight:700; }
 
 .mypage-tab{ margin:20px 0; overflow:hidden;}
-.mypage-tab li a{ display:block; width:33.33333%; box-sizing:border-box; height:58px; line-height:58px; border-right:1px solid #ddd; border-top:1px solid #ddd; border-bottom:2px solid #222; float:left; font-size:18px; background:#fff; color:#222; text-align:center; ; transition:all .3s ease;}
+.mypage-tab li a{ display:block; width:33.33333%; box-sizing:border-box; height:58px; line-height:58px; border-right:1px solid #ddd; border-top:1px solid #ddd; border-bottom:2px solid #222; float:left; font-size:18px; background:#fff; color:#222; text-align:center; ; transition:all .3s ease; position: relative;}
+.mypage-tab li a.msg:after{ content:''; position:absolute; right:100px; top:10px; width: 7px; height:7px; background:#fd0; border-radius:50%;}
 .mypage-tab li:first-child a{ border-left:1px solid #ddd; }
 .mypage-tab li a.on{ border:2px solid #222; border-bottom:none;   }
 

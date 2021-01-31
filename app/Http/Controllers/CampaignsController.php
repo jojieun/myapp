@@ -478,7 +478,7 @@ foreach ($campaigns as $key => $loop)
           \App\Refund::create([
             'advertiser_id'=>$nowuser->id,
               'campaign_id'=>$campaign->id,
-            'description'=>substr($campaign->name, 0 ,50).'... 캠페인 결제 사용',
+            'description'=>substr($campaign->name, 0, 30).'... 캠페인 결제 사용',
             'point'=>$request->use_point,
               'kinds'=>'o'
         ]);  
@@ -659,26 +659,90 @@ foreach ($campaigns as $key => $loop)
             'promotions' => \App\Promotion::with('campaignpromotions')->get(),
         ]);
     }
-    //관리자 수정요청
+    //관리자 수정요청 //사용안하는것 같음 - 확인해보고삭제
     public function edit_a(Campaign $campaign)
     {
-        return view('campaigns.edit',[
-            'campaign'=>$campaign,
-            'user'=>auth()->guard('advertiser')->user(),
-            'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
-            'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
-            'categories' => \App\Category::get(),
-            'channels' => \App\Channel::get(),
-            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
-            'exposures' => \App\Exposure::with('campaignexposures')->get(),
-            'promotions' => \App\Promotion::with('campaignpromotions')->get(),
-        ]);
+//        return view('campaigns.edit',[
+//            'campaign'=>$campaign,
+//            'user'=>auth()->guard('advertiser')->user(),
+//            'campaigns'=>auth()->guard('advertiser')->user()->campaigns()->get(),
+//            'brands'=>Auth::guard('advertiser')->user()->brands()->with('category')->get(),
+//            'categories' => \App\Category::get(),
+//            'channels' => \App\Channel::get(),
+//            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),
+//            'exposures' => \App\Exposure::with('campaignexposures')->get(),
+//            'promotions' => \App\Promotion::with('campaignpromotions')->get(),
+//        ]);
         
         return \Response::json([
-            'showhtml' => \View::make('admin.part_edit_campaign', array('campaign' => $campaign))->render(),
+            'showhtml' => \View::make('admin.part_edit_campaign', array(
+                'campaign' => $campaign,
+                'channels' => \App\Channel::select('id','name')->get(),
+            'regions' => \App\Region::orderBy('arraynum', 'desc')->get(),))->render()
             ]);
     }
-    //관리자 수정요청 저장
+    //관리자 수정 저장
+    public function update_a(Request $request){
+        $campaign = Campaign::find($request->campaign_id);
+        $campaign->channel_id=$request->channel_id;
+//        $campaign->brand_id=$request->brand_id;
+        $campaign->name=$request->name;
+//        $campaign->form=$request->form;
+        $campaign->recruit_number=$request->recruit_number;
+        $campaign->offer_point=$request->offer_point;
+        $campaign->offer_goods=$request->offer_goods;
+        $campaign->start_recruit=$request->start_recruit;
+        $campaign->end_recruit=$request->end_recruit;
+        $campaign->end_submit=$request->end_submit;
+        $campaign->contact=$request->contact;
+        $campaign->mission=$request->mission;
+        $campaign->keyword=$request->keyword;
+        $campaign->etc=$request->etc;
+        if($request->form=='v'){
+            $campaign->area_id=$request->area_id;
+            $campaign->visit_time=$request->visit_time;
+            $campaign->zipcode=$request->zipcode;
+            $campaign->address=$request->address;
+            $campaign->detail_address=$request->detail_address;
+        }
+
+        if($request->hasfile('main_image')){
+            $file = $request->file('main_image');
+            $filename = time().'1'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            $img = Image::make($file);
+            $img->orientate();
+            $img->fit(530,530);
+            $img->save($location);
+            $campaign->main_image = $filename;
+        }
+        if($request->hasfile('sub_image1')){
+            $file = $request->file('sub_image1');
+            $filename = time().'2'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image1 = $filename;
+        }
+        if($request->hasfile('sub_image2')){
+            $file = $request->file('sub_image2');
+            $filename = time().'3'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image2 = $filename;
+        }
+        if($request->hasfile('sub_image3')){
+            $file = $request->file('sub_image3');
+            $filename = time().'4'.filter_var($file->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $location = 'files/'.$filename;
+            Image::make($file)->save($location);
+            $campaign->sub_image3 = $filename;
+        }
+        $campaign->save();
+        return \Response::json([
+            'showhtml' => \View::make('admin.part_showwait', array('campaign' => $campaign))->render(),
+            ]);
+    }
+    //관리자 수정요청 저장 //사용안하는것 같음 - 확인해보고삭제
     public function update(Request $request, Campaign $campaign)
     {
         $campaign->update($request->all());
@@ -795,13 +859,13 @@ foreach ($campaigns as $key => $loop)
         if($usep=\App\Refund::where('campaign_id',$campaign->id)->where('kinds','o')->first()){
             $point += $usep->point;
         }
-        $nowuser = auth()->guard('advertiser')->user();
+        $nowuserId = $campaign->advertiser_id;
         //환불실행
-        \App\Advertiser::whereId($nowuser->id)->increment('point', $point);
+        \App\Advertiser::whereId($nowuserId)->increment('point', $point);
         \App\Refund::create([
-            'advertiser_id'=>$nowuser->id,
-            'description'=>substr($campaign->name, 0 ,50).'... 캠페인 취소 환급',
-            'point'=>$point
+            'advertiser_id'=>$nowuserId,
+            'description'=>substr($campaign->name, 0, 30).'... 캠페인 취소 환급',
+            'point'=>$point,
         ]);
         $campaign->delete();
         return response()->json([], 204);

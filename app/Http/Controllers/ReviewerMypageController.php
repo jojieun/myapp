@@ -91,6 +91,10 @@ class ReviewerMypageController extends Controller
             'channels.id as channel_id',
              'categories.name as category_name')
             ->with('review')
+            ->withCount(['messages'=>function($query){
+              $query->where('from_ad',1)
+                  ->where('new',1);
+            }])
             ->get();
         //        디데이-신청인원 구하기  
         foreach ($selectCampaigns as $key => $loop)
@@ -127,7 +131,13 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->with('review')->get();
+             'categories.name as category_name')
+            ->with('review')
+            ->withCount(['messages'=>function($query){
+              $query->where('from_ad',1)
+                  ->where('new',1);
+            }])
+            ->get();
         //        디데이-신청인원 구하기  
         foreach ($endCampaigns as $key => $loop)
 		{
@@ -264,7 +274,6 @@ class ReviewerMypageController extends Controller
         //        선정**캠페인
         $selectCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)
-            ->with('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
                     ->whereDate('end_recruit','<',Carbon::now()->toDateString())
@@ -294,7 +303,12 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->get();
+             'categories.name as category_name')
+            ->with('review')
+            ->withCount(['messages'=>function($query){
+              $query->where('from_ad',1)
+                  ->where('new',1);
+            }])->get();
         //        디데이-신청인원 구하기  
         foreach ($selectCampaigns as $key => $loop)
 		{
@@ -332,7 +346,12 @@ class ReviewerMypageController extends Controller
             'regions.name as region_name',
             'channels.name as channel_name',
             'channels.id as channel_id',
-             'categories.name as category_name')->with('review')->get();
+             'categories.name as category_name')
+            ->with('review')
+            ->withCount(['messages'=>function($query){
+              $query->where('from_ad',1)
+                  ->where('new',1);
+            }])->get();
          
         foreach ($endCampaigns as $key => $loop)
 		{

@@ -30,4 +30,8 @@ class CampaignReviewer extends Model
     {
         return $this->hasOne('App\Penalty', 'reviewer_id', 'reviewer_id')->orderBy('fixed_date', 'desc');
     }
+    public function messages(){
+        return $this->hasMany('App\Message', 'campaign_id', 'campaign_id');
+    }
+    
 }

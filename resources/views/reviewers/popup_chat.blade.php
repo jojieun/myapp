@@ -1,8 +1,25 @@
-<a href="#select" class="overlay" id="popup_chat"></a>
+<a href="#select" class="overlay close_button" id="popup_chat"></a>
 <div class="popup term" id="chat_wrap">     
 </div>
 <script>
     var url;
+    var ad;//광고주아이디
+    var re;//리뷰어아이디
+    var id_cam;//캠페인아이디
+    var before;//채팅창 열기 전 해시
+    var nowOpen = false;//현재 채팅창을 보고있는지
+    $('body').on('click','.close_button',function(e){
+        nowOpen = false;
+        e.preventDefault();
+        window.location.replace( baseUrl + before );
+//        $.ajax({
+//            type:"get",
+//            url:"{{route('new_messages')}}",
+//            success: function(data){
+//                window.location.replace( baseUrl + before );
+//            }
+//        });
+    });
     function makeChat(){
         $.ajax({
        type:"get",
@@ -10,25 +27,28 @@
         success: function(data){
             $('#chat_wrap').html(data.showhtml);
             $('#chat_area_wrap').scrollTop($('#chat_area').height());
-            }
+        }
         });
     }
 $('.chat_button').on('click', function(e){
-    var ad = $(this).data('ad');//광고주아이디
-    var re = $(this).data('re');//리뷰어아이디
-    url = "{{ route('messages.index', [":ad", ":re"]) }}";
+    nowOpen = true;//채팅창을 보고 있음
+    ad = $(this).data('ad');//광고주아이디
+    re = $(this).data('re');//리뷰어아이디
+    id_cam = $(this).data('cam');//캠페인아이디
+    url = "{{ route('messages.index', [":ad", ":re", ":id_cam"]) }}";
     url = url.replace(':ad', ad);
     url = url.replace(':re', re);
+    url = url.replace(':id_cam', id_cam);
+    before = window.location.hash;//채팅창 열기 전 해시
     makeChat();
+    $(this).removeClass('msg');
     window.location.replace( baseUrl + '#popup_chat' );
-//    window.Echo.channel('chats').listen('MessageSent', function (e) {
-    window.Echo.private('chats').listen('MessageSent', e => {
-        
-        if (e.message.advertiser_id == ad && e.message.reviewer_id == re) {
-            makeChat();
-        }
-    });
-    
+    $('.close_button').attr('href', before);
+      window.Echo.private('App.User.'+re).listen('MessageSent', e => {
+          if (e.message.advertiser_id == ad && e.message.campaign_id == id_cam && nowOpen) {
+              makeChat();
+          }
+      });
 });
 //message저장
 function save_message(){
@@ -37,9 +57,10 @@ function save_message(){
             type:"POST",
             url:"{{ route('messages.store') }}",
             data:{
-                advertiser_id:$('#chat_header').data('adid'),
-                reviewer_id:"{{auth()->user()->id}}",
-                from_ad:$('#chat_header').data('fromad'),
+                advertiser_id:ad,
+                reviewer_id:re,
+                campaign_id:id_cam,
+                from_ad:0,
                 text:$('#input_message').val(),
             },
             success:function(data){

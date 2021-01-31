@@ -49,7 +49,7 @@
             @if($option=='apply')
             <a href="{{ route('campaigns.show', [$campaign->campaign_id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w125">캠페인보기</a>
             @else
-            <a class="btn btn-check w80 chat_button" data-ad="{{$campaign->advertiser_id}}" data-re="{{auth()->user()->id}}">광고주채팅</a>
+            <a class="btn btn-check w80 chat_button @if($campaign->messages_count) msg @endif" data-ad="{{$campaign->advertiser_id}}" data-re="{{auth()->user()->id}}" data-cam="{{$campaign->campaign_id}}" >광고주채팅</a>
                 @if($option=='select')
                 <a href="{{ route('campaigns.show', [$campaign->campaign_id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w80">캠페인보기</a>
                     @if($campaign->take_visit_check==0)

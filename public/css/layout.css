@@ -66,6 +66,22 @@
 	.topmenu li:nth-child(2) a{ display:inline-block; padding-top:26px; background:url(/img/common/ico_login.gif) no-repeat center 0; background-size: 24px;}
 	.topmenu li:nth-child(3) a{ display:inline-block; padding-top:26px; background:url(/img/common/ico_join.gif) no-repeat center 0; background-size: 24px;}
 	.topmenu li.my a{ height: 100px; line-height: 100px; background:none; padding-top:5px; font-size:16px; line-height: 30px; font-weight:500;}
+.topmenu li.my a.msg:after{ content:''; position:absolute; right:-13px; top:0px; width: 7px; height:7px; background:#ffdd00;border-radius:50%;}
+.topmenu a.new_message{
+    background-color:#fd0;
+    color:white;
+    border-radius: 20px;
+    position: absolute;
+    top:0;
+    right: -28px;
+    width:24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 11px;
+    padding:0;
+}
 	.topmenu li.my a img{ width: 30px; border-radius:15px; margin-right:8px;}
 	.topmenu li.my ul.my_list{ position:absolute; top:58px; right:0; padding: 10px; border:1px solid #333; background: #fff;}
 	.topmenu li.my ul.my_list li { float:none; margin:0;}
@@ -271,7 +287,20 @@ footer{ position:relative; width: 1660px; margin:0 auto; padding:40px 0; border-
 	.main_menus ul#main_menus li.m-login span a{ height: 30px; line-height: 30px; font-size:15px; color:#222; }
 	.main_menus ul#main_menus li.m-login span:nth-child(1) a{ display:inline-block; padding-left:24px; background:url(/img/common/ico_login.gif) no-repeat 0 5px; background-size: 18px;}
 	.main_menus ul#main_menus li.m-login span:nth-child(2) a{ display:inline-block; padding-left:24px; background:url(/img/common/ico_join.gif) no-repeat 0 5px; background-size: 18px;}
-	.main_menus ul#main_menus li.m-login span.my a{ background:none; padding-left:0; }
+	.main_menus ul#main_menus li.m-login span.my a{ background:none; padding-left:0; position: relative;}
+    .main_menus ul#main_menus li.m-login span.my a.new_message{
+        background-color:#fd0;
+    color:white;
+    border-radius: 20px;
+    width:24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 11px;
+    padding:0;
+    }
+    .main_menus ul#main_menus li.m-login span.my a.msg:after{ content:''; position:absolute; right:-10px; top:0px; width: 7px; height:7px; background:#fd0;border-radius:50%;}
 	.main_menus ul#main_menus li.m-login span.my a img{width: 30px; border-radius:15px; margin-right:6px;}
 	.main_menus ul#main_menus li.m-login span.logout a{ background:url(/img/common/ico_logout.gif) no-repeat 0 5px; background-size: 18px;}
 

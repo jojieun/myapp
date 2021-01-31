@@ -125,8 +125,10 @@ Route::get('admin/waitConfirmCam', 'AdminController@waitConfirmCam')->name('admi
 Route::get('admin/showwait/{campaign}', 'AdminController@showwait')->name('admin.showwait');
 //캠페인검수 승인
 Route::post('admin/confirmcampaign', 'AdminController@confirmCampaign')->name('admin.confirmcampaign');
-//캠페인검수 수정
-Route::get('admin/edit_a/{campaign}','CampaignsController@storeEnd')->name('admin.edit_a');
+//캠페인검수 수정창 열어오기
+Route::get('admin/edit_a/{campaign}','CampaignsController@edit_a')->name('admin.edit_a');
+//캠페인검수 수정 열어오기
+Route::post('admin/update_a','CampaignsController@update_a')->name('campaigns.update_a');
 
 //수정요청 캠페인
 Route::get('admin/modify_campaign', 'AdminController@modify_campaign')->name('admin.modify_campaign');
@@ -257,6 +259,12 @@ Route::get('admin/ai_bigdata','AdminController@ai_bigdata')->name('admin.ai_bigd
 
 
 /******리뷰어마이페이지*********/
+//새메시지 개수 리턴
+Route::get('new_messages',[
+    'as'=>'new_messages',
+    'uses' => 'SessionsController@get_new_message'
+]);
+
 //마이페이지 메인
 Route::get('reviewer/mypage',[
     'as'=>'reviewers.mypage',

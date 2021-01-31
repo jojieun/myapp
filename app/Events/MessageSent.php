@@ -35,9 +35,14 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [
-            new PrivateChannel('chats'),
-            new PrivateChannel('adchats'),
-        ];
+        if($this->message->from_ad){
+            return new PrivateChannel('App.User.'.$this->message->reviewer_id);
+        } else {
+            return new PrivateChannel('App.Advertiser.'.$this->message->advertiser_id);
+        }
+//        return [
+//            new PrivateChannel('chats'),
+//            new PrivateChannel('adchats'),
+//        ];
     }
 }

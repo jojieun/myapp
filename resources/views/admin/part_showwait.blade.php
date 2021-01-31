@@ -91,6 +91,10 @@
             <th>리뷰키워드</th>
             <td>{{$campaign->keyword}}</td>
         </tr>
+        <tr>
+            <th>기타사항</th>
+            <td>{{$campaign->etc}}</td>
+        </tr>
         @if($campaign->form=='v')
         <tr>
             <th>지역</th>
@@ -109,7 +113,11 @@
         </tr>
         @endif
         <tr>
-            <td colspan="2" class="last"><button class="confirm" value="{{$campaign->id}}">검수하기</button></td>
+            <td colspan="2" class="last">
+                <button class="confirm" value="{{$campaign->id}}">검수하기</button>
+                <button class="modify" value="{{$campaign->id}}">수정하기</button>
+                <button class="del" value="{{$campaign->id}}">삭제하기</button>
+            </td>
         </tr>
     </table>
 

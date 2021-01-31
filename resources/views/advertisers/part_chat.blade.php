@@ -1,6 +1,6 @@
-<div id="chat_header" data-reid="{{$reviewer->id}}" data-fromad="1">
+<div id="chat_header">
     리뷰어 {{$reviewer->name}}님과 대화중
-    <a href="#select">채팅창 닫기</a>
+    <a href="#select" class="close_button">채팅창 닫기</a>
 </div>
 <div id="chat_area_wrap">
 <div id="chat_area">

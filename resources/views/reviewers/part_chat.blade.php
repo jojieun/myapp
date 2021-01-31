@@ -1,6 +1,6 @@
-<div id="chat_header" data-adid="{{$advertiser->id}}" data-fromad="0">
+<div id="chat_header">
     광고주 {{$advertiser->name}}님과 대화중
-    <a href="#select">채팅창 닫기</a>
+    <a href="#select" class="close_button">채팅창 닫기</a>
 </div>
 <div id="chat_area_wrap">
 <div id="chat_area">
@@ -36,4 +36,7 @@
 <div id="input_chat">
     <input id="input_message">
     <button id="send_message" onclick="save_message();">^</button>
-</div>     
+</div>
+    <script>
+    $('.close_button').attr('href', before);
+    </script>
