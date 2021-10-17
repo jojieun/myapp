@@ -8,7 +8,6 @@
 <div class="right-content">
     <h2 class="mb70 m-text-left">출금신청</h2>
 
-    <!-- 리뷰전략 등록-->
     <form method="post" action="{{ route('reviewers.save_withdraw') }}" enctype="multipart/form-data">
         {!! csrf_field() !!}
         <div class="table_form2 my-point">

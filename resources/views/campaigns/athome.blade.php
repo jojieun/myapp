@@ -118,6 +118,9 @@
     //필터 ajax
     function getDatas() {
     $.ajax({
+        headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         url : "{{ route('athome') }}",
         type : "post",
         dataType: 'json',

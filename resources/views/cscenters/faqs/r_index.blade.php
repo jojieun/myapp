@@ -52,6 +52,9 @@ $.ajaxSetup({
         $(this).addClass('on');
         var nowc = $(this).data('id');
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         url : "/reviewer_faqs_list/"+nowc,
         type : "post",
 //        dataType: 'json',

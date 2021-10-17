@@ -31,6 +31,8 @@ Route::post('campaigns/firststore','CampaignsController@firstStore')->name('camp
 Route::post('campaigns/firststore2','CampaignsController@firstStore2')->name('campaigns.firststore2');
 Route::post('campaigns/secondstore','CampaignsController@secondStore')->name('campaigns.secondstore');
 Route::post('campaigns/makearea','CampaignsController@makeArea')->name('campaigns.makearea');
+//이전캠페인 불러오기
+Route::get('campaigns/before_campaign','CampaignsController@before_campaign')->name('campaigns.before_campaign');
 //ajax 저장
 Route::post('campaigns/store_c','CampaignsController@store_c')->name('campaigns.store_c');
 Route::post('campaigns/complate','CampaignsController@complate')->name('campaigns.complate');

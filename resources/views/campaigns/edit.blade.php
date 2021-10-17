@@ -400,6 +400,9 @@
         var end_recruit = $("input[name=end_recruit]").val();
         var end_submit = $("input[name=end_submit]").val();
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:"{{ route('campaigns.firststore2') }}",
            data:{
@@ -450,6 +453,9 @@
         var $data = new FormData();
         $data.append('region', now);
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         type: 'POST',
         url: "{{ route('campaigns.makearea') }}",
         data: $data,
@@ -482,6 +488,9 @@
         var brand_name = $("input[name=brand_name]").val();
         var category_id = $("select[name=category_id]").val();
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:"{{ route('campaigns.brandstore') }}",
            data:{brand_name:brand_name, category_id:category_id},

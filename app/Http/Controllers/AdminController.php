@@ -231,7 +231,7 @@ class AdminController extends Controller
     {
         $campaign_reviewers = \App\CampaignReviewer::where('campaign_id',$camId)
             ->where('selected',1)
-            ->with(['new_review','reviewer:id,email,name'])->get();
+            ->with(['review','reviewer:id,email,name'])->get();
         return \Response::json([
             'finhtml' => \View::make('admin.part_submit_campaign_reviewers', array('campaign_reviewers' => $campaign_reviewers))->render(),
             ]);
@@ -333,7 +333,7 @@ class AdminController extends Controller
     //캠페인 노출 옵션 업데이트
     public function update_exposure(Request $request, Exposure $exposure)
     {
-        $exposure->update($request->only('name','price','limit','instruction'));
+        $exposure->update($request->only('name','price','limit','instruction','fee_waiver'));
         return redirect(route('admin.exposure'));
     }
     //캠페인 홍보 옵션 설정
@@ -354,7 +354,7 @@ class AdminController extends Controller
     //캠페인 홍보 옵션 업데이트
     public function update_promotion(Request $request, Promotion $promotion)
     {
-        $promotion->update($request->only('name','price','limit','instruction'));
+        $promotion->update($request->only('name','price','limit','instruction','fee_waiver'));
         return redirect(route('admin.promotion'));
     }
     

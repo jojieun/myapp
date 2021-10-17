@@ -244,6 +244,9 @@ $(function(){
         console.log(rsp.merchant_uid);
         
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
 				type : 'POST',
 				url : "{{ route('reviewer.certification')}}",
 				dataType : 'json',

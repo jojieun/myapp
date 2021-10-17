@@ -26,7 +26,13 @@
                     <textarea rows="4" name="instruction">{{ old('instruction', $exposure->instruction) }}</textarea>
                 </td>
             </tr>
+            <tr>
+                <th>수수료면제인원</th>
+                <td>
+                    <input name="fee_waiver" value="{{ old('fee_waiver', $exposure->fee_waiver) }}">
+                </td>
+            </tr>
         </table>
-        <button type="submit">답변입력</button>
+        <button type="submit">수정</button>
     </form>
     <a href="#close" class="close"></a>

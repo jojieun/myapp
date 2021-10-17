@@ -45,9 +45,9 @@
 				<!-- 기본정보 입력 -->
 				<div class="">
 					<!-- 이전 캠페인 불러오기 -->
-<!--
 					<div class="select-style01 mb20">
-						<select name="" type="text" id="">
+						<select name="" type="text" id="before_campaign">
+                            <option value="">이전 캠페인 불러오기</option>
 							@forelse($campaigns as $campaign)
 							<option value="{{ $campaign->id }}">{{ $campaign->name }} [등록일 : {{ $campaign->updated_at }}]</option>		
                                      @empty
@@ -55,7 +55,6 @@
                                      @endforelse
 						</select>
 					</div>
--->
 					<!-- //이전 캠페인 불러오기 -->
 					<div class="table_form2">
 						<dl>
@@ -195,8 +194,9 @@
 						<dd class="{{ $errors->has('main_image') ? 'has-error' : '' }}">
 							<div class="file-area">
 								<span class="upload">
+                                    <input type="hidden" name="before_main_image" value="">
 									<label for="file" @if(old('main_image')) style="background-image:url(/files/{{old('main_image')}});" @endif>									
-										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>	
+										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
 									</label>
 								</span>
 								<span class="add-txt">※ 대표이미지는 530*530 이상 정사각형 사이즈로 작업하여 업로드해주세요.</span>
@@ -210,16 +210,22 @@
 						<dd class="">
 							<div class="file-area">
 								<span class="upload2 {{ $errors->has('sub_image1') ? 'has-error' : '' }}">
-									<label for="file1"><input name="sub_image1" type="file" id="file1" value="{{ old('detail_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                    <img src="" width="100" class="before_sub_img" id="before_sub_image1"><input type="checkbox" name="del_image1" id="del_image1" class="del_image"><label for="del_image1" class="del_image">기존 이미지 삭제</label>
+                                    <input type="hidden" class="before_sub_img" name="before_sub_image1" value="">
+									<label for="file1"><input name="sub_image1" type="file" id="file1" value="{{ old('sub_image1') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image1','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image1"></span>
 								<span class="upload2 {{ $errors->has('sub_image2') ? 'has-error' : '' }}">
-									<label for="file2"><input name="sub_image2" type="file" id="file2" value="{{ old('detail_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
+                                    <img src="" width="100" class="before_sub_img" id="before_sub_image2"><input type="checkbox" name="del_image2" id="del_image2" class="del_image"><label for="del_image2" class="del_image">기존 이미지 삭제</label>
+                                    <input type="hidden" class="before_sub_img" name="before_sub_image2" value="">
+									<label for="file2"><input name="sub_image2" type="file" id="file2" value="{{ old('sub_image2') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('sub_image2','<span class="red">:message</span>')!!}
 								</span>
                                 <span class="red" id="sub_image2"></span>
 								<span class="upload2 {{ $errors->has('sub_image3') ? 'has-error' : '' }}">
+                                    <img src="" width="100" class="before_sub_img" id="before_sub_image3"><input type="checkbox" name="del_image3" id="del_image3" class="del_image"><label for="del_image3" class="del_image">기존 이미지 삭제</label>
+                                    <input type="hidden" class="before_sub_img" name="before_sub_image3" value="">
 									<label for="file3"><input name="sub_image3" type="file" id="file3" value="{{ old('sub_image3') }}" placeholder="상세이미지" class="mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/></label>
                                     {!! $errors->first('detail_image3','<span class="red">:message</span>')!!}
 								</span>
@@ -266,7 +272,7 @@
                             <span class="red" id="detail_address"></span>
 						</dd>
 					</dl>
-                        </div>
+                </div>
 					<dl class="bar">
 						<dt>담당자 연락처</dt>
 						<dd class="{{ $errors->has('contact') ? 'has-error' : '' }}"><input name="contact" type="text" id="" value="{{ old('contact') }}" placeholder="선정된 리뷰어에게만 공개됩니다." class="full_width" />
@@ -323,7 +329,7 @@
 								
                                     @forelse($exposures as $exposure)
                                     <span class="pay-option">
-									<input name="exposure_id" type="radio" value="{{$exposure->id}}" id="option{{$exposure->id}}"/>	
+									<input name="exposure_id" type="radio" value="{{$exposure->id}}" id="option{{$exposure->id}}" data-fee_waiver="{{$exposure->fee_waiver}}"/>	
 									<label for="option{{$exposure->id}}" class="expo @if($exposure->limit < count($exposure->campaignexposures)) notwork @endif">
 										<h3>{{$exposure->name}}</h3>
 										<p class="txt">{!!$exposure->instruction!!}</p>
@@ -340,7 +346,7 @@
 							<dd>
                                 @forelse($promotions as $promotion)
 								<span class="pay-option">
-									<input name="promotion_id" type="radio" id="poption{{$promotion->id}}" value="{{$promotion->id}}"/>	
+									<input name="promotion_id" type="radio" id="poption{{$promotion->id}}" value="{{$promotion->id}}"  data-fee_waiver="{{$promotion->fee_waiver}}"/>	
 									<label for="poption{{$promotion->id}}" class="promo @if($promotion->limit!= null && $promotion->limit < count($promotion->campaignpromotions)) notwork @endif">
 										<h3>{{$promotion->name}}</h3>
 										<p class="txt">{!!$promotion->instruction!!}</p>
@@ -352,19 +358,35 @@
                                 @endforelse
 							</dd>
 						</dl>
-						<dl>
-							<dt>결제내역</dt>
+                        <dl>
+							<dt>리뷰어 <span id="people">0</span>명 선정시 예상비용</dt>
 							<dd>
 								<div class="price-list">
                                     <p>
-										<span>중계수수료(모집인원X5,000원)</span>
+										<span>중개수수료(선정인원X5,000원)<strong class="if_pay">-옵션구매<b id="fee_waiver">0</b>명면제</strong></span>
 										<span class="price"><b id="basic_price">10,000</b>원</span>
 									</p>
 									<p>
 										<span>리뷰어 제공 포인트</span>
 										<span class="price"><b id="point_price">25,000</b>원</span>
-									</p>										
-									<p id="exposure_price_wrap" class="hide">
+									</p>
+									<p class="total-price">
+										<span>합계</span>
+										<span class="price"><b class="orange" id="expectation_total_price">25,000</b><span class="orange">원</span></span>
+									</p>
+								</div>
+								<div class="price-pay">
+									<p>+부가세(10%) <span id="expectation_vat">000</span>원</p>
+									<p class="txt">총 예상비용</p>
+									<p class="price"><b id="expectation_final_price">50,000</b>원</p>
+								</div>
+							</dd>
+						</dl>
+						<dl class="if_pay">
+							<dt>결제내역</dt>
+							<dd>
+								<div class="price-list">	
+									<p id="exposure_price_wrap" class="if_pay">
 										<span>노출 옵션</span>
 										<span class="price"><b id="exposure_price">0</b>원</span>
 									</p>
@@ -377,15 +399,16 @@
 										<span class="price"><b class="orange" id="total_price">25,000</b><span class="orange">원</span></span>
 									</p>
 								</div>
-								<div class="price-pay">
+                                <div class="price-pay">
 									<p>+부가세(10%) <span id="vat">000</span>원</p>
 									<p class="txt">총 결제금액</p>
 									<p class="price"><b id="final_price">50,000</b>원</p>
                                     <input type="hidden" name="payment">
+                                    <input type="hidden" name="fee_waiver">
 								</div>
 							</dd>
 						</dl>
-                        <dl>
+                        <dl class="if_pay">
 							<dt>포인트사용</dt>
 							<dd>
                                 <div class="price-list">
@@ -398,7 +421,7 @@
                                 </div>
 							</dd>
 						</dl>
-						<dl>
+						<dl class="if_pay">
 							<dt>결제방법</dt>
 							<dd class="mt10">					
 								<span class="input-button"><input name="pay_method" type="radio" id="pay1" value="card" checked><label for="pay1">신용카드</label></span>
@@ -415,7 +438,7 @@
 					<a class="btn" onclick="contentShow(1)">이전단계</a>
                     
 <!--					<button type="submit" class="btn black">결제진행</button>-->
-                    <button type="button" id="store_c" class="btn black">결제진행</button>
+                    <button type="button" id="store_c" class="btn black">캠페인 등록</button>
 				</div>
 		</div>
 </form>
@@ -465,14 +488,75 @@
  <!-- iamport.payment.js -->
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-    //결재진행 중복클릭 금지
-    var notWork = true;
-    
-    //    content보기 설정
-    $(function(){
-        contentShow(0);
+    var use_point = 0;
+    var expectation_total = 0;//결제예상금액
+    var total = 0;//결제금액
+    var fee_waiver = 0; //수수료 면제 인원
+    var notWork = true;//결재진행 중복클릭 금지
+    var before_area = -1;//이전 캠페인 불러오기 지역 선택 관련
+    function contentShow(now){
+        $('.right-content').css({
+            height:0
+        }).eq(now).removeAttr('style');
+        if(now==2){
+            var recruit_number = $('input[name=recruit_number]').val();
+            $('#people').html(recruit_number);
+            var pp = $('input[name=offer_point]').val()*recruit_number;
+            var bp = $('input[name=recruit_number]').val() * 5000;
+            $('#point_price').html(money(pp));
+            $('#basic_price').html(money(bp));
+            totalprice();
+        }
+    };
+    //    결제총합
+    function totalprice(){
+        var exposure_fee_waiver = $('input[name=exposure_id]:checked').data('fee_waiver');
+        exposure_fee_waiver = exposure_fee_waiver?exposure_fee_waiver:0;
+        var promotion_fee_waiver = $('input[name=promotion_id]:checked').data('fee_waiver');
+        promotion_fee_waiver = promotion_fee_waiver?promotion_fee_waiver:0;
+        fee_waiver = exposure_fee_waiver + promotion_fee_waiver;
+        $('input[name=fee_waiver]').val(fee_waiver);
+        $('#fee_waiver').html(fee_waiver);
+        total =  notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
+        if(total>0){
+            $('#store_c').html('결제진행');
+            $('.if_pay').show();
+        } else{
+            $('#store_c').html('캠페인 등록');
+            $('.if_pay').hide();
+        }
+        var basic_price = $('input[name=recruit_number]').val()*5000-5000*fee_waiver;
+        if(basic_price<0){
+            basic_price =0;
+        }
+        $('#basic_price').html(money(basic_price));
+        expectation_total = basic_price+notmoney($('#point_price').html());
+        var expectation_vat = expectation_total*0.1;
+        var vat = (total-use_point)*0.1;
+        var expectation_final = expectation_total+expectation_vat;
+        var final = (total-use_point)+vat;
+        $('#expectation_total_price').html(money(expectation_total));
+        $('#total_price').html(money((total-use_point)));
+        $('#expectation_vat').html(money(expectation_vat));
+        $('#vat').html(money(vat));
+        $('#expectation_final_price').html(money(expectation_final));
+        $('#final_price').html(money(final));
+        $('input[name=payment]').val(final);
+    }
+//    --------결제총합
+    //도큐먼트 레디
+$(function(){
+    $.ajaxSetup({
+       headers: {
+           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+       } 
     });
-    
+    //결제관련 안보기
+    $('.if_pay').hide();
+    //기존 이미지 관련 안보기
+    $('.del_image, .before_sub_img').hide();
+    //    content보기 설정
+        contentShow(0);
 //    폼 전송 전 체크
     $('button[type=submit]').click(function(){
        if($('#checkAgree1').is(':checked')) {
@@ -482,20 +566,7 @@
            return false;
        }
     });
-    var use_point = 0;
-    var total = 0;
-    function contentShow(now){
-        $('.right-content').css({
-            height:0
-        }).eq(now).removeAttr('style');
-        if(now==2){
-            var pp = $('input[name=offer_point]').val()*$('input[name=recruit_number]').val();
-            var bp = $('input[name=recruit_number]').val() * 5000;
-            $('#point_price').html(money(pp));
-            $('#basic_price').html(money(bp));
-            totalprice();
-        }
-    };
+    
 //    -----content보기 설정 끝
 //    노출옵션선택
     $('.expo:not(.notwork)').click(function(e){
@@ -542,17 +613,7 @@
         $('#use_point').val(use_point);
         totalprice();
     });
-//    결제총합
-    function totalprice(){
-       total = notmoney($('#basic_price').html())+notmoney($('#point_price').html())+notmoney($('#exposure_price').html())+notmoney($('#promotion_price').html());
-        var vat = (total-use_point)*0.1;
-        var final = (total-use_point)+vat;
-        $('#total_price').html(money((total-use_point)));
-        $('#vat').html(money(vat));
-        $('#final_price').html(money(final));
-        $('input[name=payment]').val(final);
-    }
-//    --------결제총합
+
     
 //    방문재택선택
     $('input[name=form]').change(function(){
@@ -592,13 +653,7 @@
     });
 //    -----일정지정끝
     
-
-    
-    $.ajaxSetup({
-       headers: {
-           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-       } 
-    });
+ 
 //    첫번째페이지오류검사
     $('#first_btn').on('click', function(e){
        e.preventDefault();
@@ -625,7 +680,7 @@
                channel_id:channel_id,
                start_recruit:start_recruit,
                end_recruit:end_recruit,
-               end_submit:end_submit
+               end_submit:end_submit, "_token": "{{ csrf_token() }}"
            },
            success:function(data){
                $('span').filter('.red').html('');
@@ -656,11 +711,14 @@
     // 캠페인 지역 선택
     $('#regions').change(function(e){
        e.preventDefault();
-        var now = $(this).val();
+        var now = $('#regions option:selected').val();
         if(now!='선택'){
         var $data = new FormData();
         $data.append('region', now);
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         type: 'POST',
         url: "{{ route('campaigns.makearea') }}",
         data: $data,
@@ -669,9 +727,13 @@
             $('#areas').removeClass('hide');
             var your_html = "";
             $.each(obj, function (key, val) {
-                your_html += "<option value='"+val.id+"'>" +  val.name + "</option>"
+                if(before_area==val.id){
+                    your_html += "<option selected value='"+val.id+"'>" +  val.name + "</option>";
+                } else {
+                    your_html += "<option value='"+val.id+"'>" +  val.name + "</option>";
+                }
             });
-         $("#areas").html(your_html) 
+         $("#areas").html(your_html);
         },
         error: function(data) {
         },
@@ -691,6 +753,7 @@
     $('#second_btn').on('click', function(e){
        e.preventDefault();
 var $data = new FormData();
+        $data.append('before_main_image', $("input[name=before_main_image]").val());
         $data.append('main_image', $("input[name=main_image]").val());
         $data.append('visit_time', $("input[name=visit_time]").val());
         $data.append('contact', $("input[name=contact]").val());
@@ -700,6 +763,9 @@ var $data = new FormData();
         $data.append('area_id', $("select[name=area_id]").val());
         $data.append('form', $("input[name=form]:checked").val());
     $.ajax({
+        headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         type: 'POST',
         url: "{{ route('campaigns.secondstore') }}",
         data: $data,
@@ -744,6 +810,9 @@ var $data = new FormData();
             if (rsp.success) {
                 // 결제 성공 시 로직,
                 $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     type: 'POST',
                     url: "{{ route('campaigns.complate') }}",
                     data: {
@@ -775,6 +844,9 @@ var $data = new FormData();
             if($('#checkAgree1').is(':checked')) {
                 var s_data = new FormData($("#test_form")[0]);
                 $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     type: 'POST',
                     url: "{{ route('campaigns.store_c') }}",
                     data: s_data,
@@ -812,7 +884,7 @@ var $data = new FormData();
         $.ajax({
            type:"POST",
            url:"{{ route('campaigns.brandCheck') }}",
-           data:{brand_id: $("select[name=brand_id]").val()},
+           data:{brand_id: $("select[name=brand_id]").val(), "_token": "{{ csrf_token() }}"},
            success:function(data){
                if(data.b_result){
                    window.location.hash = '#brand_cant_del';
@@ -835,7 +907,7 @@ var $data = new FormData();
         $.ajax({
            type:"POST",
            url:"{{ route('campaigns.brandstore') }}",
-           data:{brand_name:brand_name, category_id:category_id},
+           data:{brand_name:brand_name, category_id:category_id, "_token": "{{ csrf_token() }}"},
            success:function(data){
          $('#brand_select').html(data.finhtml);
                 window.location.hash = '';
@@ -849,6 +921,79 @@ var $data = new FormData();
                   }
                }
         });
+    });
+    //이전 캠페인 불러오기
+    $('#before_campaign').change(function(){
+        var select_id = $('#before_campaign option:selected').val();
+        $.ajax({
+           type:"get",
+           url:"{{ route('campaigns.before_campaign') }}",
+           data:{select_id:select_id},
+           success:function(data){
+               var bc = data.before_campaign;
+               //브랜드
+               $('select[name=brand_id] option').prop("selected", false);
+               $('select[name=brand_id]').val(bc.brand_id).prop("selected", true);
+               $('input[name=name]').val(bc.name);
+               $('input[name="form"]').each(function() {
+                   $(this).prop('checked', false);
+               });
+               $('input[name="form"][value='+bc.form+']').prop("checked", true);
+              $('input[name="form"]').change();
+               $('input[name=recruit_number]').val(bc.recruit_number);
+               $('input[name=offer_point]').val(bc.offer_point);
+               $('input[name=offer_goods]').val(bc.offer_goods);
+               $('input[name=channel_id]').each(function() {
+                   $(this).prop('checked', false);
+               });
+               $('input[name=channel_id][value='+bc.channel_id+']').prop("checked", true);
+               $('input[name=before_main_image]').val(bc.main_image);
+               $('label[for="file"]').css({
+                   'background-image':'url(/files/'+bc.main_image+')'
+               });
+               $('.del_image, .before_sub_img').hide();
+               $('input.before_sub_img').val('');
+               $('input.del_image').each(function() {
+                   $(this).prop('checked', false);
+               });
+               if(bc.sub_image1){
+                  $('input[name=before_sub_image1]').val(bc.sub_image1);
+                   $('#before_sub_image1').attr('src','/files/'+bc.sub_image1).show();
+                   $('#del_image1, label[for=del_image1]').show();
+                  }
+               if(bc.sub_image2){
+                  $('input[name=before_sub_image2]').val(bc.sub_image2);
+                   $('#before_sub_image2').attr('src','/files/'+bc.sub_image2).show();
+                   $('#del_image2, label[for=del_image2]').show();
+                  }
+               if(bc.sub_image3){
+                  $('input[name=before_sub_image3]').val(bc.sub_image3);
+                   $('#before_sub_image3').attr('src','/files/'+bc.sub_image3).show();
+                   $('#del_image3, label[for=del_image3]').show();
+                  }
+               //방문캠페인이면
+               if(bc.form=='v'){
+                   $('#regions option').prop("selected", false);
+                   $('#regions option[value='+data.before_area.region_id+']').prop("selected", true);
+                   before_area = data.before_area.id;
+                   $('#regions').change();
+                   $('#areas option').prop("selected", false);
+                   $('input[name=visit_time]').val(bc.visit_time);
+                   $('input[name=zipcode]').val(bc.zipcode);
+                   $('input[name=address]').val(bc.address);
+                   $('input[name=detail_address]').val(bc.detail_address);
+               }
+               $('input[name=contact]').val(bc.contact);
+               $('textarea[name=mission]').html(bc.mission);
+               $('input[name=keyword]').val(bc.keyword);
+               $('textarea[name=etc]').html(bc.etc);
+               
+          },
+            error: function(data) {
+                alert('이전 캠페인 불러오기에 실패했습니다.');
+          }
+        });
+    });
     });
 </script>
 @include('help.addjs')	

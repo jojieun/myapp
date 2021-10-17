@@ -219,6 +219,14 @@ foreach ($campaigns as $key => $loop)
 }])->get(),
         ]);
     }
+    //이전 캠페인 불러오기
+    public function before_campaign(Request $request)
+    {
+        $before_campaign = Campaign::find($request->select_id);
+        $before_area = \App\Area::find($before_campaign->area_id);
+//        $before_region = \App\Region::find($before_area->region_id);
+        return \Response::json(['before_campaign'=>$before_campaign,'before_area'=>$before_area]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -302,7 +310,7 @@ foreach ($campaigns as $key => $loop)
     public function secondStore(Request $request)
     {
         $this->validate($request, [
-            'main_image' => 'required',
+            'main_image' => $request->before_main_image?'':'required',
             'contact' => 'required|max:255',
             'mission' => '',
             'keyword' => 'max:255',
@@ -423,7 +431,21 @@ foreach ($campaigns as $key => $loop)
         $campaign->zipcode=$request->zipcode;
         $campaign->address=$request->address;
         $campaign->detail_address=$request->detail_address;
+        $campaign->fee_waiver=$request->fee_waiver;
         $campaign->merchant_uid='mc_'.time();
+        $campaign->main_image = $request->before_main_image;
+        $campaign->sub_image1 = $request->before_sub_image1;
+        $campaign->sub_image2 = $request->before_sub_image2;
+        $campaign->sub_image3 = $request->before_sub_image3;
+        if($request->del_image1){
+            $campaign->sub_image1 = null;
+        }
+        if($request->del_image2){
+            $campaign->sub_image2 = null;
+        }
+        if($request->del_image3){
+            $campaign->sub_image3 = null;
+        }
         
         if($request->hasfile('main_image')){
             $file = $request->file('main_image');
@@ -478,14 +500,14 @@ foreach ($campaigns as $key => $loop)
           \App\Refund::create([
             'advertiser_id'=>$nowuser->id,
               'campaign_id'=>$campaign->id,
-            'description'=>substr($campaign->name, 0, 30).'... 캠페인 결제 사용',
+            'description'=>mb_substr($campaign->name, 0, 30).'... 캠페인 결제 사용',
             'point'=>$request->use_point,
               'kinds'=>'o'
         ]);  
         \App\Advertiser::whereId($nowuser->id)->decrement('point', $request->use_point);
         }
         if(! $campaign){
-            return back()->withInput();
+            return response()->json([]);
         }
         return response()->json(['m_uid'=>$campaign->merchant_uid]);
     }
@@ -864,7 +886,7 @@ foreach ($campaigns as $key => $loop)
         \App\Advertiser::whereId($nowuserId)->increment('point', $point);
         \App\Refund::create([
             'advertiser_id'=>$nowuserId,
-            'description'=>substr($campaign->name, 0, 30).'... 캠페인 취소 환급',
+            'description'=>mb_substr($campaign->name, 0, 30).'... 캠페인 취소 환급',
             'point'=>$point,
         ]);
         $campaign->delete();

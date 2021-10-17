@@ -54,6 +54,9 @@ $('.chat_button').on('click', function(e){
 function save_message(){
     if($('#input_message').val()){ 
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
             type:"POST",
             url:"{{ route('messages.store') }}",
             data:{

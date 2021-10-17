@@ -5,6 +5,7 @@
             <td>{{ $promotion->price }}</td>
             <td>{{ $promotion->limit }}</td>
             <td>{{ $promotion->instruction }}</td>
+            <td>{{ $promotion->fee_waiver }}</td>
             <td>
                 <button class="edit" value="{{ $promotion->id }}">수정</button>
             </td>

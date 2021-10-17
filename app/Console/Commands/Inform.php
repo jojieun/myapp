@@ -40,6 +40,7 @@ class Inform extends Command
      */
     public function handle()
     {
+        $task_controller = new TaskController;
         //****리뷰마감 문자알림
         //------ 3일전
         $dMinus3s = \App\Campaign::where('confirm',1)
@@ -48,7 +49,7 @@ class Inform extends Command
                 $query->where('selected',1)
                     ->doesntHave('review');
             }])->get();
-        $task_controller = new TaskController;
+        
         foreach($dMinus3s as $dMinus3){
             $campaignReviewers = $dMinus3->campaignReviewers;
             foreach($campaignReviewers as $campaignReviewer){
@@ -63,7 +64,6 @@ class Inform extends Command
                 $query->where('selected',1)
                     ->doesntHave('review');
             }])->get();
-        $task_controller = new TaskController;
         foreach($dMinus1s as $dMinus1){
             $campaignReviewers = $dMinus1->campaignReviewers;
             foreach($campaignReviewers as $campaignReviewer){
@@ -78,7 +78,6 @@ class Inform extends Command
                 $query->where('selected',1)
                     ->doesntHave('review');
             }])->get();
-        $task_controller = new TaskController;
         foreach($dPlus1s as $dPlus1){
             $campaignReviewers = $dPlus1->campaignReviewers;
             foreach($campaignReviewers as $campaignReviewer){
@@ -93,7 +92,6 @@ class Inform extends Command
             ->whereDate('end_recruit', '<', Carbon::now()->subDay()->toDateString())
             ->with('campaignReviewers','brandCategory','area')
             ->get();
-        $task_controller = new TaskController;
         foreach($cams as $cam){
             //캠페인 링크 주소를 위한 요소
             $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
@@ -109,12 +107,12 @@ class Inform extends Command
         }//endforeach
         
         //선정 메일 보내기
-        $cams=\App\Campaign::where('confirm',1)
+        $cams2=\App\Campaign::where('confirm',1)
             ->where('send_mail',0)
             ->whereDate('end_recruit', '<', Carbon::now()->subDay()->toDateString())
             ->with('campaignReviewers','brandCategory','area')
             ->get();
-        foreach($cams as $cam){
+        foreach($cams2 as $cam){
             //캠페인 링크 주소를 위한 요소
             $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
             //캠페인 링크 주소 구하기

@@ -10,6 +10,8 @@ use App\Advertiser;
 use App\Campaign;
 use App\Exports\CampaignReviewerExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Mail;
+use App\Http\Controllers\TaskController;
 
 
 class AdvertiserMypageController extends Controller
@@ -293,15 +295,10 @@ class AdvertiserMypageController extends Controller
         $campaignreviewers1 =$campaignreviewers->reject(function ($campaignreviewers) {
             return $campaignreviewers->selected === 1;
         });
-        //선정됨
-        $campaignreviewers2 =$campaignreviewers->reject(function ($campaignreviewers) {
-            return $campaignreviewers->selected === 0;
-        });
-        //선정된
+
         return view('advertisers.recruit_campaign',[
             'r_count'=>$r_count,
             'campaignreviewers1'=>$campaignreviewers1,
-            'campaignreviewers2'=>$campaignreviewers2,
             'user'=>$nowuser,
             'campaign'=>$campaign,
             'gender_f'=>$gender_f,
@@ -319,11 +316,71 @@ class AdvertiserMypageController extends Controller
     //리뷰어 선정
     public function select_reviewer(Request $request, Campaign $campaign){
         if($request->selected){
-        foreach($request->selected as $selected){
-            \App\CampaignReviewer::whereId($selected)->update(['selected' => 1]);
+            foreach($request->selected as $selected){
+                \App\CampaignReviewer::whereId($selected)->update(['selected' => 1]);
+            }
         }
+        $campaign->update([
+            'select_payment'=>true,
+            'payment2'=>$request->payment2,
+            'merchant_uid2'=>$request->merchant_uid2?:'',
+            'end_recruit'=>Carbon::now()->subDays(2)->toDateString(),
+        ]);
+        if($request->has('use_point')){
+            $nowuser = auth()->guard('advertiser')->user();
+          \App\Refund::create([
+            'advertiser_id'=>$nowuser->id,
+              'campaign_id'=>$campaign->id,
+            'description'=>mb_substr($campaign->name, 0, 30).'... 캠페인 결제 사용',
+            'point'=>$request->use_point,
+              'kinds'=>'o'
+        ]);  
+        \App\Advertiser::whereId($nowuser->id)->decrement('point', $request->use_point);
         }
-        return redirect()->route('advertisers.recruit_campaign', ['campaign' => $campaign]);
+        $task_controller = new TaskController;
+        //*****선정 문자 보내기
+        $cam=$campaign;
+            //캠페인 링크 주소를 위한 요소
+            $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
+            //캠페인 링크 주소 구하기
+            $cam_link = route('campaigns.show', [$cam->id, 'd'=>'모집마감', 'applyCount'=>$cam->campaignReviewers->count(), 'locaOrCate'=>$locaOrCate]);
+            
+            //선정된 리뷰어 구하기
+            $select_reviewers =  $cam->campaignReviewers->where('selected',1);
+            foreach($select_reviewers as $re){
+                $task_controller->SendLMS($re->reviewer->mobile_num, $re->reviewer->name, $cam_link, $cam->end_submit, $cam->name);
+            }
+            \App\Campaign::whereId($cam->id)->update(['send_sms' => 1]);
+        
+        //선정 메일 보내기
+        $cam=$campaign;
+            //캠페인 링크 주소를 위한 요소
+            $locaOrCate = $cam->form == 'v'?$cam->area->region->name.' '.$cam->area->name:$cam->brandCategory->name;
+            //캠페인 링크 주소 구하기
+            $cam_link = route('campaigns.show', [$cam->id, 'd'=>'모집마감', 'applyCount'=>$cam->campaignReviewers->count(), 'locaOrCate'=>$locaOrCate]);
+             //선정된 리뷰어 구하기
+            $select_reviewers =  $cam->campaignReviewers->where('selected',1);
+            //전송할 메일주소 구하기
+            $to = array();
+            foreach($select_reviewers as $re){
+                $to[] = $re->reviewer->email;
+            }
+            $subject = '캠페인 리뷰어 선정 알림 메일입니다.';
+            $data = [
+                'cam_img' => route('main').'/files/'.$cam->main_image,
+                'cam_link' => $cam_link,
+                'cam_name' => $cam->name,
+            ];
+            Mail::send(
+            'emails.campaigns.reviewer_selected',
+            $data,
+            function($message) use($to, $subject) {
+                $message->to($to)->subject($subject);
+            });
+            //메일 전송했음을 저장
+            \App\Campaign::whereId($cam->id)->update(['send_mail' => 1]);
+        
+        return redirect()->route('advertisers.submit_campaign', ['campaign' => $campaign]);
     }
     //리뷰어 선정 해제
 //    public function deselect_reviewer(Request $request, Campaign $campaign){

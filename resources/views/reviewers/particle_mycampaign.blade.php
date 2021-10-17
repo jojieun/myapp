@@ -53,7 +53,7 @@
                 @if($option=='select')
                 <a href="{{ route('campaigns.show', [$campaign->campaign_id, 'd'=>$campaign->rightNow, 'applyCount'=>$campaign->applyCount, 'locaOrCate'=>$locaOrCate]) }}" class="btn btn-check w80">캠페인보기</a>
                     @if($campaign->take_visit_check==0)
-                    <a href="#" class="btn btn-check w80 black take_visit" data-cri="{{$campaign->campaign_reviewers_id}}" data-type="{{$campaign->form}}">@if($campaign->form=='v')방문@else수취@endif확인</a>
+                    <a href="#" class="btn btn-check w80 black take_visit" data-cri="{{$campaign->id}}" data-type="{{$campaign->form}}">@if($campaign->form=='v')방문@else수취@endif확인</a>
                     @else
                         @if($campaign->review==null)
                         <a href="#popup_reviewer" class="btn btn-check w80 black submission" data-c="{{$campaign->campaign_id}}" data-cr="{{$campaign->id}}">리뷰제출</a>

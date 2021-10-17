@@ -240,6 +240,9 @@ pre_sugges
         $('#reviewer_suggestion').click(function(e) {
         e.preventDefault();
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
             type: "POST",
             url: "{{ route('plans.reviewer_suggestion') }}",
             data: {reviewerId : $(this).data('r'), camId : $('#cam_list').val()},

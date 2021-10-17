@@ -33,6 +33,9 @@
               inputUrl = 'http://'+ $('#make_review input[name=url]').val();
            }
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:"{{route('reviewers.create_review')}}",
             data:{

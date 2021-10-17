@@ -62,7 +62,7 @@
 				url : "{{ route('remind.certification')}}",
 				dataType : 'json',
 				data : {
-					imp_uid : rsp.imp_uid
+					imp_uid : rsp.imp_uid, "_token": "{{ csrf_token() }}"
 				}
                 }).done(function(rsp) {
 		 		if(rsp.name=='error'){

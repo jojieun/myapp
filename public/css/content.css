@@ -1315,9 +1315,10 @@ table.tbl_terms tbody td.center{ text-align:center;}
 
 /* 채팅 */
 #chat_wrap{
-    height: 500px;
+    max-height: 500px;
     padding-left:0;
     padding-right:0;
+    height: 90%;
 }
 #chat_header{
     height: 50px;

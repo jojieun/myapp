@@ -49,6 +49,9 @@ $('.no_accept').on('click', function(e){
     e.preventDefault();
     var suggestId = $(this).data('s');
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"post",
            url:'no_accept/' + suggestId,
             success: function(data){
@@ -70,6 +73,9 @@ $('.accept').on('click', function(e){
      e.preventDefault();
      if($('#checkAgree1').is(':checked') && $('#checkAgree2').is(':checked')){
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:"{{ route('reviewers.apply') }}",
            data:{

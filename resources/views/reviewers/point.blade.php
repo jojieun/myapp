@@ -75,6 +75,9 @@
         kinds = $('select[name=kinds]').val();
 //        find = $('input[name=find]').val();
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
                 type: "POST",
                 url: "{{ route('reviewers.point_search') }}",
                 data: {

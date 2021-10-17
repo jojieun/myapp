@@ -132,6 +132,9 @@
         var $data = new FormData();
         $data.append('region', now);
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
         type: 'POST',
         url: "{{ route('campaigns.makearea') }}",
         data: $data,

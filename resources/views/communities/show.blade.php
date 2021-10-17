@@ -75,6 +75,9 @@
         $('#ccontent').val('');
         if(con){
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:'{{route('makecomment')}}',
             data:{
@@ -94,6 +97,9 @@
 
       if (confirm('글을 삭제합니다.')) {
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
           type: 'DELETE',
           url: '/communities/' + communityId,
         }).then(function () {
@@ -107,6 +113,9 @@
 var communityId = $('#has_id').data('id');
       if (confirm('댓글을 삭제합니다.')) {
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
           type: 'POST',
           url: '/delcomment/' + commentId,
             data:{

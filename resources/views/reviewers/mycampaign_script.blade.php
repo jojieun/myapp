@@ -43,7 +43,7 @@
                 type:"POST",
                 url:"{{route('reviewers.take_visit')}}",
                 data:{
-                    'id':$(this).data('cri'),
+                    'id':$(this).data('cri'), "_token": "{{ csrf_token() }}"
                 },
                 success: function(){
                     window.location.reload();

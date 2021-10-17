@@ -46,7 +46,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&display=swap" rel="stylesheet">
 	<!-- css -->
 <!--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ asset('css/style.css?ver=2.1') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?ver=2.2') }}" rel="stylesheet">
     
     <link href="{{ asset('plugin/slick-1.8.1/slick.css?ver=0.2') }}" rel="stylesheet">
     <link href="{{ asset('plugin/slick-1.8.1/slick-theme.css?ver=0.2') }}" rel="stylesheet">

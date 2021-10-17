@@ -48,7 +48,8 @@
 						<dt>캠페인일정</dt>
 						<dd>
 							<p><span class="detail-title">리뷰어 신청기간</span><span><b>{{$campaign->start_recruit}} ~ {{$campaign->end_recruit}}</b></span></p>
-							<p><span class="detail-title">리뷰어 발표</span><span>{{$reviewer_announce}}</span></p>
+							<p><span class="detail-title">리뷰어 선정일</span><span>{{$reviewer_announce}}</span></p>
+                            <p><span class="detail-title">선정리뷰어 발표일</span><span>{{$start_submit}}</span></p>
 							<p><span class="detail-title">리뷰 등록기간</span><span>{{$start_submit}} ~ {{$campaign->end_submit}}</span></p>
 							<p><span class="detail-title">캠페인 결과발표</span><span>{{$result_announce}}</span></p>
 						</dd>
@@ -353,7 +354,7 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
         $.ajax({
            type:"POST",
            url:"{{ route('reviewers.apply') }}",
-           data:{camid:camid},
+           data:{camid:camid, "_token": "{{ csrf_token() }}"},
            success:function(data){
                if(data.pre_apply){
                    window.location.replace( baseUrl + '#pre_apply' );
@@ -381,7 +382,7 @@ clipboard.on( 'success', function() {       // 복사에 성공했을 때
         $.ajax({
            type:"POST",
            url:"{{ route('reviewers.bookmark') }}",
-           data:{camid:camid},
+           data:{camid:camid, "_token": "{{ csrf_token() }}"},
             success:function(data){
                 if(data.pre=='pre_apply'){
                    window.location.replace( baseUrl + '#pre_apply' );

@@ -7,6 +7,9 @@
     $('.edit_review').on('click', function(e){
     var nowId = $(this).data('r');
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"get",
            url:'edit_review/' + nowId,
             success: function(data){
@@ -26,6 +29,9 @@
               inputUrl = 'http://'+ $('#answer input[name=url]').val();
            }
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"put",
            url:'update_review/' + nowId,
             data:{

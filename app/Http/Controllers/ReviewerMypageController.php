@@ -29,7 +29,7 @@ class ReviewerMypageController extends Controller
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->subDay()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -63,7 +63,7 @@ class ReviewerMypageController extends Controller
             ->where('selected',1)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->subDay()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
@@ -150,7 +150,7 @@ class ReviewerMypageController extends Controller
         $notreview = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->where('selected',1)->doesntHave('review')->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','<',Carbon::now()->subDay()->toDateString());
 //                ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })->count();
         //리뷰(어)제안 개수반환
@@ -239,7 +239,7 @@ class ReviewerMypageController extends Controller
         $applyCampaigns = \App\CampaignReviewer::where('reviewer_id',$nowUser->id)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','>=',Carbon::now()->toDateString());
+                    ->whereDate('end_recruit','>=',Carbon::now()->subDay()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')
             ->leftjoin('regions','areas.region_id','=','regions.id')
@@ -276,7 +276,7 @@ class ReviewerMypageController extends Controller
             ->where('selected',1)
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->subDay()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
                 
             })
@@ -379,7 +379,7 @@ class ReviewerMypageController extends Controller
             ->doesntHave('review')
             ->join('campaigns', function($join) {
                 $join->on('campaign_reviewers.campaign_id','=','campaigns.id')
-                    ->whereDate('end_recruit','<',Carbon::now()->toDateString())
+                    ->whereDate('end_recruit','<',Carbon::now()->subDay()->toDateString())
                 ->whereDate('end_submit', '>=', Carbon::now()->toDateString());
             })
             ->leftjoin('areas','campaigns.area_id','=','areas.id')

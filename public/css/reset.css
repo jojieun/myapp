@@ -51,6 +51,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 a {text-decoration:none;color:inherit;cursor:pointer;-webkit-tap-highlight-color: rgba(255, 255, 255, 0); transition:all .3s ease;}
 a:link, a:visited {text-decoration:none;color:inherit;}
-a:not(.overlay):not(.popup .close):hover, a:focus, a:active{background:none;text-decoration:none;}
+/*a:not(.overlay):not(.popup .close):hover, a:focus, a:active{background:none;text-decoration:none;}*/
 
 

@@ -65,6 +65,9 @@ $('.delete').on('click', function(e){
     e.preventDefault();
     bookmarkId = $(this).data('b');
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"post",
            url:'delete_bookmark/' + bookmarkId,
             success: function(data){
@@ -86,6 +89,9 @@ $('.apply').on('click', function(e){
      e.preventDefault();
      if($('#checkAgree1').is(':checked') && $('#checkAgree2').is(':checked')){
         $.ajax({
+            headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	},
            type:"POST",
            url:"{{ route('reviewers.apply') }}",
            data:{
