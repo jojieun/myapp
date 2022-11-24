@@ -108,18 +108,44 @@
 								</div>
 							</dt>
 							<dd>
-                                <div class="{{ $errors->has('offer_point') ? 'has-error' : '' }}">
-                                    <div class="number">
-                                    <button type="button" class="down" onclick="this.parentNode.querySelector('input[type=number]').stepDown(5000)"><img src="/img/common/btn_minus.gif" alt="-"></button><input name="offer_point" type="number" min="0" id="" value="{{ old('offer_point') }}" placeholder=" " class="mb10" /><button type="button" class="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp(5000)"><img src="/img/common/btn_plus.gif" alt="+"></button><span class="point-add">point  x  1인</span>
-                                {!! $errors->first('offer_point','<span class="red">:message</span>')!!}
-                                    <span class="red" id="offer_point"></span>
-                                    </div>
-                                    </div>
+                                
                                 <div class="{{ $errors->has('offer_goods') ? 'has-error' : '' }}">
 								<input name="offer_goods" type="text" id="" value="{{ old('offer_goods') }}" placeholder="제공 물품/서비스를 입력해주세요" class="full_width mb10" />
                                 {!! $errors->first('offer_goods','<span class="red">:message</span>')!!}
                                     <span class="red" id="offer_goods"></span>
                                 </div>
+                                <button type="button" id="show_offer_point" class="btn btn-check" style="">+ 포인트 추가 제공</button>
+                                <div class="offer_point {{ $errors->has('offer_point') ? 'has-error' : '' }}">
+                                    <div class="number">
+                                    <button type="button" class="down" onclick="this.parentNode.querySelector('input[type=number]').stepDown(5000)"><img src="/img/common/btn_minus.gif" alt="-"></button><input name="offer_point" type="number" min="0" id="" value="{{ old('offer_point', 0) }}" placeholder=" " class="mb10" /><button type="button" class="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp(5000)"><img src="/img/common/btn_plus.gif" alt="+"></button><span class="point-add">point  x  1인</span>
+                                {!! $errors->first('offer_point','<span class="red">:message</span>')!!}
+                                    <span class="red" id="offer_point"></span>
+                                    </div>
+                                    </div>
+							</dd>
+						</dl>
+						<dl>
+							<dt style="line-height: 1.3; padding-top:15px">리뷰어 <span id="people2">0</span>명 선정시 예상비용</dt>
+							<dd>
+								<div class="price-list">
+                                    <p>
+										<span>중개수수료(선정인원X5,000원)</span>
+										<span class="price"><b id="basic_price2">0</b>원</span>
+									</p>
+									<p>
+										<span>리뷰어 제공 포인트</span>
+										<span class="price"><b id="point_price2">0</b>원</span>
+									</p>
+									<p class="total-price">
+										<span>합계</span>
+										<span class="price"><b class="orange" id="expectation_total_price2">0</b><span class="orange">원</span></span>
+									</p>
+								</div>
+								<div class="price-pay">
+									<p>+부가세(10%) <span id="expectation_vat2">000</span>원</p>
+									<p class="txt">총 예상비용</p>
+									<p class="price"><b id="expectation_final_price2">0</b>원</p>
+								</div>
 							</dd>
 						</dl>
 						<dl>
@@ -199,7 +225,8 @@
 										<input name="main_image" type="file" id="file" value="{{ old('main_image') }}" placeholder="상세이미지" class="full_width mb10" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
 									</label>
 								</span>
-								<span class="add-txt">※ 대표이미지는 530*530 이상 정사각형 사이즈로 작업하여 업로드해주세요.</span>
+								<span class="add-txt" style="display: inline-block;">※ 대표이미지는 530*530 이상 정사각형 사이즈로 작업하여 업로드해주세요.<br>
+								※ 2MB 이하의 이미지를 사용해주세요.</span>
 							</div>
                             <span class="red" id="main_image"></span>
                             {!! $errors->first('main_image','<span class="red">:message</span>')!!}
@@ -543,7 +570,37 @@
         $('#final_price').html(money(final));
         $('input[name=payment]').val(final);
     }
-//    --------결제총합
+
+    $('input[name=recruit_number], input[name=offer_point]').change(function(){
+    	totalprice_first_page();
+    });
+
+    $('input[name=recruit_number], input[name=offer_point]').keyup(function(){
+    	totalprice_first_page();
+    });
+
+    $('.number button').click(function(){
+    	totalprice_first_page();
+    });
+
+
+    //첫번째 페이지 결제총합
+    function totalprice_first_page(){
+    	var recruit_number2 = $('input[name=recruit_number]').val();
+    	$('#people2').html(recruit_number2);
+    	var pp2 = $('input[name=offer_point]').val()*recruit_number2;
+    	$('#point_price2').html(money(pp2));
+        var basic_price2 = $('input[name=recruit_number]').val()*5000;
+        $('#basic_price2').html(money(basic_price2));
+        var expectation_total2 = basic_price2+notmoney($('#point_price2').html());
+        var expectation_vat2 = expectation_total2*0.1;
+        var expectation_final2 = expectation_total2+expectation_vat2;
+        var final = (total-use_point)+vat;
+        $('#expectation_total_price2').html(money(expectation_total2));
+        $('#expectation_vat2').html(money(expectation_vat2));
+        $('#expectation_final_price2').html(money(expectation_final2));
+    }
+//    --------첫번째 페이지 결제총합
     //도큐먼트 레디
 $(function(){
     $.ajaxSetup({
@@ -551,6 +608,17 @@ $(function(){
            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
        } 
     });
+
+    //제공 포인트 관련
+    //제공 포인트 안보기
+    $('.offer_point').hide();
+    $('#show_offer_point').click(function(){
+    	$('.offer_point').show();
+    	$(this).hide();
+    })
+    totalprice_first_page();
+
+
     //결제관련 안보기
     $('.if_pay').hide();
     //기존 이미지 관련 안보기
